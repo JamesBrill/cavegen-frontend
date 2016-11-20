@@ -10,6 +10,11 @@ export const setCaveView = createAction(
   caveView => ({ caveView })
 )
 
+export const setCaveViewModel = createAction(
+  'SET_CAVE_VIEWMODEL',
+  caveViewModel => ({ caveViewModel })
+)
+
 export const setCurrentBrush = createAction(
   'SET_CURRENT_BRUSH',
   currentBrush => ({ currentBrush })

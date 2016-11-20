@@ -30,7 +30,7 @@ function caveView(state = null, { type, payload }) {
   }
 }
 
-function caveViewModel(state = new CaveViewModel(), { type, payload }) {
+function caveViewModel(state = null, { type, payload }) {
   switch (type) {
     case 'SET_CAVE_VIEWMODEL':
       return payload.caveViewModel
