@@ -7,7 +7,7 @@ export function isTile(symbol) {
 export function getFileNameFromSymbol(symbol) {
   for (let i = 0; i < PALETTE_BRUSHES.length; i++) {
     if (PALETTE_BRUSHES[i].symbol === symbol) {
-      return (symbol === " ") ? 'black' : PALETTE_BRUSHES[i].fileName
+      return (symbol === ' ') ? 'black' : PALETTE_BRUSHES[i].fileName
     }
   }
   return null
