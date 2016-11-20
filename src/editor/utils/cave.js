@@ -1,4 +1,5 @@
 /* eslint-disable no-invalid-this */
+
 import grid from '' // TODO: make appropriate import here
 import brushSize from '' // TODO: make appropriate import here
 import { TileChange } from 'src/editor/utils/tile-change'
