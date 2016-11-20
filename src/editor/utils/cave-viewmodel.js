@@ -216,7 +216,7 @@ export class CaveViewModel {
 
   generateCave = function () {
     if (this.validateDimensions()) {
-      this.changeController.addGenerateCaveChange()
+      this.changeController.addGenerateCaveChange(grid, this)
       this.updateDimensions()
       // _gaq.push(['_trackEvent', 'Generation', 'Generate Cave', 'Width', this.caveWidth()])
       // _gaq.push(['_trackEvent', 'Generation', 'Generate Cave', 'Height', this.caveHeight()])

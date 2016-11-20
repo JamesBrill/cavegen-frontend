@@ -4,9 +4,6 @@ import { CaveChangeHistory } from 'src/editor/utils/cave-change-history'
 import { PaintedLineChange } from 'src/editor/utils/painted-line-change'
 import { CaveChange } from 'src/editor/utils/cave-change'
 import { getBorder, getTileSize } from 'src/editor/utils/tiles'
-import grid from '' // TODO: make appropriate import here
-import caveViewModel from '' // TODO: make appropriate import here
-import caveView from '' // TODO: make appropriate import here
 import { CaveView } from 'src/editor/utils/cave-view'
 
 export class ChangeController {
@@ -19,7 +16,7 @@ export class ChangeController {
     this.currentPaintedLineChange = new PaintedLineChange()
   }
 
-  buildCaveChange = function () {
+  buildCaveChange = function (grid, caveViewModel) {
     const preGenerationSnapshot = grid.getGridClone()
     const postGenerationWidth = caveViewModel.caveWidth()
     const postGenerationHeight = caveViewModel.caveHeight()
@@ -31,8 +28,8 @@ export class ChangeController {
     this.resetCurrentPaintedLineChange()
   }
 
-  addGenerateCaveChange = function () {
-    const caveChange = this.buildCaveChange()
+  addGenerateCaveChange = function (grid, caveViewModel) {
+    const caveChange = this.buildCaveChange(grid, caveViewModel)
     this.changeHistory.addChange(caveChange)
   }
 
@@ -46,19 +43,19 @@ export class ChangeController {
     return this.changeHistory.currentChange()
   }
 
-  applyUndo = function () {
+  applyUndo = function (grid, caveView, updateCaveView) {
     if (!this.changeHistory.atBeginningOfHistory()) {
-      this.applyChange(true)
+      this.applyChange(true, grid, caveView, updateCaveView)
     }
   }
 
-  applyRedo = function () {
+  applyRedo = function (grid, caveView, updateCaveView) {
     if (!this.changeHistory.atEndOfHistory()) {
-      this.applyChange(false)
+      this.applyChange(false, grid, caveView, updateCaveView)
     }
   }
 
-  applyChange = function (isUndo) {
+  applyChange = function (isUndo, grid, caveView, updateCaveView) {
     if (!isUndo) {
       this.changeHistory.rollForwardCurrentChange()
     }
@@ -71,7 +68,7 @@ export class ChangeController {
     if (currentChange instanceof PaintedLineChange) {
       this.applyPaintedLineChange(currentChange, isUndo)
     } else if (currentChange instanceof CaveChange) {
-      this.applyGenerateCaveChange(currentChange, isUndo)
+      this.applyGenerateCaveChange(currentChange, isUndo, grid, caveView, updateCaveView)
     }
 
     if (isUndo) {
@@ -79,7 +76,7 @@ export class ChangeController {
     }
   }
 
-  applyPaintedLineChange = function (currentChange, isUndo) {
+  applyPaintedLineChange = function (currentChange, isUndo, grid, caveView) {
     const tileChanges = currentChange.tileChanges
     const paintedPositions = []
     for (let i = 0; i < tileChanges.length; i++) {
@@ -94,7 +91,7 @@ export class ChangeController {
     caveView.paintPositions(paintedPositions)
   }
 
-  applyGenerateCaveChange = function (currentChange, isUndo) {
+  applyGenerateCaveChange = function (currentChange, isUndo, grid, caveView, updateCaveView) {
     if (isUndo) {
       const width = currentChange.preGenerationWidth
       const height = currentChange.preGenerationHeight
@@ -102,8 +99,9 @@ export class ChangeController {
       const tileSize = getTileSize(width, height)
 
       grid.rebuildCaveFromGrid(currentChange.preGenerationSnapshot)
-      caveView = new CaveView(width, height, tileSize, border)
-      caveView.draw(grid)
+      const newCaveView = new CaveView(width, height, tileSize, border)
+      updateCaveView(newCaveView)
+      newCaveView.draw(grid)
     } else {
       const width = currentChange.postGenerationWidth
       const height = currentChange.postGenerationHeight
@@ -111,8 +109,9 @@ export class ChangeController {
       const tileSize = getTileSize(width, height)
 
       grid.rebuildCaveFromCoordinates(width, height)
-      caveView = new CaveView(width, height, tileSize, border)
-      caveView.draw(grid)
+      const newCaveView = new CaveView(width, height, tileSize, border)
+      updateCaveView(newCaveView)
+      newCaveView.draw(grid)
     }
   }
 }
