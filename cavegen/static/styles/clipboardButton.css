@@ -1,0 +1,10 @@
+.clip_button 
+{
+	width: 100%;
+	text-align: center;
+	border: 1px solid black;
+	background-color: #ccc;
+}
+
+.clip_button.zeroclipboard-is-hover { background-color: #eee; }
+.clip_button.zeroclipboard-is-active { background-color: #aaa; }

@@ -1,0 +1,22 @@
+:root {
+  --light-grey: #efefef;
+  --dark-grey: #888888;
+  --pale-teal: #70c1b3;
+  --cool-blue: #3e98be;
+  --yellow-tan: #ffe066;
+  --half-baked: #89c9c1;
+  --petite-orchid: #dd8d89;
+
+  --brownish-grey: #404040;
+  --alto: #d6d6d6;
+  --cornflower-blue-50: rgba(86, 124, 222, 0.5);
+  --cornflower-blue: #567cde;
+  --silver-fox: #f5f5f5;
+  --warm-grey: #808080;
+  --duck-egg-blue: #e3eaf9;
+  --outrageous-orange: #fc5830;
+  --outrageous-orange-20: rgba(252, 88, 48, 0.2);
+  --varden: #fff7dd;
+  --shadow: #7a6a4c;
+  --alizarin-crimson: #e72b17;
+}

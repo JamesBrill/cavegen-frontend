@@ -1,0 +1,37 @@
+/* stylelint-disable at-rule-name-newline-after, no-browser-hacks */
+
+@import 'src/palette.css';
+
+@each $property in background-color, color, fill, stroke {
+  @each $color in white, black, transparent {
+    .$(property)-$(color) {
+      $(property): $(color);
+    }
+  }
+
+  @each $color in
+    light-grey,
+    dark-grey,
+    cool-blue,
+    pale-teal,
+    yellow-tan,
+    half-baked,
+    petite-orchid,
+    brownish-grey,
+    alto,
+    cornflower-blue-50,
+    cornflower-blue,
+    silver-fox,
+    warm-grey,
+    duck-egg-blue,
+    outrageous-orange,
+    outrageous-orange-20,
+    varden,
+    shadow,
+    alizarin-crimson
+  { /* stylelint-disable-line */
+    .$(property)-$(color) {
+      $(property): var(--$(color));
+    }
+  }
+}

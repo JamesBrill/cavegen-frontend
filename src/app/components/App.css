@@ -1,0 +1,33 @@
+@import 'src/viewport.css';
+
+.App {
+  z-index: 0;
+
+  min-height: 100vh;
+  min-width: 100%;
+
+  &.withTopNav {
+    padding-top: 3.625em;
+  }
+
+  @media (--small-screen) {
+    &.withBottomNav {
+      padding-bottom: 3em;
+    }
+  }
+}
+
+.page {
+  min-height: 100vh;
+  min-width: 100%;
+
+  @nest .App.withTopNav > & {
+    min-height: calc(100vh - 3.625em);
+  }
+
+  @media (--small-screen) {
+    @nest .App.withBottomNav > & {
+      min-height: calc(100vh - 6.625em);
+    }
+  }
+}

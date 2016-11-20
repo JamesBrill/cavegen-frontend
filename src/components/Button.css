@@ -1,0 +1,61 @@
+@import 'src/palette.css';
+
+.Button {
+  display: inline-block;
+  margin: 0;
+  padding: 0.875em 3.125em;
+
+  vertical-align: middle;
+  text-align: center;
+  font: inherit;
+  background-clip: padding-box;
+  border: 0;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  user-select: none;
+
+  &.defaultBackground {
+    background-color: #ededed;
+  }
+
+  &.pill {
+    border-radius: 100vh;
+  }
+
+  &.block {
+    border-radius: 0.125em;
+  }
+
+  &, &:hover, &:active, &:focus {
+    text-decoration: none;
+    outline: 0;
+    letter-spacing: 0.4px;
+    font-size: 0.875em;
+    color: #797979;
+
+    &.whiteText {
+      color: white;
+    }
+  }
+
+  &:disabled,
+  &.disabled,
+  &.disabled:hover,
+  &.disabled:active,
+  &.disabled:focus {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:not(.disabled):active {
+    padding-top: calc(0.875em + 1px);
+    padding-bottom: calc(0.875em - 1px);
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  /* Fix a Firefox bug whereby `input type="submit"` gains 2px extra padding. */
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}

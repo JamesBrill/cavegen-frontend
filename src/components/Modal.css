@@ -1,0 +1,73 @@
+/* stylelint-disable selector-class-pattern */
+@import 'src/viewport.css';
+@import 'src/palette.css';
+
+body:global(.ReactModal__Body--open) { /* stylelint-disable-line selector-no-type */
+  overflow: hidden;
+}
+
+:global(.ReactModalPortal),
+.overlay:global(.ReactModal__Overlay) {
+  z-index: 2;
+}
+
+.overlay:global(.ReactModal__Overlay) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(87, 98, 128, 0.9);
+
+  &.colorless {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  opacity: 0;
+  transition: opacity 0.3s ease 0.1s;
+
+  &:global(.ReactModal__Overlay--after-open:not(.ReactModal__Overlay--before-close)) {
+    opacity: 1;
+  }
+}
+
+.cardlike {
+  composes: Card from './Card.css'; /* stylelint-disable-line value-keyword-case */
+}
+
+.Modal:global(.ReactModal__Content) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  max-width: 90vw;
+  max-height: 80vh;
+  opacity: 0;
+
+  transform: translate(-50%, -100%);
+  transition: transform 0.3s ease 0.1s, opacity 0.3s ease 0.1s;
+
+  &:global(.ReactModal__Content--after-open:not(.ReactModal__Content--before-close)) {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  @media (--small-screen) {
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  color: var(--brownish-grey);
+  top: 0.3125em;
+  left: 0.3125em;
+  width: 1em;
+  z-index: 1;
+  font-size: 2em;
+  line-height: 1em;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}

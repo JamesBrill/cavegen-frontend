@@ -1,0 +1,19 @@
+@import 'src/palette.css';
+
+.Spinner {
+  font-size: 0.625em;
+  border: 1.1em solid var(--alto);
+  border-left: 1.1em solid var(--warm-grey);
+  border-radius: 50%;
+  animation: load8 1.1s infinite linear;
+}
+
+@keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
