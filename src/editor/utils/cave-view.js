@@ -53,17 +53,17 @@ export class CaveView {
   @autobind
   drawMeasuringGrid = function () {
     const offset = this.tileSize
-    this.linePainter.setColour('#FFFFFF')
+    this.linePainter.setColour('#FFFFFF', this)
     for (let i = 1; i < this.width; i++) {
       const x = i * this.tileSize + this.leftBorder()
       this.linePainter.plotVerticalLine(x, this.topBorder() + offset,
-        this.topBorder() + this.height * this.tileSize - offset)
+        this.topBorder() + this.height * this.tileSize - offset, this)
     }
 
     for (let i = 1; i < this.height; i++) {
       const y = i * this.tileSize + this.topBorder()
       this.linePainter.plotHorizontalLine(this.leftBorder() + offset,
-        this.leftBorder() + this.width * this.tileSize - offset, y)
+        this.leftBorder() + this.width * this.tileSize - offset, y, this)
     }
   }
 
@@ -124,11 +124,11 @@ export class CaveView {
     const bottom = Math.min(unboundedBottom, this.topBorder() + this.tileSize * (this.height - 1))
     const right = Math.min(unboundedRight, this.leftBorder() + this.tileSize * (this.width - 1))
 
-    this.linePainter.setColour(colour || '#FFFFFF')
-    this.linePainter.plotVerticalLine(left, top, bottom)
-    this.linePainter.plotHorizontalLine(left, right, bottom)
-    this.linePainter.plotVerticalLine(right, bottom, top)
-    this.linePainter.plotHorizontalLine(right, left, top)
+    this.linePainter.setColour(colour || '#FFFFFF', this)
+    this.linePainter.plotVerticalLine(left, top, bottom, this)
+    this.linePainter.plotHorizontalLine(left, right, bottom, this)
+    this.linePainter.plotVerticalLine(right, bottom, top, this)
+    this.linePainter.plotHorizontalLine(right, left, top, this)
   }
 
   paintPositions = function (paintedPositions) {
