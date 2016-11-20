@@ -177,11 +177,11 @@ export class CaveViewModel {
   updateCursor = function (x, y) {
     if (this.previousCursorSize !== brushSize) {
       caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y,
-                    '#FFFFFF', this.previousCursorSize)
+                    '#FFFFFF', this.previousCursorSize, brushSize)
       this.previousCursorSize = brushSize
     }
-    caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y)
-    caveView.drawCursor(x, y)
+    caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y, brushSize)
+    caveView.drawCursor(x, y, brushSize)
     this.previousCursorPosition = { x, y }
     this.currentCursorSize = brushSize
   }

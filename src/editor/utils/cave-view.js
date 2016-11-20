@@ -4,7 +4,6 @@ import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
-import brushSize from '' // TODO: make appropriate import here
 import { CAVE_DISPLAY_WIDTH, CAVE_DISPLAY_HEIGHT } from '' // TODO: make appropriate import here
 
 export class CaveView {
@@ -109,11 +108,11 @@ export class CaveView {
     }
   }
 
-  drawCursor = function (column, row) {
-    this.drawSquareOutline(column, row, '#FF0000')
+  drawCursor = function (column, row, brushSize) {
+    this.drawSquareOutline(column, row, '#FF0000', brushSize)
   }
 
-  drawSquareOutline = function (column, row, colour, previousCursorSize) {
+  drawSquareOutline = function (column, row, colour, previousCursorSize, brushSize) {
     const squareSize = previousCursorSize || brushSize
     const unboundedTop = (Math.min(Math.max(row, 1), this.height - 2) - Math.floor(squareSize / 2)) * this.tileSize + this.topBorder()
     const unboundedLeft = (Math.min(Math.max(column, 1), this.width - 2) - Math.floor(squareSize / 2)) * this.tileSize + this.leftBorder()
