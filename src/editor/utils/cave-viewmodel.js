@@ -6,15 +6,16 @@ import { Cave } from 'src/editor/utils/cave'
 import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
 import { CaveView } from 'src/editor/utils/cave-view'
-import caveView from '' // TODO: make appropriate import here
 import currentBrush from '' // TODO: make appropriate import here
 import lastUsedBrushSize from '' // TODO: make appropriate import here
 import brushSize from '' // TODO: make appropriate import here
 
 export class CaveViewModel {
-  constructor(grid, updateGrid) {
+  constructor(grid, updateGrid, caveView, updateCaveView) {
     this.grid = grid
     this.updateGrid = updateGrid
+    this.caveView = caveView
+    this.updateCaveView = updateCaveView
     this.caveName = '_'
     this.caveWidth = 40
     this.caveHeight = 40
@@ -51,8 +52,9 @@ export class CaveViewModel {
 
     this.grid = cave || new Cave(width, height)
     this.updateGrid(this.grid)
-    caveView = new CaveView(width, height, tileSize, border)
-    caveView.draw(this.grid)
+    this.caveView = new CaveView(width, height, tileSize, border)
+    this.updateCaveView(this.caveView)
+    this.caveView.draw(this.grid)
   }
 
   validateDimensions = function () {
@@ -99,8 +101,8 @@ export class CaveViewModel {
   }
 
   continuePaintingAtMousePosition = function (pixelX, pixelY) {
-    const gridX = caveView.getGridX(pixelX)
-    const gridY = caveView.getGridY(pixelY)
+    const gridX = this.caveView.getGridX(pixelX)
+    const gridY = this.caveView.getGridY(pixelY)
 
     if (gridX === this.previousCursorPosition.x && gridY === this.previousCursorPosition.y) {
       return
@@ -109,14 +111,14 @@ export class CaveViewModel {
     if (!this.grid.withinLimits(gridX, gridY)) {
       const x = (gridX < 0) ? 0 : ((gridX > this.width - 1) ? this.width - 1 : gridX)
       const y = (gridY < 0) ? 0 : ((gridY > this.height - 1) ? this.height - 1 : gridY)
-      caveView.previousPaintedPoint = { x, y }
+      this.caveView.previousPaintedPoint = { x, y }
     }
 
-    if (caveView.isMouseDown) {
-      caveView.paintLineMode = true
+    if (this.caveView.isMouseDown) {
+      this.caveView.paintLineMode = true
     }
 
-    if (caveView.isMouseDown && this.grid.withinLimits(gridX, gridY)) {
+    if (this.caveView.isMouseDown && this.grid.withinLimits(gridX, gridY)) {
       this.applyBrushAtPosition(gridX, gridY, currentBrush)
     }
 
@@ -126,12 +128,12 @@ export class CaveViewModel {
   }
 
   startPaintingAtMousePosition = function (pixelX, pixelY) {
-    caveView.isMouseDown = true
-    const gridX = caveView.getGridX(pixelX)
-    const gridY = caveView.getGridY(pixelY)
+    this.caveView.isMouseDown = true
+    const gridX = this.caveView.getGridX(pixelX)
+    const gridY = this.caveView.getGridY(pixelY)
     if (this.grid.withinLimits(gridX, gridY)) {
       this.applyBrushAtPosition(gridX, gridY, currentBrush)
-      caveView.paintLineMode = true
+      this.caveView.paintLineMode = true
     }
 
     if (brushSize !== lastUsedBrushSize) {
@@ -143,7 +145,7 @@ export class CaveViewModel {
   applyBrushAtPosition = function (x, y, brush) {
     const tileChanges = this.getTileChanges(x, y, brush)
     this.grid.applyTileChanges(tileChanges)
-    caveView.applyTileChanges(tileChanges)
+    this.caveView.applyTileChanges(tileChanges)
     this.changeController.addTileChanges(tileChanges)
   }
 
@@ -151,8 +153,8 @@ export class CaveViewModel {
     const currentPoint = { x: column, y: row }
     let tileChanges = []
 
-    if (caveView.paintLineMode) {
-      const lineStart = caveView.previousPaintedPoint
+    if (this.caveView.paintLineMode) {
+      const lineStart = this.caveView.previousPaintedPoint
       const lineEnd = currentPoint
       let positions = positionsBetweenPoints(lineStart, lineEnd)
       positions = positions.slice(1)
@@ -164,26 +166,26 @@ export class CaveViewModel {
       const newTileChanges = this.grid.getTileChangesFromBrush(column, row, brush, this.grid, brushSize)
       tileChanges = mergeTileChanges(tileChanges, newTileChanges)
     }
-    caveView.previousPaintedPoint = currentPoint
+    this.caveView.previousPaintedPoint = currentPoint
     return tileChanges
   }
 
   finishPainting = function () {
-    if (caveView.isMouseDown) {
+    if (this.caveView.isMouseDown) {
       this.changeController.addPaintedLineChange()
     }
-    caveView.isMouseDown = false
-    caveView.paintLineMode = false
+    this.caveView.isMouseDown = false
+    this.caveView.paintLineMode = false
   }
 
   updateCursor = function (x, y) {
     if (this.previousCursorSize !== brushSize) {
-      caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y,
+      this.caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y,
                     '#FFFFFF', this.previousCursorSize, brushSize)
       this.previousCursorSize = brushSize
     }
-    caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y, brushSize)
-    caveView.drawCursor(x, y, brushSize)
+    this.caveView.drawSquareOutline(this.previousCursorPosition.x, this.previousCursorPosition.y, brushSize)
+    this.caveView.drawCursor(x, y, brushSize)
     this.previousCursorPosition = { x, y }
     this.currentCursorSize = brushSize
   }
@@ -235,10 +237,10 @@ export class CaveViewModel {
   }
 
   undo = function (updateCaveView) {
-    this.changeController.applyUndo(this.grid, caveView, updateCaveView)
+    this.changeController.applyUndo(this.grid, this.caveView, updateCaveView)
   }
 
   redo = function (updateCaveView) {
-    this.changeController.applyRedo(this.grid, caveView, updateCaveView)
+    this.changeController.applyRedo(this.grid, this.caveView, updateCaveView)
   }
 }

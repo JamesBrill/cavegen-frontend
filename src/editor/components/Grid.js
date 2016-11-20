@@ -42,7 +42,10 @@ export default class Grid extends PureComponent {
     const border = getBorder(40, 40)
     dispatch(setCaveView(new CaveView(40, 40, tileSize, border)))
     caveView.draw(grid)
-    dispatch(setCaveViewModel(new CaveViewModel(grid, this.handleUpdateGrid)))
+    dispatch(setCaveViewModel(new CaveViewModel(grid,
+      this.handleUpdateGrid,
+      caveView,
+      this.handleUpdateCaveView)))
     addMouseEventListeners(caveView, caveViewModel)
     addKeyboardEventListeners(caveView)
   }
@@ -50,6 +53,11 @@ export default class Grid extends PureComponent {
   @autobind
   handleUpdateGrid(grid) {
     this.props.dispatch(setGrid(grid))
+  }
+
+  @autobind
+  handleUpdateCaveView(caveView) {
+    this.props.dispatch(setCaveView(caveView))
   }
 
   render() {
