@@ -33,15 +33,15 @@ export default class Grid extends PureComponent {
   };
 
   componentWillMount() {
-    const { dispatch, grid, caveView } = this.props
+    const { dispatch, grid, caveView, caveViewModel } = this.props
     preloadImages()
     dispatch(setGrid(new Cave(40, 40)))
     const tileSize = getTileSize(40, 40)
     const border = getBorder(40, 40)
     dispatch(setCaveView(new CaveView(40, 40, tileSize, border)))
     caveView.draw(grid)
-    addMouseEventListeners()
-    addKeyboardEventListeners()
+    addMouseEventListeners(caveView, caveViewModel)
+    addKeyboardEventListeners(caveView)
   }
 
   render() {

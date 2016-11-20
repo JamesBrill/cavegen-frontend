@@ -1,9 +1,6 @@
 /* eslint-disable no-invalid-this */
 
-import caveViewModel from '' // TODO: make appropriate import here
-import caveView from '' // TODO: make appropriate import here
-
-export function addMouseEventListeners() {
+export function addMouseEventListeners(caveView, caveViewModel) {
   caveView.canvas.addEventListener('mousemove', function (event) {
     const pixelX = event.pageX - this.offsetLeft - this.offsetParent.offsetLeft
     const pixelY = event.pageY - this.offsetTop - this.offsetParent.offsetTop
@@ -26,10 +23,10 @@ export function addMouseEventListeners() {
   })
 }
 
-export function addKeyboardEventListeners() {
+export function addKeyboardEventListeners(caveView) {
   addCommandKeyBindings()
   addTileKeyBindings()
-  addPanningKeyBindings()
+  addPanningKeyBindings(caveView)
 }
 
 function addCommandKeyBindings() {
@@ -54,7 +51,7 @@ function addTileKeyBindings() {
   }) */
 }
 
-function addPanningKeyBindings() {
+function addPanningKeyBindings(caveView) {
   window.onkeydown = function (e) {
     if (e.which === 37) {
       caveView.zoomer.startPanningLeft()
