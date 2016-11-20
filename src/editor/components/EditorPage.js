@@ -4,9 +4,9 @@ import Palette from 'src/editor/components/Palette'
 
 import styles from 'src/editor/components/EditorPage.css'
 const tileImages = require
-  .context('src/assets', true, /^\.\/.*\.png$/)
+  .context('src/assets/palette-tiles', true, /^\.\/.*\.png$/)
   .keys()
-  .map(x => `src/assets/${x.substring(2)}`)
+  .map(x => `src/assets/palette-tiles/${x.substring(2)}`)
 
 export default class EditorPage extends PureComponent {
   static propTypes = {
