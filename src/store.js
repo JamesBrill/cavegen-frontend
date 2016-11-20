@@ -1,13 +1,11 @@
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 import { hashHistory } from 'react-router'
-import persistState from 'redux-localstorage'
 import thunkMiddleware from 'redux-thunk'
 import analyticsMiddleware from 'src/middleware/analytics'
 import * as reducers from 'src/reducers'
 
 const store = compose(
-  persistState('authentication'),
   applyMiddleware(
     analyticsMiddleware,
     thunkMiddleware,
