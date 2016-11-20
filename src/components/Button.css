@@ -1,4 +1,4 @@
-@import 'src/palette.css';
+@import '../palette.css';
 
 .Button {
   display: inline-block;

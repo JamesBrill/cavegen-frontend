@@ -1,6 +1,6 @@
 /* stylelint-disable at-rule-name-newline-after, no-browser-hacks */
 
-@import 'src/palette.css';
+@import './palette.css';
 
 @each $property in background-color, color, fill, stroke {
   @each $color in white, black, transparent {

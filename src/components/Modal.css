@@ -1,6 +1,6 @@
 /* stylelint-disable selector-class-pattern */
-@import 'src/viewport.css';
-@import 'src/palette.css';
+@import '../viewport.css';
+@import '../palette.css';
 
 body:global(.ReactModal__Body--open) { /* stylelint-disable-line selector-no-type */
   overflow: hidden;
