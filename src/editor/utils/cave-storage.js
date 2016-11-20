@@ -1,14 +1,12 @@
 /* eslint-disable no-invalid-this */
 
-import caveViewModel from '' // TODO: make appropriate import here
-
 export class CaveStorage {
   constructor() {
     this.caveNames = this.loadAllCaveNames()
     this.selectedCaveName = ''
   }
 
-  loadCave = function (caveName) {
+  loadCave = function (caveName, caveViewModel) {
     if (!caveName || caveName === '') {
       return
     }
@@ -28,7 +26,7 @@ export class CaveStorage {
     return caveNames
   }
 
-  storeCave = function () {
+  storeCave = function (caveViewModel) {
     const caveName = caveViewModel.caveName()
     const caveString = caveViewModel.getCaveString()
     let addToCaveNameList = false
