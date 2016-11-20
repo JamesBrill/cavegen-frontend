@@ -117,10 +117,10 @@ export class Cave {
     }
 
     if (brush.symbol === 'f') {
-      return this.spikePainter.getTileFromSpikeFiller(row, column)
+      return this.spikePainter.getTileFromSpikeFiller(this, row, column)
     }
 
-    return this.spikePainter.getTileFromSpikeRemover(row, column)
+    return this.spikePainter.getTileFromSpikeRemover(this, row, column)
   }
 
   applyTileChanges = function (tileChanges) {
