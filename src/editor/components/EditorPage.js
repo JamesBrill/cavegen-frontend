@@ -19,7 +19,7 @@ export default class EditorPage extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <Palette tileImages={tileImages} />
+        <Palette className={styles.palette} tileImages={tileImages} />
       </div>
     )
   }

@@ -1,0 +1,10 @@
+.Palette {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tile {
+  height: 2em;
+  width: 2em;
+}

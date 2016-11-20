@@ -13,7 +13,7 @@ export default class Palette extends PureComponent {
   @autobind
   renderTileImage(src) {
     return (
-      <img src={src} />
+      <img className={styles.tile} src={src} />
     )
   }
 

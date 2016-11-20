@@ -1,3 +1,7 @@
 .EditorPage {
   width: 100%;
 }
+
+.palette {
+  width: 8em;
+}
