@@ -1,7 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
+import Palette from 'src/editor/components/Palette'
 
 import styles from 'src/editor/components/EditorPage.css'
+const tileImages = require
+  .context('src/assets', true, /^\.\/.*\.png$/)
+  .keys()
+  .map(x => `src/assets/${x.substring(2)}`)
 
 export default class EditorPage extends PureComponent {
   static propTypes = {
@@ -14,7 +19,7 @@ export default class EditorPage extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        Hello World!
+        <Palette tileImages={tileImages} />
       </div>
     )
   }
