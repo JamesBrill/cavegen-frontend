@@ -7,4 +7,10 @@
 .tile {
   height: 2.5em;
   width: 2.5em;
+  border: solid 3px black;
+  display: block;
+
+  &:hover {
+    border: solid 3px white;
+  }
 }

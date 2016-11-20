@@ -5,7 +5,7 @@ import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
-import CaveView from '' // TODO: make appropriate import here
+import { CaveView } from 'src/editor/utils/cave-view'
 import caveView from '' // TODO: make appropriate import here
 import grid from '' // TODO: make appropriate import here
 import currentBrush from '' // TODO: make appropriate import here

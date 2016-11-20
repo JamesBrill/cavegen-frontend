@@ -7,7 +7,7 @@ import { getBorder, getTileSize } from 'src/editor/utils/tiles'
 import grid from '' // TODO: make appropriate import here
 import caveViewModel from '' // TODO: make appropriate import here
 import caveView from '' // TODO: make appropriate import here
-import CaveView from '' // TODO: make appropriate import here
+import { CaveView } from 'src/editor/utils/cave-view'
 
 export class ChangeController {
   constructor() {
