@@ -1,7 +1,5 @@
 /* eslint-disable no-invalid-this */
 
-import grid from '' // TODO: make appropriate import here
-import brushSize from '' // TODO: make appropriate import here
 import { TileChange } from 'src/editor/utils/tile-change'
 import { getFileNameFromSymbol, getTileFromSymbol } from 'src/editor/utils/tiles'
 
@@ -95,7 +93,7 @@ export class Cave {
     return coordinatesWithinRectangularCursor
   }
 
-  getTileChangesFromBrush = function (x, y, brush) {
+  getTileChangesFromBrush = function (x, y, brush, grid, brushSize) {
     const tileChanges = []
     const paintedPositions = grid.getCoordinatesWithinRectangularCursor(brushSize, x, y)
     for (let i = 0; i < paintedPositions.length; i++) {

@@ -155,11 +155,11 @@ export class CaveViewModel {
       let positions = positionsBetweenPoints(lineStart, lineEnd)
       positions = positions.slice(1)
       for (let i = 0; i < positions.length; i++) {
-        const newTileChanges = grid.getTileChangesFromBrush(positions[i].x, positions[i].y, brush)
+        const newTileChanges = grid.getTileChangesFromBrush(positions[i].x, positions[i].y, brush, grid, brushSize)
         tileChanges = mergeTileChanges(tileChanges, newTileChanges)
       }
     } else {
-      const newTileChanges = grid.getTileChangesFromBrush(column, row, brush)
+      const newTileChanges = grid.getTileChangesFromBrush(column, row, brush, grid, brushSize)
       tileChanges = mergeTileChanges(tileChanges, newTileChanges)
     }
     caveView.previousPaintedPoint = currentPoint
@@ -232,11 +232,11 @@ export class CaveViewModel {
     this.changeController = new ChangeController()
   }
 
-  undo = function () {
-    this.changeController.applyUndo()
+  undo = function (updateCaveView) {
+    this.changeController.applyUndo(grid, caveView, updateCaveView)
   }
 
-  redo = function () {
-    this.changeController.applyRedo()
+  redo = function (updateCaveView) {
+    this.changeController.applyRedo(grid, caveView, updateCaveView)
   }
 }
