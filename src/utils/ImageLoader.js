@@ -1,4 +1,4 @@
-const PALETTE_IMAGE_NAMES = [
+export const PALETTE_IMAGE_NAMES = [
   'terrain',
   'space',
   'spikefiller',

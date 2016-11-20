@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { autobind } from 'core-decorators'
 import classNames from 'classnames'
-import { PALETTE_IMAGE_PATHS } from 'src/utils/ImageLoader'
+import { PALETTE_IMAGE_NAMES, PALETTE_IMAGE_PATHS } from 'src/utils/ImageLoader'
 
 import styles from 'src/editor/components/Palette.css'
 
@@ -11,9 +11,15 @@ export default class Palette extends PureComponent {
   };
 
   @autobind
-  renderTileImage(src) {
+  handlePaletteTileClick(tileName) {
+    console.log(tileName)
+  }
+
+  @autobind
+  renderTileImage(src, index) {
+    const tileName = PALETTE_IMAGE_NAMES[index]
     return (
-      <img className={styles.tile} src={src} />
+      <img className={styles.tile} key={tileName} src={src} onClick={() => this.handlePaletteTileClick(tileName)} />
     )
   }
 
