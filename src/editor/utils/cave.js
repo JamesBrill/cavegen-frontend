@@ -17,7 +17,7 @@ export class Cave {
   }
 
   rebuildCaveFromGrid = function (_grid) {
-    this.grid = _grid.clone()
+    this.grid = _grid.map(a => a.slice())
     this.width = _grid.length
     this.height = _grid[0].length
   }
@@ -61,7 +61,7 @@ export class Cave {
   }
 
   getGridClone = function () {
-    return this.grid.clone()
+    return this.grid.map(a => a.slice())
   }
 
   applyBrushAtPosition = function (brush, position) {
