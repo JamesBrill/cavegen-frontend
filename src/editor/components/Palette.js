@@ -1,25 +1,27 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { autobind } from 'core-decorators'
 import classNames from 'classnames'
-import { PALETTE_IMAGE_NAMES, PALETTE_IMAGE_PATHS } from 'src/utils/ImageLoader'
+import { PALETTE_BRUSHES, PALETTE_IMAGE_PATHS } from 'src/utils/ImageLoader'
 
 import styles from 'src/editor/components/Palette.css'
 
 export default class Palette extends PureComponent {
   static propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    onTileClick: PropTypes.func
   };
 
   @autobind
-  handlePaletteTileClick(tileName) {
-    console.log(tileName)
+  handlePaletteTileClick(brush) {
+    const { onTileClick } = this.props
+    onTileClick(brush)
   }
 
   @autobind
   renderTileImage(src, index) {
-    const tileName = PALETTE_IMAGE_NAMES[index]
+    const brush = PALETTE_BRUSHES[index]
     return (
-      <img className={styles.tile} key={tileName} src={src} onClick={() => this.handlePaletteTileClick(tileName)} />
+      <img className={styles.tile} key={brush.fileName} src={src} onClick={() => this.handlePaletteTileClick(brush)} />
     )
   }
 
