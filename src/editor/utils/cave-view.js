@@ -4,22 +4,18 @@ import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
-const CAVE_DISPLAY_WIDTH = {} // TODO: make appropriate import here
-const CAVE_DISPLAY_HEIGHT = {} // TODO: make appropriate import here
 
 export class CaveView {
-  constructor(x, y, tileSize, border) {
+  constructor(x, y, tileSize, border, canvas) {
     this.location = { x: 0, y: 0 }
     this.tileSize = tileSize
     this.unscaledTileSize = tileSize
     this.border = border || { top: 0, left: 0 }
-    this.pixelWidth = CAVE_DISPLAY_WIDTH
-    this.pixelHeight = CAVE_DISPLAY_HEIGHT
+    this.pixelWidth = 1000
+    this.pixelHeight = 800
     this.width = x
     this.height = y
-    this.canvas = document.getElementById('caveGridCanvas') // TODO: hook up to React component ref
-    this.canvas.width = this.pixelWidth
-    this.canvas.height = this.pixelHeight
+    this.canvas = canvas
     this.context = this.canvas.getContext('2d')
     this.previousPaintedPoint = { x: -1, y: -1 }
     this.paintLineMode = false

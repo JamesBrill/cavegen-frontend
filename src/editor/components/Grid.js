@@ -7,14 +7,12 @@ import { addMouseEventListeners, addKeyboardEventListeners } from 'src/editor/ut
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
-import { CaveViewModel } from 'src/editor/utils/cave-viewmodel'
 import { connect } from 'react-redux'
 
 // TODO: add to validation
 import {
   setGrid,
   setCaveView,
-  setCaveViewModel,
   setPreviousCursorSize,
   setPreviousCursorPosition,
   setLastUsedBrushSize
@@ -51,20 +49,22 @@ export default class Grid extends PureComponent {
     previousCursor: PropTypes.object
   };
 
-  componentWillMount() {
-    const { dispatch, grid, caveView, caveViewModel } = this.props
+  componentDidMount() {
+    const { dispatch } = this.props
     preloadImages()
-    dispatch(setGrid(new Cave(40, 40)))
+    const newGrid = new Cave(40, 40)
+    dispatch(setGrid(newGrid))
     const tileSize = getTileSize(40, 40)
     const border = getBorder(40, 40)
-    dispatch(setCaveView(new CaveView(40, 40, tileSize, border)))
-    caveView.draw(grid)
-    dispatch(setCaveViewModel(new CaveViewModel(grid,
+    const newCaveView = new CaveView(40, 40, tileSize, border, this.canvas)
+    dispatch(setCaveView(newCaveView))
+    newCaveView.draw(newGrid)
+    /*dispatch(setCaveViewModel(new CaveViewModel(grid,
       this.handleUpdateGrid,
       caveView,
       this.handleUpdateCaveView)))
     addMouseEventListeners(caveView, caveViewModel)
-    addKeyboardEventListeners(caveView)
+    addKeyboardEventListeners(caveView)*/
   }
 
   @autobind
@@ -185,13 +185,23 @@ export default class Grid extends PureComponent {
     newCaveView.draw(grid)
   }
 
+  @autobind
+  handleMouseDown(e) {
+    debugger
+  }
+
   render() {
     const { className } = this.props
     const computedClassName = classNames(styles.Grid, className)
 
     return (
       <div className={computedClassName}>
-        <canvas className={styles.canvas} />
+        <canvas
+          className={styles.canvas}
+          width={1000}
+          height={800}
+          ref={canvas => (this.canvas = canvas)}
+          onMouseDown={this.handleMouseDown} />
       </div>
     )
   }
