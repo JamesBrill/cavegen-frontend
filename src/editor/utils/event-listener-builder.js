@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 
-export function addMouseEventListeners(caveView, caveViewModel) {
+export function addMouseEventListeners(caveView, caveViewModel, brushSize) {
   caveView.canvas.addEventListener('mousemove', function (event) {
     const pixelX = event.pageX - this.offsetLeft - this.offsetParent.offsetLeft
     const pixelY = event.pageY - this.offsetTop - this.offsetParent.offsetTop
@@ -19,7 +19,7 @@ export function addMouseEventListeners(caveView, caveViewModel) {
 
   caveView.canvas.addEventListener('mouseleave', () => {
     caveViewModel.finishPainting()
-    caveViewModel.previousCursorSize = caveViewModel.currentCursorSize
+    caveViewModel.previousCursorSize = brushSize
   })
 }
 

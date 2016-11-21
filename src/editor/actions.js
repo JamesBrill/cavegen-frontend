@@ -15,7 +15,32 @@ export const setCaveViewModel = createAction(
   caveViewModel => ({ caveViewModel })
 )
 
+export const setChangeController = createAction(
+  'SET_CHANGE_CONTROLLER',
+  changeController => ({ changeController })
+)
+
 export const setCurrentBrush = createAction(
   'SET_CURRENT_BRUSH',
   currentBrush => ({ currentBrush })
+)
+
+export const setBrushSize = createAction(
+  'SET_BRUSH_SIZE',
+  brushSize => ({ brushSize })
+)
+
+export const setLastUsedBrushSize = createAction(
+  'SET_LAST_USED_BRUSH_SIZE',
+  lastUsedBrushSize => ({ lastUsedBrushSize })
+)
+
+export const setPreviousCursorSize = createAction(
+  'SET_PREVIOUS_CURSOR_SIZE',
+  previousCursorSize => ({ previousCursorSize })
+)
+
+export const setPreviousCursorPosition = createAction(
+  'SET_PREVIOUS_CURSOR_POSITION',
+  previousCursorPosition => ({ previousCursorPosition })
 )
