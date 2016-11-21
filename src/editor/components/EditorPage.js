@@ -17,7 +17,7 @@ export default class EditorPage extends PureComponent {
     return (
       <div className={computedClassName}>
         <Palette className={styles.palette} onTileClick={brush => console.log(brush.fileName) } />
-        <Grid />
+        <Grid className={styles.grid} />
       </div>
     )
   }

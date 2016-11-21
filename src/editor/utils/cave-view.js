@@ -4,6 +4,7 @@ import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
+import { CAVE_DISPLAY_WIDTH, CAVE_DISPLAY_HEIGHT } from 'src/editor/utils/tiles'
 
 export class CaveView {
   constructor(x, y, tileSize, border, canvas, grid, updateCursor) {
@@ -12,8 +13,8 @@ export class CaveView {
     this.tileSize = tileSize
     this.unscaledTileSize = tileSize
     this.border = border || { top: 0, left: 0 }
-    this.pixelWidth = 1000
-    this.pixelHeight = 800
+    this.pixelWidth = CAVE_DISPLAY_WIDTH
+    this.pixelHeight = CAVE_DISPLAY_HEIGHT
     this.width = x
     this.height = y
     this.canvas = canvas

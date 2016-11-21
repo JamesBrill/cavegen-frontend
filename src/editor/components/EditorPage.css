@@ -1,7 +1,13 @@
 .EditorPage {
   width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .palette {
-  width: 13em;
+  width: 20%;
+}
+
+.grid {
+  width: 80%;
 }
