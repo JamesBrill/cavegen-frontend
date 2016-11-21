@@ -10,7 +10,7 @@ export class CaveChange {
   }
 
   // Returns true if regeneration changes the existing cave
-  hasEffect = function () {
+  hasEffect() {
     if (this.preGenerationWidth !== this.postGenerationWidth ||
       this.preGenerationHeight !== this.postGenerationHeight) {
       return true
@@ -26,7 +26,7 @@ export class CaveChange {
     return false
   }
 
-  equals = function (other) {
+  equals(other) {
     if (!other || !(other instanceof CaveChange)) {
       return false
     }

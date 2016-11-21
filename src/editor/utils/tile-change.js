@@ -8,7 +8,7 @@ export class TileChange {
     this.after = after
   }
 
-  equals = function (other) {
+  equals(other) {
     if (!other) {
       return false
     }

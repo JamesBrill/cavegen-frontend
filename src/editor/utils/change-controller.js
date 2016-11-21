@@ -12,50 +12,50 @@ export class ChangeController {
     this.currentPaintedLineChange = new PaintedLineChange()
   }
 
-  resetCurrentPaintedLineChange = function () {
+  resetCurrentPaintedLineChange() {
     this.currentPaintedLineChange = new PaintedLineChange()
   }
 
-  buildCaveChange = function (grid, caveViewModel) {
+  buildCaveChange(grid, caveViewModel) {
     const preGenerationSnapshot = grid.getGridClone()
     const postGenerationWidth = caveViewModel.caveWidth()
     const postGenerationHeight = caveViewModel.caveHeight()
     return new CaveChange(preGenerationSnapshot, postGenerationWidth, postGenerationHeight)
   }
 
-  addPaintedLineChange = function () {
+  addPaintedLineChange() {
     this.changeHistory.addChange(this.currentPaintedLineChange)
     this.resetCurrentPaintedLineChange()
   }
 
-  addGenerateCaveChange = function (grid, caveViewModel) {
+  addGenerateCaveChange(grid, caveViewModel) {
     const caveChange = this.buildCaveChange(grid, caveViewModel)
     this.changeHistory.addChange(caveChange)
   }
 
-  addTileChanges = function (tileChanges) {
+  addTileChanges(tileChanges) {
     for (let i = 0; i < tileChanges.length; i++) {
       this.currentPaintedLineChange.addTileChange(tileChanges[i])
     }
   }
 
-  getCurrentChange = function () {
+  getCurrentChange() {
     return this.changeHistory.currentChange()
   }
 
-  applyUndo = function (grid, caveView, updateCaveView) {
+  applyUndo(grid, caveView, updateCaveView) {
     if (!this.changeHistory.atBeginningOfHistory()) {
       this.applyChange(true, grid, caveView, updateCaveView)
     }
   }
 
-  applyRedo = function (grid, caveView, updateCaveView) {
+  applyRedo(grid, caveView, updateCaveView) {
     if (!this.changeHistory.atEndOfHistory()) {
       this.applyChange(false, grid, caveView, updateCaveView)
     }
   }
 
-  applyChange = function (isUndo, grid, caveView, updateCaveView) {
+  applyChange(isUndo, grid, caveView, updateCaveView) {
     if (!isUndo) {
       this.changeHistory.rollForwardCurrentChange()
     }
@@ -76,7 +76,7 @@ export class ChangeController {
     }
   }
 
-  applyPaintedLineChange = function (currentChange, isUndo, grid, caveView) {
+  applyPaintedLineChange(currentChange, isUndo, grid, caveView) {
     const tileChanges = currentChange.tileChanges
     const paintedPositions = []
     for (let i = 0; i < tileChanges.length; i++) {
@@ -91,7 +91,7 @@ export class ChangeController {
     caveView.paintPositions(paintedPositions)
   }
 
-  applyGenerateCaveChange = function (currentChange, isUndo, grid, caveView, updateCaveView) {
+  applyGenerateCaveChange(currentChange, isUndo, grid, caveView, updateCaveView) {
     if (isUndo) {
       const width = currentChange.preGenerationWidth
       const height = currentChange.preGenerationHeight

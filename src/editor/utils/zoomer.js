@@ -1,9 +1,9 @@
 /* eslint-disable no-invalid-this */
 
 import { autobind } from 'core-decorators'
-import caveViewModel from '' // TODO: make appropriate import here
-import caveView from '' // TODO: make appropriate import here
-import grid from '' // TODO: make appropriate import here
+const caveViewModel = {} // TODO: make appropriate import here
+const caveView = {} // TODO: make appropriate import here
+const grid = {} // TODO: make appropriate import here
 
 export class Zoomer {
   constructor(canvas) {
@@ -38,7 +38,7 @@ export class Zoomer {
     return Zoomer.zoomerInstance
   }
 
-  redraw = function () {
+  redraw() {
     const p1 = this.context.transformedPoint(0, 0)
     const p2 = this.context.transformedPoint(this.canvas.width, this.canvas.height)
     this.context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
@@ -48,7 +48,7 @@ export class Zoomer {
     caveViewModel.updateCursor(gridX, gridY)
   }
 
-  trackTransforms = function (context) {
+  trackTransforms(context) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     let xform = svg.createSVGMatrix()
     context.getTransform = function () {
@@ -111,7 +111,7 @@ export class Zoomer {
     }
   }
 
-  zoom = function (mouseWheelDelta) {
+  zoom(mouseWheelDelta) {
     if (mouseWheelDelta >= 1) {
       caveView.multiplyScalingFactor(1 + (0.2 * mouseWheelDelta))
     } else {
@@ -135,18 +135,18 @@ export class Zoomer {
     this.redraw()
   }
 
-  getNumberOfTilesFromContextLeft = function (mouseX) {
+  getNumberOfTilesFromContextLeft(mouseX) {
     const distanceFromContextLeft = mouseX - this.totalXTranslation
     return distanceFromContextLeft / caveView.tileSize
   }
 
-  getNumberOfTilesFromContextTop = function (mouseY) {
+  getNumberOfTilesFromContextTop(mouseY) {
     const distanceFromContextTop = mouseY - this.totalYTranslation
     return distanceFromContextTop / caveView.tileSize
   }
 
   @autobind
-  handleScroll = function (evt) {
+  handleScroll(evt) {
     const delta = evt.wheelDelta ?
           evt.wheelDelta / 40 :
           (evt.detail ? -evt.detail : 0)
@@ -161,7 +161,7 @@ export class Zoomer {
   }
 
   @autobind
-  handleMouseDown = function (evt) {
+  handleMouseDown(evt) {
     if (evt.button === 1) {
       this.enablePanning()
     }
@@ -174,7 +174,7 @@ export class Zoomer {
   }
 
   @autobind
-  handleMouseMove = function (evt) {
+  handleMouseMove(evt) {
     this.lastX = evt.offsetX || (evt.pageX - this.canvas.offsetLeft)
     this.lastY = evt.offsetY || (evt.pageY - this.canvas.offsetTop)
     if (this.dragStart) {
@@ -187,32 +187,32 @@ export class Zoomer {
   }
 
   @autobind
-  handleMouseUp = function (evt) {
+  handleMouseUp(evt) {
     if (evt.button === 1) {
       this.disablePanning()
     }
     this.dragStart = null
   }
 
-  transformPixelX = function (pixelX) {
+  transformPixelX(pixelX) {
     const transformedPoint = this.context.transformedPoint(pixelX, 0)
     return transformedPoint.x
   }
 
-  transformPixelY = function (pixelY) {
+  transformPixelY(pixelY) {
     const transformedPoint = this.context.transformedPoint(0, pixelY)
     return transformedPoint.y
   }
 
-  enablePanning = function () {
+  enablePanning() {
     this.panning = true
   }
 
-  disablePanning = function () {
+  disablePanning() {
     this.panning = false
   }
 
-  panLeft = function () {
+  panLeft() {
     if (this.totalXTranslation <= (caveView.tileSize * (caveView.width - 2))) {
       const shift = caveView.tileSize
       this.context.translate(shift, 0)
@@ -221,7 +221,7 @@ export class Zoomer {
     }
   }
 
-  panRight = function () {
+  panRight() {
     if (this.totalXTranslation >= -(caveView.tileSize * (caveView.width - 2))) {
       const shift = -caveView.tileSize
       this.context.translate(shift, 0)
@@ -230,7 +230,7 @@ export class Zoomer {
     }
   }
 
-  panUp = function () {
+  panUp() {
     if (this.totalYTranslation <= (caveView.tileSize * (caveView.height - 2))) {
       const shift = caveView.tileSize
       this.context.translate(0, shift)
@@ -239,7 +239,7 @@ export class Zoomer {
     }
   }
 
-  panDown = function () {
+  panDown() {
     if (this.totalYTranslation >= -(caveView.tileSize * (caveView.height - 2))) {
       const shift = -caveView.tileSize
       this.context.translate(0, shift)
@@ -248,7 +248,7 @@ export class Zoomer {
     }
   }
 
-  startPanningLeft = function () {
+  startPanningLeft() {
     if (!this.panningLeft) {
       setTimeout(this.continuePanningLeft, 10)
     }
@@ -256,18 +256,18 @@ export class Zoomer {
   }
 
   @autobind
-  continuePanningLeft = function () {
+  continuePanningLeft() {
     if (this.panningLeft) {
       this.panLeft()
       setTimeout(this.continuePanningLeft, 10)
     }
   }
 
-  stopPanningLeft = function () {
+  stopPanningLeft() {
     this.panningLeft = false
   }
 
-  startPanningUp = function () {
+  startPanningUp() {
     if (!this.panningUp) {
       setTimeout(this.continuePanningUp, 10)
     }
@@ -275,18 +275,18 @@ export class Zoomer {
   }
 
   @autobind
-  continuePanningUp = function () {
+  continuePanningUp() {
     if (this.panningUp) {
       this.panUp()
       setTimeout(this.continuePanningUp, 10)
     }
   }
 
-  stopPanningUp = function () {
+  stopPanningUp() {
     this.panningUp = false
   }
 
-  startPanningRight = function () {
+  startPanningRight() {
     if (!this.panningRight) {
       setTimeout(this.continuePanningRight, 10)
     }
@@ -294,18 +294,18 @@ export class Zoomer {
   }
 
   @autobind
-  continuePanningRight = function () {
+  continuePanningRight() {
     if (this.panningRight) {
       this.panRight()
       setTimeout(this.continuePanningRight, 10)
     }
   }
 
-  stopPanningRight = function () {
+  stopPanningRight() {
     this.panningRight = false
   }
 
-  startPanningDown = function () {
+  startPanningDown() {
     if (!this.panningDown) {
       setTimeout(this.continuePanningDown, 10)
     }
@@ -313,14 +313,14 @@ export class Zoomer {
   }
 
   @autobind
-  continuePanningDown = function () {
+  continuePanningDown() {
     if (this.panningDown) {
       this.panDown()
       setTimeout(this.continuePanningDown, 10)
     }
   }
 
-  stopPanningDown = function () {
+  stopPanningDown() {
     this.panningDown = false
   }
 }

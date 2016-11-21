@@ -6,36 +6,36 @@ export class CaveChangeHistory {
     this.currentChangeIndex = -1
   }
 
-  numberOfChanges = function () {
+  numberOfChanges() {
     return this.changes.length
   }
 
-  currentChange = function () {
+  currentChange() {
     this.currentChangeIndex = Math.max(0, this.currentChangeIndex)
     return this.changes[this.currentChangeIndex]
   }
 
-  atBeginningOfHistory = function () {
+  atBeginningOfHistory() {
     return this.currentChangeIndex === -1
   }
 
-  atEndOfHistory = function () {
+  atEndOfHistory() {
     return this.currentChangeIndex === (this.changes.length - 1)
   }
 
-  rollBackCurrentChange = function () {
+  rollBackCurrentChange() {
     this.currentChangeIndex = Math.max(-1, this.currentChangeIndex - 1)
   }
 
-  rollForwardCurrentChange = function () {
+  rollForwardCurrentChange() {
     this.currentChangeIndex = Math.min(this.changes.length - 1, this.currentChangeIndex + 1)
   }
 
-  getTileChanges = function (index) {
+  getTileChanges(index) {
     return this.changes[index].tileChanges
   }
 
-  cullHistory = function () {
+  cullHistory() {
     if (this.numberOfChanges() > 100) {
       const numberOfChangesToRemove = this.numberOfChanges() - 100
       this.changes.splice(0, numberOfChangesToRemove)
@@ -43,7 +43,7 @@ export class CaveChangeHistory {
     }
   }
 
-  addChange = function (change) {
+  addChange(change) {
     if (this.currentChangeIndex === -1) {
       this.changes = [change]
       this.currentChangeIndex = 0

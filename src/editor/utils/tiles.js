@@ -1,5 +1,6 @@
 import { PALETTE_BRUSHES } from 'src/utils/ImageLoader'
-import { CAVE_DISPLAY_WIDTH, CAVE_DISPLAY_HEIGHT } from '' // TODO: make appropriate import here
+const CAVE_DISPLAY_WIDTH = {} // TODO: make appropriate import here
+const CAVE_DISPLAY_HEIGHT = {} // TODO: make appropriate import here
 
 export function isTile(symbol) {
   return /[xbk+mw\/|=o^<>v\"n()u12345@!~t.zc0#Dlg"]/.test(symbol)

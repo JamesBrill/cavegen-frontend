@@ -6,7 +6,7 @@ export class CaveStorage {
     this.selectedCaveName = ''
   }
 
-  loadCave = function (caveName, caveViewModel) {
+  loadCave(caveName, caveViewModel) {
     if (!caveName || caveName === '') {
       return
     }
@@ -15,7 +15,7 @@ export class CaveStorage {
     caveViewModel.loadCave(caveName, caveString)
   }
 
-  loadAllCaveNames = function () {
+  loadAllCaveNames() {
     const caveNames = []
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
@@ -26,7 +26,7 @@ export class CaveStorage {
     return caveNames
   }
 
-  storeCave = function (caveViewModel) {
+  storeCave(caveViewModel) {
     const caveName = caveViewModel.caveName()
     const caveString = caveViewModel.getCaveString()
     let addToCaveNameList = false

@@ -7,7 +7,7 @@ export class PaintedLineChange {
     this.tileChanges = []
   }
 
-  addTileChange = function (tileChange) {
+  addTileChange(tileChange) {
     // This filthy code is to get Undo/Redo to work with Spike Digger. It finds pairs like (Terrain, DownSpike)
     // when given a (DownSpike, Space) pair and merges them together into (Terrain, Space). It basically wipes
     // out the intermediate "CleanUpSpikes" step, which we don't want the user to see when using Undo/Redo.
@@ -30,7 +30,7 @@ export class PaintedLineChange {
   }
 
   // Returns true if not all TileChanges change a tile from one type back to that same type again
-  hasEffect = function () {
+  hasEffect() {
     let hasEffect = false
     const ineffectiveChanges = []
     for (let i = 0; i < this.tileChanges.length; i++) {
@@ -46,7 +46,7 @@ export class PaintedLineChange {
     return hasEffect
   }
 
-  equals = function (other) {
+  equals(other) {
     if (!other || !(other instanceof PaintedLineChange)) {
       return false
     }
@@ -63,7 +63,7 @@ export class PaintedLineChange {
     return true
   }
 
-  removeChanges = function (changes) {
+  removeChanges(changes) {
     const indexesOfChangesToRemove = []
     let offset = 0
     for (let i = 0; i < this.tileChanges.length; i++) {

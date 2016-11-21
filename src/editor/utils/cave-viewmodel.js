@@ -21,7 +21,7 @@ export class CaveViewModel {
   }
 
   @autobind
-  validatedCaveName = function () {
+  validatedCaveName() {
     const text = this.caveName()
     if (text === '') {
       return '_'
@@ -37,7 +37,7 @@ export class CaveViewModel {
     return validName
   }
 
-  validateDimensions = function () {
+  validateDimensions() {
     let validationReport = ''
 
     if (isNaN(this.caveWidth())) {
@@ -80,7 +80,7 @@ export class CaveViewModel {
     return true
   }
 
-  getCaveString = function () {
+  getCaveString() {
     let caveString = `${this.validatedCaveName()}\nterrain ${this.terrainType()}\nbackground 1\nwater ${this.waterType()}\n`
 
     for (let i = 0; i < this.caveHeight(); i++) {
@@ -92,12 +92,12 @@ export class CaveViewModel {
     return caveString
   }
 
-  getUploadableCaveString = function () {
+  getUploadableCaveString() {
     const caveString = this.getCaveString()
     return this.addMissingDoorAndStartingPosition(caveString)
   }
 
-  addMissingDoorAndStartingPosition = function (caveString) {
+  addMissingDoorAndStartingPosition(caveString) {
     let additionalCharacters = ''
     if (caveString.indexOf('#') === -1) {
       additionalCharacters += '#'
@@ -108,7 +108,7 @@ export class CaveViewModel {
     return `${caveString}${additionalCharacters}`
   }
 
-  generateCave = function () {
+  generateCave() {
     if (this.validateDimensions()) {
       this.changeController.addGenerateCaveChange(this.grid, this)
       this.updateDimensions()
@@ -117,7 +117,7 @@ export class CaveViewModel {
     }
   }
 
-  loadCave = function (caveName, caveString) {
+  loadCave(caveName, caveString) {
     this.grid.rebuildCaveFromCaveString(caveString)
     this.caveName(caveName)
     this.caveWidth(this.grid.width)
@@ -126,11 +126,11 @@ export class CaveViewModel {
     this.changeController = new ChangeController()
   }
 
-  undo = function (updateCaveView) {
+  undo(updateCaveView) {
     this.changeController.applyUndo(this.grid, this.caveView, updateCaveView)
   }
 
-  redo = function (updateCaveView) {
+  redo(updateCaveView) {
     this.changeController.applyRedo(this.grid, this.caveView, updateCaveView)
   }
 }

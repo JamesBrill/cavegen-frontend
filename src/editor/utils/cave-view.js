@@ -4,7 +4,8 @@ import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
-import { CAVE_DISPLAY_WIDTH, CAVE_DISPLAY_HEIGHT } from '' // TODO: make appropriate import here
+const CAVE_DISPLAY_WIDTH = {} // TODO: make appropriate import here
+const CAVE_DISPLAY_HEIGHT = {} // TODO: make appropriate import here
 
 export class CaveView {
   constructor(x, y, tileSize, border) {
@@ -50,7 +51,7 @@ export class CaveView {
   }
 
   @autobind
-  drawMeasuringGrid = function () {
+  drawMeasuringGrid() {
     const offset = this.tileSize
     this.linePainter.setColour('#FFFFFF', this)
     for (let i = 1; i < this.width; i++) {
@@ -67,7 +68,7 @@ export class CaveView {
   }
 
   @autobind
-  drawAtGridCoordinates = function (x, y, tile) {
+  drawAtGridCoordinates(x, y, tile) {
     const left = x * this.tileSize + this.leftBorder()
     const top = y * this.tileSize + this.topBorder()
     const size = this.tileSize
