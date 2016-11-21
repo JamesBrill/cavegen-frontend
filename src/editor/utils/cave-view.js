@@ -6,7 +6,8 @@ import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
 
 export class CaveView {
-  constructor(x, y, tileSize, border, canvas) {
+  constructor(x, y, tileSize, border, canvas, grid, updateCursor) {
+    this.grid = grid
     this.location = { x: 0, y: 0 }
     this.tileSize = tileSize
     this.unscaledTileSize = tileSize
@@ -21,7 +22,7 @@ export class CaveView {
     this.paintLineMode = false
     this.isMouseDown = false
     this.linePainter = new LinePainter(this.context)
-    this.zoomer = Zoomer.getZoomer(this.canvas)
+    this.zoomer = Zoomer.getZoomer(this.canvas, this, updateCursor)
     this.scalingFactor = 1
     this.MIN_SCALING_FACTOR = 1
     this.MAX_SCALING_FACTOR = this.setMaxScalingFactor()
@@ -37,11 +38,11 @@ export class CaveView {
     return Math.round(this.border.top * this.scalingFactor)
   }
 
-  draw = function (gridModel) {
+  draw = function () {
     this.drawMeasuringGrid()
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
-        this.drawAtGridCoordinates(i, j, gridModel.getTileAtCoordinates(i, j))
+        this.drawAtGridCoordinates(i, j, this.grid.getTileAtCoordinates(i, j))
       }
     }
   }

@@ -56,7 +56,7 @@ export default class Grid extends PureComponent {
     dispatch(setGrid(newGrid))
     const tileSize = getTileSize(40, 40)
     const border = getBorder(40, 40)
-    const newCaveView = new CaveView(40, 40, tileSize, border, this.canvas)
+    const newCaveView = new CaveView(40, 40, tileSize, border, this.canvas, newGrid, this.updateCursor)
     dispatch(setCaveView(newCaveView))
     newCaveView.draw(newGrid)
     /*dispatch(setCaveViewModel(new CaveViewModel(grid,
@@ -77,6 +77,7 @@ export default class Grid extends PureComponent {
     this.props.dispatch(setCaveView(caveView))
   }
 
+  @autobind
   updateCursor(x, y) {
     const { dispatch, caveView, brushSize, previousCursor } = this.props
     if (previousCursor.size !== brushSize) {
@@ -180,7 +181,7 @@ export default class Grid extends PureComponent {
     const tileSize = getTileSize(width, height)
 
     dispatch(setGrid(cave || new Cave(width, height)))
-    const newCaveView = new CaveView(width, height, tileSize, border)
+    const newCaveView = new CaveView(width, height, tileSize, border, this.canvas, grid, this.updateCursor)
     dispatch(setCaveView(newCaveView))
     newCaveView.draw(grid)
   }

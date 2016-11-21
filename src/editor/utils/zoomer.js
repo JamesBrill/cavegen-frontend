@@ -1,12 +1,11 @@
 /* eslint-disable no-invalid-this */
 
 import { autobind } from 'core-decorators'
-const caveViewModel = {} // TODO: make appropriate import here
-const caveView = {} // TODO: make appropriate import here
-const grid = {} // TODO: make appropriate import here
 
 export class Zoomer {
-  constructor(canvas) {
+  constructor(canvas, caveView, updateCursor) {
+    this.caveView = caveView
+    this.updateCursor = updateCursor
     this.canvas = canvas
     this.context = canvas.getContext('2d')
     this.lastX = this.canvas.width / 2
@@ -27,9 +26,9 @@ export class Zoomer {
 
   static zoomerInstance = null
 
-  static getZoomer(canvas) {
+  static getZoomer(canvas, caveView, updateCursor) {
     if (Zoomer.zoomerInstance === null) {
-      Zoomer.zoomerInstance = new Zoomer(canvas)
+      Zoomer.zoomerInstance = new Zoomer(canvas, caveView, updateCursor)
     }
     const context = Zoomer.zoomerInstance.context
     Zoomer.zoomerInstance.trackTransforms(context)
@@ -42,10 +41,10 @@ export class Zoomer {
     const p1 = this.context.transformedPoint(0, 0)
     const p2 = this.context.transformedPoint(this.canvas.width, this.canvas.height)
     this.context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
-    caveView.draw(grid)
-    const gridX = caveView.getGridX(this.lastX)
-    const gridY = caveView.getGridY(this.lastY)
-    caveViewModel.updateCursor(gridX, gridY)
+    this.caveView.draw(this.caveView.grid)
+    const gridX = this.caveView.getGridX(this.lastX)
+    const gridY = this.caveView.getGridY(this.lastY)
+    this.updateCursor(gridX, gridY)
   }
 
   trackTransforms(context) {
@@ -113,18 +112,18 @@ export class Zoomer {
 
   zoom(mouseWheelDelta) {
     if (mouseWheelDelta >= 1) {
-      caveView.multiplyScalingFactor(1 + (0.2 * mouseWheelDelta))
+      this.caveView.multiplyScalingFactor(1 + (0.2 * mouseWheelDelta))
     } else {
-      caveView.multiplyScalingFactor(1 / (1 + (0.2 * -mouseWheelDelta)))
+      this.caveView.multiplyScalingFactor(1 / (1 + (0.2 * -mouseWheelDelta)))
     }
 
     const tilesBetweenMouseAndContextLeft = this.getNumberOfTilesFromContextLeft(this.lastX)
     const tilesBetweenMouseAndContextTop = this.getNumberOfTilesFromContextTop(this.lastY)
-    caveView.scaleTileSize()
+    this.caveView.scaleTileSize()
     const oldXContextMouseDistance = this.lastX - this.totalXTranslation
     const oldYContextMouseDistance = this.lastY - this.totalYTranslation
-    const newXContextMouseDistance = caveView.tileSize * tilesBetweenMouseAndContextLeft
-    const newYContextMouseDistance = caveView.tileSize * tilesBetweenMouseAndContextTop
+    const newXContextMouseDistance = this.caveView.tileSize * tilesBetweenMouseAndContextLeft
+    const newYContextMouseDistance = this.caveView.tileSize * tilesBetweenMouseAndContextTop
     const xDifference = Math.round(newXContextMouseDistance - oldXContextMouseDistance)
     const yDifference = Math.round(newYContextMouseDistance - oldYContextMouseDistance)
 
@@ -137,12 +136,12 @@ export class Zoomer {
 
   getNumberOfTilesFromContextLeft(mouseX) {
     const distanceFromContextLeft = mouseX - this.totalXTranslation
-    return distanceFromContextLeft / caveView.tileSize
+    return distanceFromContextLeft / this.caveView.tileSize
   }
 
   getNumberOfTilesFromContextTop(mouseY) {
     const distanceFromContextTop = mouseY - this.totalYTranslation
-    return distanceFromContextTop / caveView.tileSize
+    return distanceFromContextTop / this.caveView.tileSize
   }
 
   @autobind
@@ -213,8 +212,8 @@ export class Zoomer {
   }
 
   panLeft() {
-    if (this.totalXTranslation <= (caveView.tileSize * (caveView.width - 2))) {
-      const shift = caveView.tileSize
+    if (this.totalXTranslation <= (this.caveView.tileSize * (this.caveView.width - 2))) {
+      const shift = this.caveView.tileSize
       this.context.translate(shift, 0)
       this.totalXTranslation += shift
       this.redraw()
@@ -222,8 +221,8 @@ export class Zoomer {
   }
 
   panRight() {
-    if (this.totalXTranslation >= -(caveView.tileSize * (caveView.width - 2))) {
-      const shift = -caveView.tileSize
+    if (this.totalXTranslation >= -(this.caveView.tileSize * (this.caveView.width - 2))) {
+      const shift = -this.caveView.tileSize
       this.context.translate(shift, 0)
       this.totalXTranslation += shift
       this.redraw()
@@ -231,8 +230,8 @@ export class Zoomer {
   }
 
   panUp() {
-    if (this.totalYTranslation <= (caveView.tileSize * (caveView.height - 2))) {
-      const shift = caveView.tileSize
+    if (this.totalYTranslation <= (this.caveView.tileSize * (this.caveView.height - 2))) {
+      const shift = this.caveView.tileSize
       this.context.translate(0, shift)
       this.totalYTranslation += shift
       this.redraw()
@@ -240,8 +239,8 @@ export class Zoomer {
   }
 
   panDown() {
-    if (this.totalYTranslation >= -(caveView.tileSize * (caveView.height - 2))) {
-      const shift = -caveView.tileSize
+    if (this.totalYTranslation >= -(this.caveView.tileSize * (this.caveView.height - 2))) {
+      const shift = -this.caveView.tileSize
       this.context.translate(0, shift)
       this.totalYTranslation += shift
       this.redraw()
