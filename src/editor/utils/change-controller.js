@@ -95,23 +95,23 @@ export class ChangeController {
     if (isUndo) {
       const width = currentChange.preGenerationWidth
       const height = currentChange.preGenerationHeight
-      const border = getBorder(width, height)
-      const tileSize = getTileSize(width, height)
+      const border = getBorder(width, height) // TODO: pass in canvas dims
+      const tileSize = getTileSize(width, height) // TODO: pass in canvas dims
 
       grid.rebuildCaveFromGrid(currentChange.preGenerationSnapshot)
       const newCaveView = new CaveView(width, height, tileSize, border)
       updateCaveView(newCaveView)
-      newCaveView.draw(grid)
+      newCaveView.draw({ grid })
     } else {
       const width = currentChange.postGenerationWidth
       const height = currentChange.postGenerationHeight
-      const border = getBorder(width, height)
-      const tileSize = getTileSize(width, height)
+      const border = getBorder(width, height) // TODO: pass in canvas dims
+      const tileSize = getTileSize(width, height) // TODO: pass in canvas dims
 
       grid.rebuildCaveFromCoordinates(width, height)
       const newCaveView = new CaveView(width, height, tileSize, border)
       updateCaveView(newCaveView)
-      newCaveView.draw(grid)
+      newCaveView.draw({ grid })
     }
   }
 }

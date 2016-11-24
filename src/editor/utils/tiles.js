@@ -24,30 +24,30 @@ export function getTileFromSymbol(symbol) {
   return null
 }
 
-export function getBorder(caveWidth, caveHeight) {
-  const displayWidthHeightRatio = CAVE_DISPLAY_WIDTH / CAVE_DISPLAY_HEIGHT
+export function getBorder(caveWidth, caveHeight, canvasWidth, canvasHeight) {
+  const displayWidthHeightRatio = canvasWidth / canvasHeight
   const caveWidthHeightRatio = caveWidth / caveHeight
   const widthHeightRatio = caveWidthHeightRatio / displayWidthHeightRatio
   let border
   if (widthHeightRatio > 1) {
-    const displayHeight = CAVE_DISPLAY_HEIGHT / widthHeightRatio
-    const borderThickness = Math.floor((CAVE_DISPLAY_HEIGHT - displayHeight) / 2)
+    const displayHeight = canvasHeight / widthHeightRatio
+    const borderThickness = Math.floor((canvasHeight - displayHeight) / 2)
     border = { top: borderThickness, left: 0 }
   } else {
-    const displayWidth = CAVE_DISPLAY_WIDTH * widthHeightRatio
-    const borderThickness = Math.floor((CAVE_DISPLAY_WIDTH - displayWidth) / 2)
+    const displayWidth = canvasWidth * widthHeightRatio
+    const borderThickness = Math.floor((canvasWidth - displayWidth) / 2)
     border = { top: 0, left: borderThickness }
   }
   return border
 }
 
-export function getTileSize(caveWidth, caveHeight) {
-  const displayWidthHeightRatio = CAVE_DISPLAY_WIDTH / CAVE_DISPLAY_HEIGHT
+export function getTileSize(caveWidth, caveHeight, canvasWidth, canvasHeight) {
+  const displayWidthHeightRatio = canvasWidth / canvasHeight
   const caveWidthHeightRatio = caveWidth / caveHeight
   if (caveWidthHeightRatio > displayWidthHeightRatio) {
-    return Math.floor(CAVE_DISPLAY_WIDTH / caveWidth)
+    return Math.floor(canvasWidth / caveWidth)
   }
-  return Math.floor(CAVE_DISPLAY_HEIGHT / caveHeight)
+  return Math.floor(canvasHeight / caveHeight)
 }
 
 export function mergeTileChanges(first, second) {

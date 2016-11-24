@@ -37,11 +37,26 @@ export class Zoomer {
     return Zoomer.zoomerInstance
   }
 
+  resize(caveView, canvas) {
+    this.caveView = caveView
+    this.context = canvas.getContext('2d')
+    this.lastX = this.canvas.width / 2
+    this.lastY = this.canvas.height / 2
+    console.log(`resize zoomer for ${this.lastX},${this.lastY}`)
+    this.totalXTranslation = 0 // Change?
+    this.totalYTranslation = 0 // Change?
+    this.panning = false
+    this.panningLeft = false
+    this.panningUp = false
+    this.panningRight = false
+    this.panningDown = false
+  }
+
   redraw() {
     const p1 = this.context.transformedPoint(0, 0)
     const p2 = this.context.transformedPoint(this.canvas.width, this.canvas.height)
     this.context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
-    this.caveView.draw(this.caveView.grid)
+    this.caveView.draw({})
     const gridX = this.caveView.getGridX(this.lastX)
     const gridY = this.caveView.getGridY(this.lastY)
     this.updateCursor(gridX, gridY)

@@ -4,7 +4,6 @@ import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
-import { CAVE_DISPLAY_WIDTH, CAVE_DISPLAY_HEIGHT } from 'src/editor/utils/tiles'
 
 export class CaveView {
   constructor(x, y, tileSize, border, canvas, grid, updateCursor) {
@@ -13,8 +12,6 @@ export class CaveView {
     this.tileSize = tileSize
     this.unscaledTileSize = tileSize
     this.border = border || { top: 0, left: 0 }
-    this.pixelWidth = CAVE_DISPLAY_WIDTH
-    this.pixelHeight = CAVE_DISPLAY_HEIGHT
     this.width = x
     this.height = y
     this.canvas = canvas
@@ -39,11 +36,16 @@ export class CaveView {
     return Math.round(this.border.top * this.scalingFactor)
   }
 
-  draw = function () {
+  draw = function ({ grid, canvas }) {
+    const cave = grid || this.grid
+    if (canvas) {
+      this.canvas = canvas
+      this.context = this.canvas.getContext('2d')
+    }
     this.drawMeasuringGrid()
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
-        this.drawAtGridCoordinates(i, j, this.grid.getTileAtCoordinates(i, j))
+        this.drawAtGridCoordinates(i, j, cave.getTileAtCoordinates(i, j))
       }
     }
   }
@@ -51,6 +53,7 @@ export class CaveView {
   @autobind
   drawMeasuringGrid() {
     const offset = this.tileSize
+    console.log(`Border: top(${this.topBorder()}), left(${this.leftBorder()})`)
     this.linePainter.setColour('#FFFFFF', this)
     for (let i = 1; i < this.width; i++) {
       const x = i * this.tileSize + this.leftBorder()
