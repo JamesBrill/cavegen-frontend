@@ -49,13 +49,21 @@ export default class Grid extends PureComponent {
     previousCursor: PropTypes.object
   };
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      redrawCanvas: false
+    }
+  }
+
   componentDidMount() {
     const { dispatch } = this.props
     preloadImages()
     const newGrid = new Cave(40, 40)
     dispatch(setGrid(newGrid))
-    const tileSize = getTileSize(40, 40, 1000, 800)
-    const border = getBorder(40, 40, 1000, 800)
+    const tileSize = getTileSize(40, 40, this.canvas.clientWidth, this.canvas.clientHeight)
+    const border = getBorder(40, 40, this.canvas.clientWidth, this.canvas.clientHeight)
     const newCaveView = new CaveView(40, 40, tileSize, border, this.canvas, newGrid, this.updateCursor)
     dispatch(setCaveView(newCaveView))
     newCaveView.draw({})
@@ -66,6 +74,20 @@ export default class Grid extends PureComponent {
       this.handleUpdateCaveView)))
     addMouseEventListeners(caveView, caveViewModel)
     addKeyboardEventListeners(caveView)*/
+  }
+
+  componentWillReceiveProps({ nextCaveView }) {
+    if (this.props.caveView !== nextCaveView) {
+      this.setState({ redrawCanvas: true })
+    } else {
+      this.setState({ redrawCanvas: false })
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.redrawCanvas) {
+      this.props.caveView.draw({})
+    }
   }
 
   componentWillUnmount() {
