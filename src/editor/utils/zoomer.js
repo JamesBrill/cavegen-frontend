@@ -8,10 +8,13 @@ export class Zoomer {
     this.updateCursor = updateCursor
     this.canvas = canvas
     this.context = canvas.getContext('2d')
-    this.lastX = this.canvas.width / 2
-    this.lastY = this.canvas.height / 2
+    this.lastX = this.canvas.clientWidth / 2
+    this.lastY = this.canvas.clientHeight / 2
+    this.canvasWidth = this.canvas.clientWidth
+    this.canvasHeight = this.canvas.clientHeight
     this.totalXTranslation = 0
     this.totalYTranslation = 0
+    this.trackTransforms(this.context)
     this.panning = false
     this.panningLeft = false
     this.panningUp = false
@@ -24,37 +27,30 @@ export class Zoomer {
     this.canvas.addEventListener('mouseup', this.handleMouseUp, false)
   }
 
-  static zoomerInstance = null
-
-  static getZoomer(canvas, caveView, updateCursor) {
-    if (Zoomer.zoomerInstance === null) {
-      Zoomer.zoomerInstance = new Zoomer(canvas, caveView, updateCursor)
-    }
-    const context = Zoomer.zoomerInstance.context
-    Zoomer.zoomerInstance.trackTransforms(context)
-    Zoomer.zoomerInstance.totalXTranslation = 0
-    Zoomer.zoomerInstance.totalYTranslation = 0
-    return Zoomer.zoomerInstance
-  }
-
   resize(caveView, canvas) {
     this.caveView = caveView
     this.context = canvas.getContext('2d')
-    this.lastX = this.canvas.width / 2
-    this.lastY = this.canvas.height / 2
-    console.log(`resize zoomer for ${this.lastX},${this.lastY}`)
-    this.totalXTranslation = 0 // Change?
-    this.totalYTranslation = 0 // Change?
+    const lastXProportion = this.lastX / this.canvasWidth
+    const lastYProportion = this.lastY / this.canvasHeight
+    this.lastX = Math.round(this.canvas.clientWidth * lastXProportion)
+    this.lastY = Math.round(this.canvas.clientHeight * lastYProportion)
+    this.totalXTranslation *= Math.round(this.canvas.width / this.canvasWidth)
+    this.totalYTranslation *= Math.round(this.canvas.height / this.canvasHeight)
+    this.canvasWidth = this.canvas.clientWidth
+    this.canvasHeight = this.canvas.clientHeight
     this.panning = false
     this.panningLeft = false
     this.panningUp = false
     this.panningRight = false
     this.panningDown = false
+    this.trackTransforms(this.context)
+    this.context.translate(this.totalXTranslation, this.totalYTranslation)
+    this.redraw()
   }
 
   redraw() {
     const p1 = this.context.transformedPoint(0, 0)
-    const p2 = this.context.transformedPoint(this.canvas.width, this.canvas.height)
+    const p2 = this.context.transformedPoint(this.canvas.clientWidth, this.canvas.clientHeight)
     this.context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
     this.caveView.draw({})
     const gridX = this.caveView.getGridX(this.lastX)
@@ -338,5 +334,3 @@ export class Zoomer {
     this.panningDown = false
   }
 }
-
-Zoomer.zoomerInstance = null

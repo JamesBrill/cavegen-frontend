@@ -6,11 +6,11 @@ import { Zoomer } from 'src/editor/utils/zoomer'
 import { getImageFromFileName } from 'src/editor/utils/image-preloader'
 
 export class CaveView {
-  constructor(x, y, tileSize, border, canvas, grid, updateCursor) {
+  constructor({ x, y, tileSize, unscaledTileSize, border, scalingFactor, canvas, grid, updateCursor, zoomer }) {
     this.grid = grid
     this.location = { x: 0, y: 0 }
     this.tileSize = tileSize
-    this.unscaledTileSize = tileSize
+    this.unscaledTileSize = unscaledTileSize || tileSize
     this.border = border || { top: 0, left: 0 }
     this.width = x
     this.height = y
@@ -20,8 +20,8 @@ export class CaveView {
     this.paintLineMode = false
     this.isMouseDown = false
     this.linePainter = new LinePainter(this.context)
-    this.zoomer = Zoomer.getZoomer(this.canvas, this, updateCursor)
-    this.scalingFactor = 1
+    this.zoomer = zoomer || new Zoomer(this.canvas, this, updateCursor)
+    this.scalingFactor = scalingFactor || 1
     this.MIN_SCALING_FACTOR = 1
     this.MAX_SCALING_FACTOR = this.setMaxScalingFactor()
   }
@@ -53,7 +53,6 @@ export class CaveView {
   @autobind
   drawMeasuringGrid() {
     const offset = this.tileSize
-    console.log(`Border: top(${this.topBorder()}), left(${this.leftBorder()})`)
     this.linePainter.setColour('#FFFFFF', this)
     for (let i = 1; i < this.width; i++) {
       const x = i * this.tileSize + this.leftBorder()
