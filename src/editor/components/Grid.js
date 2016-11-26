@@ -15,7 +15,8 @@ import {
   setCaveView,
   setPreviousCursorSize,
   setPreviousCursorPosition,
-  setLastUsedBrushSize
+  setLastUsedBrushSize,
+  setBrushSize
 } from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
@@ -60,6 +61,7 @@ export default class Grid extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     preloadImages()
+    dispatch(setBrushSize(1))
     const newGrid = new Cave(40, 40)
     dispatch(setGrid(newGrid))
     const tileSize = getTileSize(40, 40, this.canvas.clientWidth, this.canvas.clientHeight)
@@ -85,8 +87,8 @@ export default class Grid extends PureComponent {
     addKeyboardEventListeners(caveView)*/
   }
 
-  componentWillReceiveProps({ nextCaveView }) {
-    if (this.props.caveView !== nextCaveView) {
+  componentWillReceiveProps({ caveView }) {
+    if (this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
     } else {
       this.setState({ redrawCanvas: false })
@@ -145,7 +147,7 @@ export default class Grid extends PureComponent {
                     '#FFFFFF', previousCursor.size, brushSize)
       dispatch(setPreviousCursorSize(brushSize))
     }
-    caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y, brushSize)
+    caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y, '#FFFFFF', brushSize)
     caveView.drawCursor(x, y, brushSize)
     dispatch(setPreviousCursorPosition({ x, y }))
   }
@@ -259,6 +261,13 @@ export default class Grid extends PureComponent {
     debugger
   }
 
+  @autobind
+  handleMouseMove(e) {
+    const pixelX = e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
+    const pixelY = e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
+    this.continuePaintingAtMousePosition(pixelX, pixelY)
+  }
+
   render() {
     const { className } = this.props
     const computedClassName = classNames(styles.Grid, className)
@@ -272,7 +281,8 @@ export default class Grid extends PureComponent {
           width={newCanvasWidth}
           height={newCanvasHeight}
           ref={canvas => (this.canvas = canvas)}
-          onMouseDown={this.handleMouseDown} />
+          onMouseDown={this.handleMouseDown}
+          onMouseMove={this.handleMouseMove} />
       </div>
     )
   }
