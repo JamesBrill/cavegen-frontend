@@ -1,6 +1,7 @@
 /* eslint-disable no-invalid-this */
 
 import { TileChange } from 'src/editor/utils/tile-change'
+import { getTileFromSpikeFiller, getTileFromSpikeRemover } from 'src/editor/utils/spike-painter'
 import { getFileNameFromSymbol, getTileFromSymbol } from 'src/editor/utils/tiles'
 
 export class Cave {
@@ -115,10 +116,10 @@ export class Cave {
     }
 
     if (brush.symbol === 'f') {
-      return this.spikePainter.getTileFromSpikeFiller(this, row, column)
+      return getTileFromSpikeFiller(this, row, column)
     }
 
-    return this.spikePainter.getTileFromSpikeRemover(this, row, column)
+    return getTileFromSpikeRemover(this, row, column)
   }
 
   applyTileChanges(tileChanges) {
