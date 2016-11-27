@@ -15,8 +15,7 @@ import {
   setCaveView,
   setPreviousCursorSize,
   setPreviousCursorPosition,
-  setLastUsedBrushSize,
-  setBrushSize
+  setLastUsedBrushSize
 } from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
@@ -62,7 +61,6 @@ export default class Grid extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     preloadImages()
-    dispatch(setBrushSize(1))
     const newGrid = new Cave(40, 40)
     dispatch(setGrid(newGrid))
     const tileSize = getTileSize(40, 40, this.canvas.clientWidth, this.canvas.clientHeight)

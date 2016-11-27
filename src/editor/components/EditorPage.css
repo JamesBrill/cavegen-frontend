@@ -5,8 +5,9 @@
   background-color: black;
 }
 
-.palette {
+.editorControls {
   width: 20%;
+  height: 100%;
 }
 
 .grid {

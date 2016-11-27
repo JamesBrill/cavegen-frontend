@@ -73,7 +73,7 @@ function currentBrush(state = { fileName: 'terrain', symbol: 'x' }, { type, payl
   }
 }
 
-function brushSize(state = null, { type, payload }) {
+function brushSize(state = 1, { type, payload }) {
   switch (type) {
     case 'SET_BRUSH_SIZE':
       return payload.brushSize

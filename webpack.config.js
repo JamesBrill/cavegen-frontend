@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 const sourceRoot = path.join(__dirname, 'src')
+const editorComponentsRoot = path.join(sourceRoot, 'editor/components')
 const isProduction = process.env.NODE_ENV === 'production'
 
 const developmentEntry = [
@@ -63,7 +64,13 @@ module.exports = {
       {
         test: /\.css$/,
         loader: 'style-loader!css-loader?modules&localIdentName=[local]---[hash:base64:5]!postcss-loader',
-        include: sourceRoot
+        include: sourceRoot,
+        exclude: path.resolve(editorComponentsRoot, 'Slider.css')
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
+        include: path.resolve(editorComponentsRoot, 'Slider.css')
       },
       {
         test: /\.css$/,
