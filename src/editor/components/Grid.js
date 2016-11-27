@@ -47,7 +47,8 @@ export default class Grid extends PureComponent {
     caveStorage: PropTypes.object,
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
-    previousCursor: PropTypes.object
+    previousCursor: PropTypes.object,
+    currentBrush: PropTypes.object
   };
 
   constructor(props) {
@@ -102,9 +103,6 @@ export default class Grid extends PureComponent {
   }
 
   componentWillUnmount() {
-    // TODO:
-    // Figure out why grid gets wiped after initial render
-    // Get border (or zoom level?) right when rendering grid in resized window
     window.removeEventListener('resize', this.handleWindowResize)
   }
 
@@ -155,7 +153,7 @@ export default class Grid extends PureComponent {
   finishPainting() {
     const { caveView, changeController } = this.props
     if (caveView.isMouseDown) {
-      changeController.addPaintedLineChange()
+      //changeController.addPaintedLineChange()
     }
     caveView.isMouseDown = false
     caveView.paintLineMode = false
@@ -188,9 +186,10 @@ export default class Grid extends PureComponent {
     const tileChanges = this.getTileChanges(x, y, brush)
     grid.applyTileChanges(tileChanges)
     caveView.applyTileChanges(tileChanges)
-    changeController.addTileChanges(tileChanges)
+    //changeController.addTileChanges(tileChanges)
   }
 
+  @autobind
   startPaintingAtMousePosition(pixelX, pixelY) {
     const { dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
     caveView.isMouseDown = true
@@ -258,7 +257,17 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleMouseDown(e) {
-    debugger
+    const { caveView } = this.props
+    if (!caveView.zoomer.panning) {
+      const pixelX = e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
+      const pixelY = e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
+      this.startPaintingAtMousePosition(pixelX, pixelY)
+    }
+  }
+
+  @autobind
+  handleMouseUp() {
+    this.finishPainting()
   }
 
   @autobind
@@ -282,7 +291,8 @@ export default class Grid extends PureComponent {
           height={newCanvasHeight}
           ref={canvas => (this.canvas = canvas)}
           onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove} />
+          onMouseMove={this.handleMouseMove}
+          onMouseUp={this.handleMouseUp} />
       </div>
     )
   }

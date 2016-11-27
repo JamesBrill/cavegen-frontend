@@ -17,6 +17,7 @@ export default class Palette extends PureComponent {
     onTileClick(brush)
   }
 
+  @autobind
   renderTileImage(src, index) {
     const brush = PALETTE_BRUSHES[index]
     return (
