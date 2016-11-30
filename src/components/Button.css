@@ -1,9 +1,7 @@
-@import '../palette.css';
-
 .Button {
   display: inline-block;
   margin: 0;
-  padding: 0.875em 3.125em;
+  padding: 0.6em 2em;
 
   vertical-align: middle;
   text-align: center;
@@ -19,7 +17,7 @@
   }
 
   &.pill {
-    border-radius: 100vh;
+    border-radius: 1vh;
   }
 
   &.block {
@@ -31,11 +29,14 @@
     outline: 0;
     letter-spacing: 0.4px;
     font-size: 0.875em;
-    color: #797979;
 
     &.whiteText {
       color: white;
     }
+  }
+
+  &:hover {
+    color: #dfdfdf;
   }
 
   &:disabled,
@@ -48,8 +49,8 @@
   }
 
   &:not(.disabled):active {
-    padding-top: calc(0.875em + 1px);
-    padding-bottom: calc(0.875em - 1px);
+    padding-top: calc(0.6em + 1px);
+    padding-bottom: calc(0.6em - 1px);
     box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.16);
   }
 
