@@ -159,4 +159,8 @@ export class CaveView {
   scaleTileSize = function () {
     this.tileSize = Math.round(this.scalingFactor * this.unscaledTileSize)
   }
+
+  clear = function () {
+    this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight)
+  }
 }

@@ -3,6 +3,8 @@ import { CaveStorage } from 'src/editor/utils/cave-storage'
 
 export default combineReducers({
   grid,
+  caveWidth,
+  caveHeight,
   caveView,
   caveViewModel,
   caveStorage,
@@ -17,6 +19,26 @@ function grid(state = null, { type, payload }) {
   switch (type) {
     case 'SET_GRID':
       return payload.grid
+
+    default:
+      return state
+  }
+}
+
+function caveWidth(state = 40, { type, payload }) {
+  switch (type) {
+    case 'SET_CAVE_WIDTH':
+      return payload.caveWidth
+
+    default:
+      return state
+  }
+}
+
+function caveHeight(state = 40, { type, payload }) {
+  switch (type) {
+    case 'SET_CAVE_HEIGHT':
+      return payload.caveHeight
 
     default:
       return state

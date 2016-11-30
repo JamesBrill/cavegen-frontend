@@ -15,6 +15,7 @@ export class Zoomer {
     this.totalXTranslation = 0
     this.totalYTranslation = 0
     this.trackTransforms(this.context)
+    this.context.translate(0, 0)
     this.panning = false
     this.panningLeft = false
     this.panningUp = false
@@ -25,6 +26,14 @@ export class Zoomer {
     this.canvas.addEventListener('mousedown', this.handleMouseDown, false)
     this.canvas.addEventListener('mousemove', this.handleMouseMove, false)
     this.canvas.addEventListener('mouseup', this.handleMouseUp, false)
+  }
+
+  removeEventListeners() {
+    this.canvas.removeEventListener('DOMMouseScroll', this.handleScroll, false)
+    this.canvas.removeEventListener('mousewheel', this.handleScroll, false)
+    this.canvas.removeEventListener('mousedown', this.handleMouseDown, false)
+    this.canvas.removeEventListener('mousemove', this.handleMouseMove, false)
+    this.canvas.removeEventListener('mouseup', this.handleMouseUp, false)
   }
 
   resize(caveView, canvas) {
@@ -45,17 +54,23 @@ export class Zoomer {
     this.panningDown = false
     this.trackTransforms(this.context)
     this.context.translate(this.totalXTranslation, this.totalYTranslation)
-    this.redraw()
+    this.redraw(true)
   }
 
-  redraw() {
+  resetZoom() {
+    this.context.translate(-this.totalXTranslation, -this.totalYTranslation)
+  }
+
+  redraw(hideCursor) {
     const p1 = this.context.transformedPoint(0, 0)
     const p2 = this.context.transformedPoint(this.canvas.clientWidth, this.canvas.clientHeight)
     this.context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
     this.caveView.draw({})
     const gridX = this.caveView.getGridX(this.lastX)
     const gridY = this.caveView.getGridY(this.lastY)
-    this.updateCursor(gridX, gridY)
+    if (!hideCursor) {
+      this.updateCursor(gridX, gridY)
+    }
   }
 
   trackTransforms(context) {

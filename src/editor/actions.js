@@ -5,6 +5,16 @@ export const setGrid = createAction(
   grid => ({ grid })
 )
 
+export const setCaveWidth = createAction(
+  'SET_CAVE_WIDTH',
+  caveWidth => ({ caveWidth })
+)
+
+export const setCaveHeight = createAction(
+  'SET_CAVE_HEIGHT',
+  caveHeight => ({ caveHeight })
+)
+
 export const setCaveView = createAction(
   'SET_CAVE_VIEW',
   caveView => ({ caveView })

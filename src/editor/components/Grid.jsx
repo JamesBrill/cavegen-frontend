@@ -23,6 +23,8 @@ import styles from 'src/editor/components/Grid.css'
 function mapStateToProps(state) {
   return {
     grid: state.editor.grid,
+    caveWidth: state.editor.caveWidth,
+    caveHeight: state.editor.caveHeight,
     caveView: state.editor.caveView,
     caveViewModel: state.editor.caveViewModel,
     caveStorage: state.editor.caveStorage,
@@ -40,6 +42,8 @@ export default class Grid extends PureComponent {
     className: PropTypes.string,
     dispatch: PropTypes.func,
     grid: PropTypes.object,
+    caveWidth: PropTypes.number,
+    caveHeight: PropTypes.number,
     caveView: PropTypes.object,
     caveViewModel: PropTypes.object,
     changeController: PropTypes.object,
@@ -59,15 +63,15 @@ export default class Grid extends PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
+    const { dispatch, caveWidth, caveHeight } = this.props
     preloadImages()
-    const newGrid = new Cave(40, 40)
+    const newGrid = new Cave(caveWidth, caveHeight)
     dispatch(setGrid(newGrid))
-    const tileSize = getTileSize(40, 40, this.canvas.clientWidth, this.canvas.clientHeight)
-    const border = getBorder(40, 40, this.canvas.clientWidth, this.canvas.clientHeight)
+    const tileSize = getTileSize(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
+    const border = getBorder(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
     const newCaveView = new CaveView({
-      x: 40,
-      y: 40,
+      x: caveWidth,
+      y: caveHeight,
       tileSize,
       border,
       scalingFactor: 1,
@@ -86,9 +90,30 @@ export default class Grid extends PureComponent {
     addKeyboardEventListeners(caveView)*/
   }
 
-  componentWillReceiveProps({ caveView }) {
+  componentWillReceiveProps({ caveView, caveWidth, caveHeight }) {
+    const { dispatch } = this.props
     if (this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
+    } else if (this.props.caveWidth !== caveWidth || this.props.caveHeight !== caveHeight) {
+      this.props.caveView.zoomer.resetZoom()
+      this.props.caveView.zoomer.removeEventListeners()
+      const newGrid = new Cave(caveWidth, caveHeight)
+      dispatch(setGrid(newGrid))
+      const tileSize = getTileSize(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
+      const border = getBorder(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
+      const newCaveView = new CaveView({
+        x: caveWidth,
+        y: caveHeight,
+        tileSize,
+        border,
+        scalingFactor: 1,
+        canvas: this.canvas,
+        grid: newGrid,
+        updateCursor: this.updateCursor
+      })
+      dispatch(setCaveView(newCaveView))
+      newCaveView.zoomer.resize(newCaveView, this.canvas)
+      this.setState({ redrawCanvas: false })
     } else {
       this.setState({ redrawCanvas: false })
     }
@@ -106,11 +131,12 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleWindowResize() {
-    const unscaledTileSize = getTileSize(40, 40, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
-    const border = this.props.caveView.border || getBorder(40, 40, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
+    const { caveWidth, caveHeight } = this.props
+    const unscaledTileSize = getTileSize(caveWidth, caveHeight, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
+    const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
     const newCaveView = new CaveView({
-      x: 40,
-      y: 40,
+      x: caveWidth,
+      y: caveHeight,
       tileSize: Math.round((this.props.caveView.scalingFactor || 1) * unscaledTileSize),
       unscaledTileSize,
       border,
