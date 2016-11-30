@@ -13,31 +13,44 @@ import {
   setCurrentBrush,
   setBrushSize,
   setCaveWidth,
-  setCaveHeight
+  setCaveHeight,
+  startRebuild
 } from 'src/editor/actions'
+
+function mapStateToProps(state) {
+  return {
+    caveWidth: state.editor.caveWidth,
+    caveHeight: state.editor.caveHeight
+  }
+}
 
 const mapDispatchToProps = {
   dispatchSetCurrentBrush: setCurrentBrush,
   dispatchSetBrushSize: setBrushSize,
   dispatchSetCaveWidth: setCaveWidth,
-  dispatchSetCaveHeight: setCaveHeight
+  dispatchSetCaveHeight: setCaveHeight,
+  dispatchStartRebuild: startRebuild
 }
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 export default class EditorPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
+    caveWidth: PropTypes.number,
+    caveHeight: PropTypes.number,
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetBrushSize: PropTypes.func,
     dispatchSetCaveWidth: PropTypes.func,
-    dispatchSetCaveHeight: PropTypes.func
+    dispatchSetCaveHeight: PropTypes.func,
+    dispatchStartRebuild: PropTypes.func
   };
 
   @autobind
   handleRebuild(width, height) {
-    const { dispatchSetCaveWidth, dispatchSetCaveHeight } = this.props
+    const { dispatchSetCaveWidth, dispatchSetCaveHeight, dispatchStartRebuild } = this.props
     dispatchSetCaveWidth(width)
     dispatchSetCaveHeight(height)
+    dispatchStartRebuild()
   }
 
   render() {

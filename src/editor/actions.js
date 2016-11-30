@@ -15,6 +15,9 @@ export const setCaveHeight = createAction(
   caveHeight => ({ caveHeight })
 )
 
+export const startRebuild = createAction('START_REBUILD')
+export const stopRebuild = createAction('STOP_REBUILD')
+
 export const setCaveView = createAction(
   'SET_CAVE_VIEW',
   caveView => ({ caveView })

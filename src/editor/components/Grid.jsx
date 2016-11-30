@@ -15,7 +15,8 @@ import {
   setCaveView,
   setPreviousCursorSize,
   setPreviousCursorPosition,
-  setLastUsedBrushSize
+  setLastUsedBrushSize,
+  stopRebuild
 } from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
@@ -32,7 +33,8 @@ function mapStateToProps(state) {
     currentBrush: state.editor.currentBrush,
     brushSize: state.editor.brushSize,
     lastUsedBrushSize: state.editor.lastUsedBrushSize,
-    previousCursor: state.editor.previousCursor
+    previousCursor: state.editor.previousCursor,
+    needsRebuild: state.editor.needsRebuild
   }
 }
 
@@ -51,7 +53,8 @@ export default class Grid extends PureComponent {
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,
-    currentBrush: PropTypes.object
+    currentBrush: PropTypes.object,
+    needsRebuild: PropTypes.bool
   };
 
   constructor(props) {
@@ -90,11 +93,11 @@ export default class Grid extends PureComponent {
     addKeyboardEventListeners(caveView)*/
   }
 
-  componentWillReceiveProps({ caveView, caveWidth, caveHeight }) {
+  componentWillReceiveProps({ caveView, caveWidth, caveHeight, needsRebuild }) {
     const { dispatch } = this.props
     if (this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
-    } else if (this.props.caveWidth !== caveWidth || this.props.caveHeight !== caveHeight) {
+    } else if (needsRebuild) {
       this.props.caveView.zoomer.resetZoom()
       this.props.caveView.zoomer.removeEventListeners()
       const newGrid = new Cave(caveWidth, caveHeight)
@@ -114,6 +117,7 @@ export default class Grid extends PureComponent {
       dispatch(setCaveView(newCaveView))
       newCaveView.zoomer.resize(newCaveView, this.canvas)
       this.setState({ redrawCanvas: false })
+      dispatch(stopRebuild())
     } else {
       this.setState({ redrawCanvas: false })
     }

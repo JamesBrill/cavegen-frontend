@@ -12,7 +12,8 @@ export default combineReducers({
   currentBrush,
   brushSize,
   lastUsedBrushSize,
-  previousCursor
+  previousCursor,
+  needsRebuild
 })
 
 function grid(state = null, { type, payload }) {
@@ -128,6 +129,19 @@ function previousCursor(state = { size: 1, position: { x: 0, y: 0 } }, { type, p
         size: state.size,
         position: payload.previousCursorPosition
       }
+
+    default:
+      return state
+  }
+}
+
+function needsRebuild(state = false, { type }) {
+  switch (type) {
+    case 'START_REBUILD':
+      return true
+
+    case 'STOP_REBUILD':
+      return false
 
     default:
       return state
