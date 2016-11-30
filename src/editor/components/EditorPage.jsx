@@ -47,8 +47,8 @@ export default class EditorPage extends PureComponent {
     return (
       <div className={computedClassName}>
         <div className={styles.editorControls}>
-          <CaveDimensionsInput onCaveRebuild={this.handleRebuild} />
-          <BrushSizeSelector onBrushSizeChange={dispatchSetBrushSize} />
+          <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
+          <CaveDimensionsInput className={styles.dimensions} onCaveRebuild={this.handleRebuild} />
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
         <Grid className={styles.grid} />

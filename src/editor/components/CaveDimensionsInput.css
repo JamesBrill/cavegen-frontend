@@ -4,16 +4,18 @@
 }
 
 .title {
-  margin-top: 3em;
   margin-bottom: 0.5em;
-  color: #404040;
+  color: white;
   font-size: 0.8125em;
   font-weight: normal;
 }
 
 .button {
-  width: 100%;
+  width: 10em;
   height: 100%;
+  margin-top: 1em;
+  margin-left: auto;
+  margin-right: auto;
   background-color: #567cde !important; /* stylelint-disable-line declaration-no-important */
   color: white;
 }
