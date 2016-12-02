@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import ReactZeroClipboard from 'react-zeroclipboard'
+import 'src/editor/components/ZeroClipboard.css'
 import Button from 'src/components/Button'
 
 import styles from 'src/editor/components/CopyToClipboard.css'

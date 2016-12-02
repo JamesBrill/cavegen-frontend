@@ -72,12 +72,18 @@ module.exports = {
         test: /\.css$/,
         loader: 'style-loader!css-loader?modules&localIdentName=[local]---[hash:base64:5]!postcss-loader',
         include: sourceRoot,
-        exclude: path.resolve(editorComponentsRoot, 'Slider.css')
+        exclude: [
+          path.resolve(editorComponentsRoot, 'Slider.css'),
+          path.resolve(editorComponentsRoot, 'ZeroClipboard.css')
+        ]
       },
       {
         test: /\.css$/,
         loader: 'style-loader!css-loader',
-        include: path.resolve(editorComponentsRoot, 'Slider.css')
+        include: [
+          path.resolve(editorComponentsRoot, 'Slider.css'),
+          path.resolve(editorComponentsRoot, 'ZeroClipboard.css')
+        ]
       },
       {
         test: /\.css$/,
