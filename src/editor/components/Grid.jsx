@@ -5,6 +5,7 @@ import { preloadImages } from 'src/editor/utils/image-preloader'
 import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles'
 import { addMouseEventListeners, addKeyboardEventListeners } from 'src/editor/utils/event-listener-builder'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
+import { getCaveCode } from 'src/editor/utils/cave-code'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
 import { connect } from 'react-redux'
@@ -16,6 +17,7 @@ import {
   setPreviousCursorSize,
   setPreviousCursorPosition,
   setLastUsedBrushSize,
+  setCaveCode,
   stopRebuild
 } from 'src/editor/actions'
 
@@ -70,6 +72,8 @@ export default class Grid extends PureComponent {
     preloadImages()
     const newGrid = new Cave(caveWidth, caveHeight)
     dispatch(setGrid(newGrid))
+    const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
+    dispatch(setCaveCode(caveCode))
     const tileSize = getTileSize(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
     const border = getBorder(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
     const newCaveView = new CaveView({
@@ -102,6 +106,8 @@ export default class Grid extends PureComponent {
       this.props.caveView.zoomer.removeEventListeners()
       const newGrid = new Cave(caveWidth, caveHeight)
       dispatch(setGrid(newGrid))
+      const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
+      dispatch(setCaveCode(caveCode))
       const tileSize = getTileSize(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
       const border = getBorder(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
       const newCaveView = new CaveView({
@@ -179,7 +185,9 @@ export default class Grid extends PureComponent {
   }
 
   finishPainting() {
-    const { caveView, changeController } = this.props
+    const { dispatch, caveView, grid, changeController } = this.props
+    const caveCode = getCaveCode(grid, 'Test', '1', 'clear')
+    dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       //changeController.addPaintedLineChange()
     }

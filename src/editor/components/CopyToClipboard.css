@@ -1,0 +1,14 @@
+.CopyToClipboard {
+  height: 100%;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  width: 10em;
+  height: 100%;
+  background-color: #567cde !important; /* stylelint-disable-line declaration-no-important */
+  color: white;
+}

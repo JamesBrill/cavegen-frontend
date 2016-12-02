@@ -6,6 +6,7 @@ import Palette from 'src/editor/components/Palette'
 import Grid from 'src/editor/components/Grid'
 import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
+import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -20,7 +21,8 @@ import {
 function mapStateToProps(state) {
   return {
     caveWidth: state.editor.caveWidth,
-    caveHeight: state.editor.caveHeight
+    caveHeight: state.editor.caveHeight,
+    caveCode: state.editor.caveCode
   }
 }
 
@@ -54,7 +56,7 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, dispatchSetCurrentBrush, dispatchSetBrushSize } = this.props
+    const { className, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
@@ -62,6 +64,7 @@ export default class EditorPage extends PureComponent {
         <div className={styles.editorControls}>
           <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
           <CaveDimensionsInput className={styles.dimensions} onCaveRebuild={this.handleRebuild} />
+          <CopyToClipboard caveCode={caveCode} />
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
         <Grid className={styles.grid} />

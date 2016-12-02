@@ -5,6 +5,7 @@ export default combineReducers({
   grid,
   caveWidth,
   caveHeight,
+  caveCode,
   caveView,
   caveViewModel,
   caveStorage,
@@ -40,6 +41,17 @@ function caveHeight(state = 40, { type, payload }) {
   switch (type) {
     case 'SET_CAVE_HEIGHT':
       return payload.caveHeight
+
+    default:
+      return state
+  }
+}
+
+function caveCode(state = '', { type, payload }) {
+  switch (type) {
+    case 'SET_CAVE_CODE':
+    console.log(`set ${payload.caveCode}`)
+      return payload.caveCode
 
     default:
       return state
