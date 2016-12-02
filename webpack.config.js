@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const sourceRoot = path.join(__dirname, 'src')
 const editorComponentsRoot = path.join(sourceRoot, 'editor/components')
@@ -22,7 +23,10 @@ const developmentPlugins = [
       'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }
   }),
-  new webpack.HotModuleReplacementPlugin()
+  new webpack.HotModuleReplacementPlugin(),
+  new CopyWebpackPlugin([
+    { from: 'static' }
+  ])
 ]
 
 const productionPlugins = [
@@ -37,7 +41,10 @@ const productionPlugins = [
     compressor: {
       warnings: false
     }
-  })
+  }),
+  new CopyWebpackPlugin([
+    { from: 'static' }
+  ])
 ]
 
 module.exports = {

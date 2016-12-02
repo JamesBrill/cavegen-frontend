@@ -39,7 +39,7 @@ export const PALETTE_BRUSHES = [
   { fileName: 'heart', symbol: 'l' },
   { fileName: 'gem', symbol: 'g' }
 ]
-const ASSETS_PATH = 'src/assets'
+const ASSETS_PATH = 'static'
 export const PALETTE_IMAGES_PATH = `${ASSETS_PATH}/palette-tiles`
 export const MISC_IMAGES_PATH = `${ASSETS_PATH}/misc`
 export const PALETTE_IMAGE_PATHS = PALETTE_BRUSHES.map(brush => `${PALETTE_IMAGES_PATH}/${brush.fileName}.png`)
