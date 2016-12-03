@@ -9,7 +9,9 @@ import styles from 'src/editor/components/CaveDimensionsInput.css'
 export default class CaveDimensionsInput extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    onCaveRebuild: PropTypes.func
+    onCaveRebuild: PropTypes.func,
+    caveWidth: PropTypes.number,
+    caveHeight: PropTypes.number
   };
 
   constructor(props) {
@@ -36,16 +38,16 @@ export default class CaveDimensionsInput extends PureComponent {
   }
 
   render() {
-    const { className, onCaveRebuild } = this.props
+    const { className, onCaveRebuild, caveWidth, caveHeight } = this.props
     const { width, height } = this.state
     const computedClassName = classNames(styles.CaveDimensionsInput, className)
 
     return (
       <div className={computedClassName}>
         <h2 className={styles.title}>Width</h2>
-        <Input onChange={this.handleWidthChange} defaultValue={width} />
+        <Input onChange={this.handleWidthChange} key={`width: ${caveWidth}`} defaultValue={caveWidth} />
         <h2 className={styles.title}>Height</h2>
-        <Input onChange={this.handleHeightChange} defaultValue={height} />
+        <Input onChange={this.handleHeightChange} key={`height: ${caveHeight}`} defaultValue={caveHeight} />
         <Button className={styles.button} onClick={() => onCaveRebuild(width, height)}>Rebuild</Button>
       </div>
     )

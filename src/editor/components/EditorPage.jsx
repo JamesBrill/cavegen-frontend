@@ -63,14 +63,18 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize, dispatchUndo, dispatchRedo } = this.props
+    const { className, caveWidth, caveHeight, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize, dispatchUndo, dispatchRedo } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
       <div className={computedClassName}>
         <div className={styles.editorControls}>
           <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
-          <CaveDimensionsInput className={styles.dimensions} onCaveRebuild={this.handleRebuild} />
+          <CaveDimensionsInput
+            className={styles.dimensions}
+            onCaveRebuild={this.handleRebuild}
+            caveWidth={caveWidth}
+            caveHeight={caveHeight} />
           <CopyToClipboard caveCode={caveCode} />
           <div className={styles.undoRedoContainer}>
             <Button className={styles.undoRedoButton} onClick={dispatchUndo}>Undo</Button>
