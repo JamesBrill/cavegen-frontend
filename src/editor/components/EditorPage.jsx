@@ -7,6 +7,7 @@ import Grid from 'src/editor/components/Grid'
 import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
+import Button from 'src/components/Button'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -15,7 +16,9 @@ import {
   setBrushSize,
   setCaveWidth,
   setCaveHeight,
-  startRebuild
+  startRebuild,
+  undoCaveChange,
+  redoCaveChange
 } from 'src/editor/actions'
 
 function mapStateToProps(state) {
@@ -31,7 +34,9 @@ const mapDispatchToProps = {
   dispatchSetBrushSize: setBrushSize,
   dispatchSetCaveWidth: setCaveWidth,
   dispatchSetCaveHeight: setCaveHeight,
-  dispatchStartRebuild: startRebuild
+  dispatchStartRebuild: startRebuild,
+  dispatchUndo: undoCaveChange,
+  dispatchRedo: redoCaveChange
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -44,7 +49,9 @@ export default class EditorPage extends PureComponent {
     dispatchSetBrushSize: PropTypes.func,
     dispatchSetCaveWidth: PropTypes.func,
     dispatchSetCaveHeight: PropTypes.func,
-    dispatchStartRebuild: PropTypes.func
+    dispatchStartRebuild: PropTypes.func,
+    dispatchUndo: PropTypes.func,
+    dispatchRedo: PropTypes.func
   };
 
   @autobind
@@ -56,7 +63,7 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize } = this.props
+    const { className, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize, dispatchUndo, dispatchRedo } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
@@ -65,6 +72,10 @@ export default class EditorPage extends PureComponent {
           <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
           <CaveDimensionsInput className={styles.dimensions} onCaveRebuild={this.handleRebuild} />
           <CopyToClipboard caveCode={caveCode} />
+          <div className={styles.undoRedoContainer}>
+            <Button className={styles.undoRedoButton} onClick={dispatchUndo}>Undo</Button>
+            <Button className={styles.undoRedoButton} onClick={dispatchRedo}>Redo</Button>
+          </div>
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
         <Grid className={styles.grid} />

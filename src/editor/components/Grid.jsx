@@ -6,6 +6,7 @@ import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles
 import { addMouseEventListeners, addKeyboardEventListeners } from 'src/editor/utils/event-listener-builder'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
 import { getCaveCode } from 'src/editor/utils/cave-code'
+import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
 import { connect } from 'react-redux'
@@ -14,6 +15,7 @@ import { connect } from 'react-redux'
 import {
   setGrid,
   setCaveView,
+  setChangeController,
   setPreviousCursorSize,
   setPreviousCursorPosition,
   setLastUsedBrushSize,
@@ -69,6 +71,8 @@ export default class Grid extends PureComponent {
 
   componentDidMount() {
     preloadImages()
+    const changeController = new ChangeController(this.handleUpdateCaveView)
+    this.props.dispatch(setChangeController(changeController))
     const newCaveView = this.rebuildCave()
     newCaveView.draw({})
     window.addEventListener('resize', this.handleWindowResize)
@@ -100,6 +104,16 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  getCanvasWidth() {
+    return (this.canvas && this.canvas.clientWidth) || 1000
+  }
+
+  @autobind
+  getCanvasHeight() {
+    return (this.canvas && this.canvas.clientHeight) || 800
+  }
+
+  @autobind
   rebuildCave(width, height) {
     const { dispatch, caveView } = this.props
     const caveWidth = width || this.props.caveWidth
@@ -112,8 +126,8 @@ export default class Grid extends PureComponent {
     dispatch(setGrid(newGrid))
     const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
     dispatch(setCaveCode(caveCode))
-    const tileSize = getTileSize(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
-    const border = getBorder(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
+    const tileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
+    const border = getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
     const newCaveView = new CaveView({
       x: caveWidth,
       y: caveHeight,
@@ -132,8 +146,8 @@ export default class Grid extends PureComponent {
   @autobind
   handleWindowResize() {
     const { caveWidth, caveHeight } = this.props
-    const unscaledTileSize = getTileSize(caveWidth, caveHeight, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
-    const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
+    const unscaledTileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
+    const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
     const newCaveView = new CaveView({
       x: caveWidth,
       y: caveHeight,
@@ -179,7 +193,7 @@ export default class Grid extends PureComponent {
     const caveCode = getCaveCode(grid, 'Test', '1', 'clear')
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
-      //changeController.addPaintedLineChange()
+      changeController.addPaintedLineChange()
     }
     caveView.isMouseDown = false
     caveView.paintLineMode = false
@@ -212,7 +226,7 @@ export default class Grid extends PureComponent {
     const tileChanges = this.getTileChanges(x, y, brush)
     grid.applyTileChanges(tileChanges)
     caveView.applyTileChanges(tileChanges)
-    //changeController.addTileChanges(tileChanges)
+    changeController.addTileChanges(tileChanges)
   }
 
   @autobind
@@ -264,8 +278,8 @@ export default class Grid extends PureComponent {
     const { dispatch, grid } = this.props
     const width = grid.width
     const height = grid.height
-    const border = getBorder(width, height, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
-    const tileSize = getTileSize(width, height, (this.canvas && this.canvas.clientWidth) || 1000, (this.canvas && this.canvas.clientHeight) || 800)
+    const border = getBorder(width, height, this.getCanvasWidth(), this.getCanvasHeight())
+    const tileSize = getTileSize(width, height, this.getCanvasWidth(), this.getCanvasHeight())
 
     dispatch(setGrid(cave || new Cave(width, height)))
     const newCaveView = new CaveView({
@@ -306,8 +320,8 @@ export default class Grid extends PureComponent {
   render() {
     const { className } = this.props
     const computedClassName = classNames(styles.Grid, className)
-    const newCanvasWidth = (this.canvas && this.canvas.clientWidth) || 1000
-    const newCanvasHeight = (this.canvas && this.canvas.clientHeight) || 800
+    const newCanvasWidth = this.getCanvasWidth()
+    const newCanvasHeight = this.getCanvasHeight()
 
     return (
       <div className={computedClassName}>
