@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
+import keydown from 'react-keydown'
 import { autobind } from 'core-decorators'
 import Palette from 'src/editor/components/Palette'
 import Grid from 'src/editor/components/Grid'
@@ -62,8 +63,20 @@ export default class EditorPage extends PureComponent {
     dispatchStartRebuild()
   }
 
+  @autobind
+  @keydown('ctrl+z', 'cmd+z')
+  handleUndo() {
+    this.props.dispatchUndo()
+  }
+
+  @autobind
+  @keydown('ctrl+y', 'cmd+y', 'ctrl+shift+z', 'cmd+shift+z')
+  handleRedo() {
+    this.props.dispatchRedo()
+  }
+
   render() {
-    const { className, caveWidth, caveHeight, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize, dispatchUndo, dispatchRedo } = this.props
+    const { className, caveWidth, caveHeight, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
@@ -77,8 +90,8 @@ export default class EditorPage extends PureComponent {
             caveHeight={caveHeight} />
           <CopyToClipboard caveCode={caveCode} />
           <div className={styles.undoRedoContainer}>
-            <Button className={styles.undoRedoButton} onClick={dispatchUndo}>Undo</Button>
-            <Button className={styles.undoRedoButton} onClick={dispatchRedo}>Redo</Button>
+            <Button className={styles.undoRedoButton} onClick={this.handleUndo}>Undo</Button>
+            <Button className={styles.undoRedoButton} onClick={this.handleRedo}>Redo</Button>
           </div>
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
