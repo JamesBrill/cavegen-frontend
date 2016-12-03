@@ -1,7 +1,7 @@
 import { PALETTE_BRUSHES } from 'src/utils/ImageLoader'
 
 export function isTile(symbol) {
-  return /[xbk+mw\/|=o^<>v\"n()u12345@!~t.zc0#Dlg"]/.test(symbol)
+  return /[xbk+mw\/|=o^<>v\"n()u12345@!~t.zc0#Dlgfr"]/.test(symbol)
 }
 
 export function getFileNameFromSymbol(symbol) {
