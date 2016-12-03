@@ -15,6 +15,8 @@ import { connect } from 'react-redux'
 import {
   setGrid,
   setCaveView,
+  setCaveWidth,
+  setCaveHeight,
   setChangeController,
   setPreviousCursorSize,
   setPreviousCursorPosition,
@@ -71,7 +73,7 @@ export default class Grid extends PureComponent {
 
   componentDidMount() {
     preloadImages()
-    const changeController = new ChangeController(this.handleUpdateCaveView)
+    const changeController = new ChangeController(this.rebuildCave)
     this.props.dispatch(setChangeController(changeController))
     const newCaveView = this.rebuildCave()
     newCaveView.draw({})
@@ -104,6 +106,22 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  buildCaveView(grid, caveWidth, caveHeight) {
+    const tileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
+    const border = getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
+    return new CaveView({
+      x: caveWidth,
+      y: caveHeight,
+      tileSize,
+      border,
+      scalingFactor: 1,
+      canvas: this.canvas,
+      grid,
+      updateCursor: this.updateCursor
+    })
+  }
+
+  @autobind
   getCanvasWidth() {
     return (this.canvas && this.canvas.clientWidth) || 1000
   }
@@ -114,7 +132,7 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
-  rebuildCave(width, height) {
+  rebuildCave(width, height, grid) {
     const { dispatch, caveView } = this.props
     const caveWidth = width || this.props.caveWidth
     const caveHeight = height || this.props.caveHeight
@@ -122,24 +140,15 @@ export default class Grid extends PureComponent {
       caveView.zoomer.resetZoom()
       caveView.zoomer.removeEventListeners()
     }
-    const newGrid = new Cave(caveWidth, caveHeight)
+    dispatch(setCaveWidth(caveWidth))
+    dispatch(setCaveHeight(caveHeight))
+    const newGrid = grid || new Cave(caveWidth, caveHeight)
     dispatch(setGrid(newGrid))
     const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
     dispatch(setCaveCode(caveCode))
-    const tileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
-    const border = getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
-    const newCaveView = new CaveView({
-      x: caveWidth,
-      y: caveHeight,
-      tileSize,
-      border,
-      scalingFactor: 1,
-      canvas: this.canvas,
-      grid: newGrid,
-      updateCursor: this.updateCursor
-    })
+    const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
-    newCaveView.zoomer.resize(newCaveView, this.canvas)
+    newCaveView.zoomer.resize(newCaveView)
     return newCaveView
   }
 
@@ -161,7 +170,7 @@ export default class Grid extends PureComponent {
       zoomer: this.props.caveView.zoomer
     })
     this.props.dispatch(setCaveView(newCaveView))
-    newCaveView.zoomer.resize(newCaveView, this.canvas)
+    newCaveView.zoomer.resize(newCaveView)
     newCaveView.draw({})
   }
 

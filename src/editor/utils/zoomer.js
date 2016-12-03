@@ -36,9 +36,10 @@ export class Zoomer {
     this.canvas.removeEventListener('mouseup', this.handleMouseUp, false)
   }
 
-  resize(caveView, canvas) {
+  resize(caveView) {
     this.caveView = caveView
-    this.context = canvas.getContext('2d')
+    this.canvas = caveView.canvas
+    this.context = this.canvas.getContext('2d')
     const lastXProportion = this.lastX / this.canvasWidth
     const lastYProportion = this.lastY / this.canvasHeight
     this.lastX = Math.round(this.canvas.clientWidth * lastXProportion)

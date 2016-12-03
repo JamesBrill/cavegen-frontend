@@ -20,9 +20,6 @@ export const setCaveCode = createAction(
   caveCode => ({ caveCode })
 )
 
-export const startRebuild = createAction('START_REBUILD')
-export const stopRebuild = createAction('STOP_REBUILD')
-
 export const setCaveView = createAction(
   'SET_CAVE_VIEW',
   caveView => ({ caveView })
@@ -62,3 +59,29 @@ export const setPreviousCursorPosition = createAction(
   'SET_PREVIOUS_CURSOR_POSITION',
   previousCursorPosition => ({ previousCursorPosition })
 )
+
+export function undoCaveChange() {
+  return function (dispatch, getState) {
+    const { changeController, caveView, grid } = getState().editor
+    changeController.applyUndo(grid, caveView)
+    return dispatch({ type: 'UNDO_CAVE_CHANGE' })
+  }
+}
+
+export function redoCaveChange() {
+  return function (dispatch, getState) {
+    const { changeController, caveView, grid } = getState().editor
+    changeController.applyRedo(grid, caveView)
+    return dispatch({ type: 'REDO_CAVE_CHANGE' })
+  }
+}
+
+export function startRebuild() {
+  return function (dispatch, getState) {
+    const { changeController, grid, caveWidth, caveHeight } = getState().editor
+    changeController.addGenerateCaveChange(grid, caveWidth, caveHeight)
+    return dispatch({ type: 'START_REBUILD' })
+  }
+}
+
+export const stopRebuild = createAction('STOP_REBUILD')

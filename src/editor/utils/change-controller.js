@@ -3,25 +3,21 @@
 import { CaveChangeHistory } from 'src/editor/utils/cave-change-history'
 import { PaintedLineChange } from 'src/editor/utils/painted-line-change'
 import { CaveChange } from 'src/editor/utils/cave-change'
-import { getBorder, getTileSize } from 'src/editor/utils/tiles'
-import { CaveView } from 'src/editor/utils/cave-view'
 
 export class ChangeController {
-  constructor(updateCaveView) {
+  constructor(rebuildCave) {
     this.changeHistory = new CaveChangeHistory()
     this.currentPaintedLineChange = new PaintedLineChange()
-    this.updateCaveView = updateCaveView
+    this.rebuildCave = rebuildCave
   }
 
   resetCurrentPaintedLineChange() {
     this.currentPaintedLineChange = new PaintedLineChange()
   }
 
-  buildCaveChange(grid, caveViewModel) {
+  buildCaveChange(grid, newCaveWidth, newCaveHeight) {
     const preGenerationSnapshot = grid.getGridClone()
-    const postGenerationWidth = caveViewModel.caveWidth()
-    const postGenerationHeight = caveViewModel.caveHeight()
-    return new CaveChange(preGenerationSnapshot, postGenerationWidth, postGenerationHeight)
+    return new CaveChange(preGenerationSnapshot, newCaveWidth, newCaveHeight)
   }
 
   addPaintedLineChange() {
@@ -29,8 +25,8 @@ export class ChangeController {
     this.resetCurrentPaintedLineChange()
   }
 
-  addGenerateCaveChange(grid, caveViewModel) {
-    const caveChange = this.buildCaveChange(grid, caveViewModel)
+  addGenerateCaveChange(grid, newCaveWidth, newCaveHeight) {
+    const caveChange = this.buildCaveChange(grid, newCaveWidth, newCaveHeight)
     this.changeHistory.addChange(caveChange)
   }
 
@@ -67,9 +63,9 @@ export class ChangeController {
     }
 
     if (currentChange instanceof PaintedLineChange) {
-      this.applyPaintedLineChange(currentChange, isUndo)
+      this.applyPaintedLineChange(currentChange, isUndo, grid, caveView)
     } else if (currentChange instanceof CaveChange) {
-      this.applyGenerateCaveChange(currentChange, isUndo, grid, caveView)
+      this.applyGenerateCaveChange(currentChange, isUndo, grid)
     }
 
     if (isUndo) {
@@ -93,26 +89,17 @@ export class ChangeController {
   }
 
   applyGenerateCaveChange(currentChange, isUndo, grid) {
+    let width, height
     if (isUndo) {
-      const width = currentChange.preGenerationWidth
-      const height = currentChange.preGenerationHeight
-      const border = getBorder(width, height) // TODO: pass in canvas dims
-      const tileSize = getTileSize(width, height) // TODO: pass in canvas dims
-
+      width = currentChange.preGenerationWidth
+      height = currentChange.preGenerationHeight
       grid.rebuildCaveFromGrid(currentChange.preGenerationSnapshot)
-      const newCaveView = new CaveView(width, height, tileSize, border)
-      this.updateCaveView(newCaveView)
-      newCaveView.draw({ grid })
     } else {
-      const width = currentChange.postGenerationWidth
-      const height = currentChange.postGenerationHeight
-      const border = getBorder(width, height) // TODO: pass in canvas dims
-      const tileSize = getTileSize(width, height) // TODO: pass in canvas dims
-
+      width = currentChange.postGenerationWidth
+      height = currentChange.postGenerationHeight
       grid.rebuildCaveFromCoordinates(width, height)
-      const newCaveView = new CaveView(width, height, tileSize, border)
-      this.updateCaveView(newCaveView)
-      newCaveView.draw({ grid })
     }
+    const newCaveView = this.rebuildCave(width, height, grid)
+    newCaveView.draw({ grid })
   }
 }

@@ -78,7 +78,7 @@ export default class EditorPage extends PureComponent {
           </div>
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
-        <Grid className={styles.grid} />
+        <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
       </div>
     )
   }
