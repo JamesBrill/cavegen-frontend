@@ -23,3 +23,16 @@
 .brushSize {
   margin-top: 0.5em;
 }
+
+.undoRedoContainer {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.undoRedoButton {
+  background-color: #567cde !important; /* stylelint-disable-line declaration-no-important */
+  color: white;
+}
