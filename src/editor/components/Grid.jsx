@@ -68,8 +68,46 @@ export default class Grid extends PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch, caveWidth, caveHeight } = this.props
     preloadImages()
+    const newCaveView = this.rebuildCave()
+    newCaveView.draw({})
+    window.addEventListener('resize', this.handleWindowResize)
+    /* addMouseEventListeners(caveView, caveViewModel)
+    addKeyboardEventListeners(caveView) */
+  }
+
+  componentWillReceiveProps({ caveView, caveWidth, caveHeight, needsRebuild }) {
+    const { dispatch } = this.props
+    if (this.props.caveView !== caveView) {
+      this.setState({ redrawCanvas: true })
+    } else if (needsRebuild) {
+      this.rebuildCave(caveWidth, caveHeight)
+      this.setState({ redrawCanvas: false })
+      dispatch(stopRebuild())
+    } else {
+      this.setState({ redrawCanvas: false })
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.redrawCanvas) {
+      this.props.caveView.draw({})
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize)
+  }
+
+  @autobind
+  rebuildCave(width, height) {
+    const { dispatch, caveView } = this.props
+    const caveWidth = width || this.props.caveWidth
+    const caveHeight = height || this.props.caveHeight
+    if (caveView) {
+      caveView.zoomer.resetZoom()
+      caveView.zoomer.removeEventListeners()
+    }
     const newGrid = new Cave(caveWidth, caveHeight)
     dispatch(setGrid(newGrid))
     const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
@@ -87,56 +125,8 @@ export default class Grid extends PureComponent {
       updateCursor: this.updateCursor
     })
     dispatch(setCaveView(newCaveView))
-    newCaveView.draw({})
-    window.addEventListener('resize', this.handleWindowResize)
-    /*dispatch(setCaveViewModel(new CaveViewModel(grid,
-      this.handleUpdateGrid,
-      caveView,
-      this.handleUpdateCaveView)))
-    addMouseEventListeners(caveView, caveViewModel)
-    addKeyboardEventListeners(caveView)*/
-  }
-
-  componentWillReceiveProps({ caveView, caveWidth, caveHeight, needsRebuild }) {
-    const { dispatch } = this.props
-    if (this.props.caveView !== caveView) {
-      this.setState({ redrawCanvas: true })
-    } else if (needsRebuild) {
-      this.props.caveView.zoomer.resetZoom()
-      this.props.caveView.zoomer.removeEventListeners()
-      const newGrid = new Cave(caveWidth, caveHeight)
-      dispatch(setGrid(newGrid))
-      const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
-      dispatch(setCaveCode(caveCode))
-      const tileSize = getTileSize(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
-      const border = getBorder(caveWidth, caveHeight, this.canvas.clientWidth, this.canvas.clientHeight)
-      const newCaveView = new CaveView({
-        x: caveWidth,
-        y: caveHeight,
-        tileSize,
-        border,
-        scalingFactor: 1,
-        canvas: this.canvas,
-        grid: newGrid,
-        updateCursor: this.updateCursor
-      })
-      dispatch(setCaveView(newCaveView))
-      newCaveView.zoomer.resize(newCaveView, this.canvas)
-      this.setState({ redrawCanvas: false })
-      dispatch(stopRebuild())
-    } else {
-      this.setState({ redrawCanvas: false })
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.state.redrawCanvas) {
-      this.props.caveView.draw({})
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize)
+    newCaveView.zoomer.resize(newCaveView, this.canvas)
+    return newCaveView
   }
 
   @autobind
