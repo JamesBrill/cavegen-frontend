@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const sourceRoot = path.join(__dirname, 'src')
-const editorComponentsRoot = path.join(sourceRoot, 'editor/components')
+const componentsRoot = path.join(sourceRoot, 'components')
 const isProduction = process.env.NODE_ENV === 'production'
 
 const developmentEntry = [
@@ -73,16 +73,16 @@ module.exports = {
         loader: 'style-loader!css-loader?modules&localIdentName=[local]---[hash:base64:5]!postcss-loader',
         include: sourceRoot,
         exclude: [
-          path.resolve(editorComponentsRoot, 'Slider.css'),
-          path.resolve(editorComponentsRoot, 'ZeroClipboard.css')
+          path.resolve(componentsRoot, 'Slider.css'),
+          path.resolve(componentsRoot, 'ZeroClipboard.css')
         ]
       },
       {
         test: /\.css$/,
         loader: 'style-loader!css-loader',
         include: [
-          path.resolve(editorComponentsRoot, 'Slider.css'),
-          path.resolve(editorComponentsRoot, 'ZeroClipboard.css')
+          path.resolve(componentsRoot, 'Slider.css'),
+          path.resolve(componentsRoot, 'ZeroClipboard.css')
         ]
       },
       {

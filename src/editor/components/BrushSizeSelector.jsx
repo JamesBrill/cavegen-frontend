@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react'
 import { autobind } from 'core-decorators'
 import classNames from 'classnames'
 import Slider from 'react-rangeslider'
-import 'src/editor/components/Slider.css'
+import 'src/components/Slider.css'
 
 import styles from 'src/editor/components/BrushSizeSelector.css'
 
