@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
 import { preloadImages } from 'src/editor/utils/image-preloader'
-import { getBorder, getTileSize, mergeTileChanges, getTileFromSymbol } from 'src/editor/utils/tiles'
+import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
 import { getCaveCode } from 'src/editor/utils/cave-code'
 import { ChangeController } from 'src/editor/utils/change-controller'
@@ -17,7 +17,6 @@ import {
   setCaveWidth,
   setCaveHeight,
   setChangeController,
-  setCurrentBrush,
   setPreviousCursorSize,
   setPreviousCursorPosition,
   setLastUsedBrushSize,
@@ -34,7 +33,6 @@ function mapStateToProps(state) {
     caveHeight: state.editor.caveHeight,
     caveView: state.editor.caveView,
     caveViewModel: state.editor.caveViewModel,
-    caveStorage: state.editor.caveStorage,
     changeController: state.editor.changeController,
     currentBrush: state.editor.currentBrush,
     brushSize: state.editor.brushSize,
@@ -55,7 +53,6 @@ export default class Grid extends PureComponent {
     caveView: PropTypes.object,
     caveViewModel: PropTypes.object,
     changeController: PropTypes.object,
-    caveStorage: PropTypes.object,
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { CaveStorage } from 'src/editor/utils/cave-storage'
 
 export default combineReducers({
   grid,
@@ -8,7 +7,6 @@ export default combineReducers({
   caveCode,
   caveView,
   caveViewModel,
-  caveStorage,
   changeController,
   currentBrush,
   brushSize,
@@ -81,16 +79,6 @@ function changeController(state = null, { type, payload }) {
   switch (type) {
     case 'SET_CHANGE_CONTROLLER':
       return payload.changeController
-
-    default:
-      return state
-  }
-}
-
-function caveStorage(state = new CaveStorage(), { type, payload }) {
-  switch (type) {
-    case 'SET_CAVE_STORAGE':
-      return payload.caveStorage
 
     default:
       return state

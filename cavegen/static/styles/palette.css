@@ -1,9 +1,0 @@
-.paletteTile
-{ 
-	border: solid 3px black;
-	display: block;
-}
-.paletteTile:hover 
-{ 
-	border: solid 3px white;
-} 
