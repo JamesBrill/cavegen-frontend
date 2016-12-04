@@ -1,9 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
-import keydown from 'react-keydown'
 import { preloadImages } from 'src/editor/utils/image-preloader'
-import { getBorder, getTileSize, mergeTileChanges, isTile, getTileFromSymbol } from 'src/editor/utils/tiles'
+import { getBorder, getTileSize, mergeTileChanges, getTileFromSymbol } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
 import { getCaveCode } from 'src/editor/utils/cave-code'
 import { ChangeController } from 'src/editor/utils/change-controller'
@@ -46,7 +45,6 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps)
-@keydown
 export default class Grid extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -82,7 +80,7 @@ export default class Grid extends PureComponent {
     window.addEventListener('resize', this.handleWindowResize)
   }
 
-  componentWillReceiveProps({ caveView, caveWidth, caveHeight, needsRebuild, keydown }) {
+  componentWillReceiveProps({ caveView, caveWidth, caveHeight, needsRebuild }) {
     const { dispatch } = this.props
     if (this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
@@ -92,15 +90,6 @@ export default class Grid extends PureComponent {
       dispatch(stopRebuild())
     } else {
       this.setState({ redrawCanvas: false })
-    }
-
-    if (keydown.event) {
-      const keyPressed = keydown.event.key
-      if (isTile(keyPressed)) {
-        dispatch(setCurrentBrush(getTileFromSymbol(keyPressed)))
-      } else if (keyPressed === 's') {
-        dispatch(setCurrentBrush(getTileFromSymbol(' ')))
-      }
     }
   }
 

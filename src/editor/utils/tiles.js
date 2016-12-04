@@ -1,8 +1,9 @@
 import { PALETTE_BRUSHES } from 'src/utils/ImageLoader'
 
-export function isTile(symbol) {
-  return /[xbk+mw\/|=o^<>v\"n()u12345@!~t.zc0#Dlgfr"]/.test(symbol)
-}
+export const TILE_KEYS = ['x', 'b', 'k', '+', 'm', 'w', '\\', '/', '|', '=',
+                          'o', '^', '<', '>', 'v', '\"', 'n', '(', ')', 'u',
+                          '1', '2', '3', '4', '5', '@', '!', '~', 't', '.',
+                          'z', 's', 'c', '0', '#', 'D', 'l', 'g', 'f', 'r']
 
 export function getFileNameFromSymbol(symbol) {
   for (let i = 0; i < PALETTE_BRUSHES.length; i++) {

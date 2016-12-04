@@ -5,6 +5,7 @@ import keydown from 'react-keydown'
 import { autobind } from 'core-decorators'
 import Palette from 'src/editor/components/Palette'
 import Grid from 'src/editor/components/Grid'
+import { getTileFromSymbol, TILE_KEYS } from 'src/editor/utils/tiles'
 import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
@@ -40,6 +41,9 @@ const mapDispatchToProps = {
   dispatchRedo: redoCaveChange
 }
 
+const UNDO_KEYS = ['ctrl+z', 'cmd+z']
+const REDO_KEYS = ['ctrl+y', 'cmd+y', 'ctrl+shift+z', 'cmd+shift+z']
+
 @connect(mapStateToProps, mapDispatchToProps)
 export default class EditorPage extends PureComponent {
   static propTypes = {
@@ -64,15 +68,25 @@ export default class EditorPage extends PureComponent {
   }
 
   @autobind
-  @keydown('ctrl+z', 'cmd+z')
+  @keydown(UNDO_KEYS)
   handleUndo() {
     this.props.dispatchUndo()
   }
 
   @autobind
-  @keydown('ctrl+y', 'cmd+y', 'ctrl+shift+z', 'cmd+shift+z')
+  @keydown(REDO_KEYS)
   handleRedo() {
     this.props.dispatchRedo()
+  }
+
+  @autobind
+  @keydown(TILE_KEYS)
+  handleTileKeyPress(e) {
+    if (e.key === 's') {
+      this.props.dispatchSetCurrentBrush(getTileFromSymbol(' '))
+    } else {
+      this.props.dispatchSetCurrentBrush(e.key)
+    }
   }
 
   render() {
