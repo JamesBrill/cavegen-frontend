@@ -13,6 +13,7 @@
     "babel-polyfill": "^6.9.1",
     "classnames": "^2.2.5",
     "core-decorators": "^0.12.3",
+    "humps": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
     "jwt-decode": "^2.0.1",
     "lodash.isstring": "^4.0.1",
