@@ -99,7 +99,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
     alias: {
-      'src': sourceRoot
+      'src': sourceRoot,
+      'environment-config': path.join(__dirname, 'src/config', process.env.NODE_ENV)
     }
   },
   postcss: () => [
