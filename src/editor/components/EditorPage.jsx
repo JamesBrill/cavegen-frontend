@@ -20,7 +20,8 @@ import {
   setCaveHeight,
   startRebuild,
   undoCaveChange,
-  redoCaveChange
+  redoCaveChange,
+  playCave
 } from 'src/editor/actions'
 
 function mapStateToProps(state) {
@@ -38,7 +39,8 @@ const mapDispatchToProps = {
   dispatchSetCaveHeight: setCaveHeight,
   dispatchStartRebuild: startRebuild,
   dispatchUndo: undoCaveChange,
-  dispatchRedo: redoCaveChange
+  dispatchRedo: redoCaveChange,
+  dispatchPlayCave: playCave
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -56,7 +58,8 @@ export default class EditorPage extends PureComponent {
     dispatchSetCaveHeight: PropTypes.func,
     dispatchStartRebuild: PropTypes.func,
     dispatchUndo: PropTypes.func,
-    dispatchRedo: PropTypes.func
+    dispatchRedo: PropTypes.func,
+    dispatchPlayCave: PropTypes.func
   };
 
   @autobind
@@ -90,7 +93,7 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, caveWidth, caveHeight, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize } = this.props
+    const { className, caveWidth, caveHeight, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize, dispatchPlayCave } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
@@ -106,6 +109,9 @@ export default class EditorPage extends PureComponent {
           <div className={styles.undoRedoContainer}>
             <Button className={styles.undoRedoButton} onClick={this.handleUndo}>Undo</Button>
             <Button className={styles.undoRedoButton} onClick={this.handleRedo}>Redo</Button>
+          </div>
+          <div className={styles.playButtonContainer}>
+            <Button className={styles.playButton} onClick={dispatchPlayCave}>Play</Button>
           </div>
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
