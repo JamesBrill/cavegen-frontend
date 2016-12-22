@@ -1,4 +1,6 @@
 import { createAction } from 'redux-actions'
+import { apiRequest } from 'src/utils/api'
+import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
 
 export const setGrid = createAction(
   'SET_GRID',
@@ -85,3 +87,30 @@ export function startRebuild() {
 }
 
 export const stopRebuild = createAction('STOP_REBUILD')
+
+export function playCave() {
+  return async function (dispatch, getState) {
+    try {
+      const text = getState().editor.caveCode
+      const { json } = await apiRequest(getState, '/caves/', {
+        method: 'post',
+        headers: { 'content-type': 'application/json' },
+        body: { text }
+      })
+
+      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/caves/${json.id}/`)
+      const playerUrl = `http://droidfreak36.com/HATPC/0_2_1/index.html?cave=${caveUrl}`
+      window.open(playerUrl, 'HATPC Reborn', 'height=440,width=600')
+
+      return dispatch({
+        type: 'PLAY_CAVE',
+        payload: text
+      })
+    } catch (e) {
+      return dispatch({
+        type: 'PLAY_CAVE_ERROR',
+        error: e
+      })
+    }
+  }
+}
