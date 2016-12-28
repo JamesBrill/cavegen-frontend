@@ -1,6 +1,6 @@
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
-import { hashHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 import thunkMiddleware from 'redux-thunk'
 import persistState from 'redux-localstorage'
 import analyticsMiddleware from 'src/middleware/analytics'
@@ -11,7 +11,7 @@ const store = compose(
   applyMiddleware(
     analyticsMiddleware,
     thunkMiddleware,
-    routerMiddleware(hashHistory)
+    routerMiddleware(browserHistory)
   ),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore)(
