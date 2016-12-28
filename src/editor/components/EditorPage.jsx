@@ -10,6 +10,7 @@ import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 import Button from 'src/components/Button'
+import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -47,6 +48,7 @@ const UNDO_KEYS = ['ctrl+z', 'cmd+z']
 const REDO_KEYS = ['ctrl+y', 'cmd+y', 'ctrl+shift+z', 'cmd+shift+z']
 
 @connect(mapStateToProps, mapDispatchToProps)
+@requiresAuthentication
 export default class EditorPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,

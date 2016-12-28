@@ -1,20 +1,18 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { LOGIN_URL } from '../config'
+import { LOGIN_URL } from 'src/config'
 
 export default function requiresAuthentication(WrappedComponent) {
-  function mapStateToProps(state, ownProps) {
-    const isAuthenticated = state.authentication.token !== null
-    const originalProps = ownProps
+  function mapStateToProps(state) {
+    const isAuthenticated = !!(state.authentication && state.authentication.token !== null)
 
-    return { isAuthenticated, originalProps }
+    return { isAuthenticated }
   }
 
   @connect(mapStateToProps)
   class AuthenticatedComponent extends PureComponent {
     static propTypes = {
-      isAuthenticated: PropTypes.bool.isRequired,
-      originalProps: PropTypes.object // eslint-disable-line react/forbid-prop-types
+      isAuthenticated: PropTypes.bool.isRequired
     };
 
     componentWillMount() {
@@ -36,9 +34,7 @@ export default function requiresAuthentication(WrappedComponent) {
     }
 
     render() {
-      const childProps = this.props.originalProps
-
-      return this.allowedAccess() ? <WrappedComponent {...childProps} /> : null
+      return this.allowedAccess() ? <WrappedComponent {...this.props} /> : null
     }
   }
 
