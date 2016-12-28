@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import keydown from 'react-keydown'
+import { browserHistory } from 'react-router'
 import { autobind } from 'core-decorators'
 import Palette from 'src/editor/components/Palette'
 import Grid from 'src/editor/components/Grid'
@@ -24,6 +25,7 @@ import {
   redoCaveChange,
   playCave
 } from 'src/editor/actions'
+import { logout } from 'src/authentication/actions'
 
 function mapStateToProps(state) {
   return {
@@ -41,7 +43,8 @@ const mapDispatchToProps = {
   dispatchStartRebuild: startRebuild,
   dispatchUndo: undoCaveChange,
   dispatchRedo: redoCaveChange,
-  dispatchPlayCave: playCave
+  dispatchPlayCave: playCave,
+  dispatchLogout: logout
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -61,7 +64,8 @@ export default class EditorPage extends PureComponent {
     dispatchStartRebuild: PropTypes.func,
     dispatchUndo: PropTypes.func,
     dispatchRedo: PropTypes.func,
-    dispatchPlayCave: PropTypes.func
+    dispatchPlayCave: PropTypes.func,
+    dispatchLogout: PropTypes.func
   };
 
   @autobind
@@ -94,8 +98,16 @@ export default class EditorPage extends PureComponent {
     }
   }
 
+  @autobind
+  handleLogout() {
+    this.props.dispatchLogout()
+    browserHistory.replace('/')
+  }
+
   render() {
-    const { className, caveWidth, caveHeight, caveCode, dispatchSetCurrentBrush, dispatchSetBrushSize, dispatchPlayCave } = this.props
+    const { className, caveWidth, caveHeight, caveCode,
+            dispatchSetCurrentBrush, dispatchSetBrushSize,
+            dispatchPlayCave } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
@@ -114,6 +126,9 @@ export default class EditorPage extends PureComponent {
           </div>
           <div className={styles.playButtonContainer}>
             <Button className={styles.playButton} onClick={dispatchPlayCave}>Play</Button>
+          </div>
+          <div className={styles.playButtonContainer}>
+            <Button className={styles.playButton} onClick={this.handleLogout}>Logout</Button>
           </div>
           <Palette onTileClick={dispatchSetCurrentBrush} />
         </div>
