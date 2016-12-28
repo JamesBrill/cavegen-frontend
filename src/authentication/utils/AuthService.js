@@ -1,10 +1,11 @@
 import Auth0Lock from 'auth0-lock'
 import { browserHistory } from 'react-router'
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from 'src/config'
 
 export default class AuthService {
-  constructor(clientId, domain) {
+  constructor() {
     // Configure Auth0
-    this.lock = new Auth0Lock(clientId, domain, {
+    this.lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
       auth: {
         redirectUrl: 'http://localhost:3000/login',
         responseType: 'token'
