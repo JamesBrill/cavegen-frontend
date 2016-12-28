@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react'
-import Auth0Lock from 'auth0-lock'
 import Auth0 from 'auth0-js'
 import { createAuth0Lock, getProfile } from 'src/authentication/utils/auth0Lock'
 import { connect } from 'react-redux'
@@ -42,6 +41,9 @@ export default class LoginPage extends PureComponent {
     const token = this.props.token || this.getIdTokenFromUrlHash()
     if (token) {
       this.props.dispatch(storeToken(token))
+      getProfile(createAuth0Lock(), token).then(profile => {
+        this.props.dispatch(storeUser(profile))
+      })
       browserHistory.replace('/')
     } else {
       this.showAuth0Lock()

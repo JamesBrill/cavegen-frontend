@@ -3,7 +3,8 @@ import jwtDecode from 'jwt-decode'
 
 export default combineReducers({
   token,
-  claims
+  claims,
+  user
 })
 
 function token(state = null, action) {
@@ -26,6 +27,19 @@ function claims(state = {}, action) {
 
     case 'LOGOUT':
       return {}
+
+    default:
+      return state
+  }
+}
+
+function user(state = null, action) {
+  switch (action.type) {
+    case 'STORE_USER':
+      return action.payload.user
+
+    case 'LOGOUT':
+      return null
 
     default:
       return state
