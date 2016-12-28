@@ -1,11 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react'
 import Auth0Lock from 'auth0-lock'
 import Auth0 from 'auth0-js'
+import { createAuth0Lock, getProfile } from 'src/authentication/utils/auth0Lock'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import { withRouter, locationShape, browserHistory } from 'react-router'
-import { AUTH0_CLIENT_ID, AUTH0_DOMAIN, LOGIN_URL } from 'src/config'
-import { storeToken } from 'src/authentication/actions'
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from 'src/config'
+import { storeToken, storeUser } from 'src/authentication/actions'
 
 function mapStateToProps(state) {
   return {
@@ -31,17 +32,9 @@ export default class LoginPage extends PureComponent {
     return result && result.idToken
   }
 
+  @autobind
   showAuth0Lock() {
-    const lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
-      auth: {
-        redirectUrl: LOGIN_URL,
-        responseType: 'token'
-      },
-      closable: false,
-      languageDictionary: {
-        title: 'CaveGen'
-      }
-    })
+    const lock = createAuth0Lock()
     lock.show()
   }
 
