@@ -23,22 +23,13 @@ export default class LoginPage extends PureComponent {
   };
 
   @autobind
-  getIdTokenFromUrlHash() {
-    const result = new Auth0({
-      clientID: AUTH0_CLIENT_ID,
-      domain: AUTH0_DOMAIN
-    }).parseHash(this.props.location.hash)
-    return result && result.idToken
-  }
-
-  @autobind
   showAuth0Lock() {
     const lock = createAuth0Lock()
     lock.show()
   }
 
   componentWillMount() {
-    const token = this.props.token || this.getIdTokenFromUrlHash()
+    const token = this.props.token || this.props.location.query.token
     if (token) {
       this.props.dispatch(storeToken(token))
       getProfile(createAuth0Lock(), token).then(profile => {
