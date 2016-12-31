@@ -1,11 +1,14 @@
-import { AUTH0_CLIENT_ID, AUTH0_DOMAIN, LOGIN_URL } from 'src/config'
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN, AUTH0_CALLBACK_URL } from 'src/config'
 import Auth0Lock from 'auth0-lock'
 
 export function createAuth0Lock() {
   return new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
     auth: {
-      redirectUrl: LOGIN_URL,
-      responseType: 'token'
+      redirectUrl: AUTH0_CALLBACK_URL,
+      responseType: 'code',
+      params: {
+        scope: 'openid email'
+      }
     },
     closable: false,
     languageDictionary: {
