@@ -105,6 +105,7 @@ export class ChangeController {
       grid.rebuildCaveFromCoordinates(width, height)
     }
     const newCaveView = this.rebuildCave(width, height, grid)
+    newCaveView.zoomer.resize(newCaveView)
     newCaveView.draw({ grid })
   }
 }

@@ -70,17 +70,17 @@ export default class Grid extends PureComponent {
   componentDidMount() {
     const changeController = new ChangeController(this.rebuildCave)
     this.props.dispatch(setChangeController(changeController))
-    const newCaveView = this.rebuildCave()
-    newCaveView.draw({})
+    this.rebuildCave()
     window.addEventListener('resize', this.handleWindowResize)
   }
 
   componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {
     const { dispatch } = this.props
-    if (this.props.caveView !== caveView) {
+    if (this.props.caveView && this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
     } else if (needsRebuild) {
-      this.rebuildCave(caveWidth, caveHeight, grid)
+      const newCaveView = this.rebuildCave(caveWidth, caveHeight, grid)
+      newCaveView.zoomer.resize(newCaveView)
       this.setState({ redrawCanvas: false })
       dispatch(stopRebuild())
     } else {
@@ -142,7 +142,6 @@ export default class Grid extends PureComponent {
     dispatch(setCaveCode(caveCode))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
-    newCaveView.zoomer.resize(newCaveView)
     return newCaveView
   }
 
