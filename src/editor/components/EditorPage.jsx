@@ -27,8 +27,7 @@ import {
   startRebuild,
   undoCaveChange,
   redoCaveChange,
-  playCave,
-  loadImages
+  playCave
 } from 'src/editor/actions'
 import { logout } from 'src/authentication/actions'
 import {
@@ -59,7 +58,6 @@ const mapDispatchToProps = {
   dispatchLogout: logout,
   dispatchLoadCaves: loadCaves,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid,
-  dispatchLoadImages: loadImages,
   dispatchUpdateCave: updateCave
 }
 
@@ -86,12 +84,11 @@ export default class EditorPage extends PureComponent {
     dispatchLogout: PropTypes.func,
     dispatchLoadCaves: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func,
-    dispatchLoadImages: PropTypes.func,
     dispatchUpdateCave: PropTypes.func
   };
 
   componentWillMount() {
-    this.props.dispatchLoadImages().then(this.props.dispatchLoadCaves)
+    this.props.dispatchLoadCaves()
   }
 
   componentWillReceiveProps(nextProps) {
