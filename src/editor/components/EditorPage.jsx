@@ -10,6 +10,7 @@ import { getTileFromSymbol, TILE_KEYS } from 'src/editor/utils/tiles'
 import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
+import EditorBanner from 'src/editor/components/EditorBanner'
 import Button from 'src/components/Button'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 
@@ -112,27 +113,30 @@ export default class EditorPage extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <div className={styles.editorControls}>
-          <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
-          <CaveDimensionsInput
-            className={styles.dimensions}
-            onCaveRebuild={this.handleRebuild}
-            caveWidth={caveWidth}
-            caveHeight={caveHeight} />
-          <CopyToClipboard caveCode={caveCode} />
-          <div className={styles.undoRedoContainer}>
-            <Button className={styles.undoRedoButton} onClick={this.handleUndo}>Undo</Button>
-            <Button className={styles.undoRedoButton} onClick={this.handleRedo}>Redo</Button>
+        <EditorBanner />
+        <div className={styles.editor}>
+          <div className={styles.editorControls}>
+            <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
+            <CaveDimensionsInput
+              className={styles.dimensions}
+              onCaveRebuild={this.handleRebuild}
+              caveWidth={caveWidth}
+              caveHeight={caveHeight} />
+            <CopyToClipboard caveCode={caveCode} />
+            <div className={styles.undoRedoContainer}>
+              <Button className={styles.undoRedoButton} onClick={this.handleUndo}>Undo</Button>
+              <Button className={styles.undoRedoButton} onClick={this.handleRedo}>Redo</Button>
+            </div>
+            <div className={styles.playButtonContainer}>
+              <Button className={styles.playButton} onClick={dispatchPlayCave}>Play</Button>
+            </div>
+            <div className={styles.playButtonContainer}>
+              <Button className={styles.playButton} onClick={this.handleLogout}>Logout</Button>
+            </div>
+            <Palette onTileClick={dispatchSetCurrentBrush} />
           </div>
-          <div className={styles.playButtonContainer}>
-            <Button className={styles.playButton} onClick={dispatchPlayCave}>Play</Button>
-          </div>
-          <div className={styles.playButtonContainer}>
-            <Button className={styles.playButton} onClick={this.handleLogout}>Logout</Button>
-          </div>
-          <Palette onTileClick={dispatchSetCurrentBrush} />
+          <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
         </div>
-        <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
       </div>
     )
   }
