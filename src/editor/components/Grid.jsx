@@ -22,11 +22,17 @@ import {
   setCaveCode,
   stopRebuild
 } from 'src/editor/actions'
-import { updateCave } from 'src/caves/actions'
+import {
+  updateCave,
+  loadCaveIntoGrid
+} from 'src/caves/actions'
 
 import styles from 'src/editor/components/Grid.css'
 
 function mapStateToProps(state) {
+  const currentCaveUuid = state.caves.currentCaveUuid
+  const caves = state.caves.caves
+  const currentCave = caves && caves.filter(cave => cave.uuid === currentCaveUuid)[0]
   return {
     grid: state.editor.grid,
     caveWidth: state.editor.caveWidth,
@@ -38,7 +44,8 @@ function mapStateToProps(state) {
     lastUsedBrushSize: state.editor.lastUsedBrushSize,
     previousCursor: state.editor.previousCursor,
     needsRebuild: state.editor.needsRebuild,
-    imageMap: state.editor.imageMap
+    imageMap: state.editor.imageMap,
+    currentCave
   }
 }
 
@@ -57,7 +64,8 @@ export default class Grid extends PureComponent {
     previousCursor: PropTypes.object,
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
-    imageMap: PropTypes.object
+    imageMap: PropTypes.object,
+    currentCave: PropTypes.object
   };
 
   constructor(props) {
@@ -69,10 +77,14 @@ export default class Grid extends PureComponent {
   }
 
   componentDidMount() {
+    const { dispatch, currentCave } = this.props
     const changeController = new ChangeController(this.rebuildCave)
-    this.props.dispatch(setChangeController(changeController))
+    dispatch(setChangeController(changeController))
     this.rebuildCave()
     window.addEventListener('resize', this.handleWindowResize)
+    if (currentCave) {
+      dispatch(loadCaveIntoGrid(currentCave))
+    }
   }
 
   componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {

@@ -93,8 +93,7 @@ export default class EditorPage extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.caves.length === 0 && nextProps.caves.length > 0) {
-      const mostRecentlyOpenedCave = nextProps.caves[0] // TODO: actually get most recently opened cave
-      this.props.dispatchLoadCaveIntoGrid(mostRecentlyOpenedCave)
+      this.props.dispatchLoadCaveIntoGrid(nextProps.caves[0])
     }
   }
 
