@@ -11,6 +11,11 @@ export class ChangeController {
     this.rebuildCave = rebuildCave
   }
 
+  clear() {
+    this.changeHistory.clear()
+    this.currentPaintedLineChange = new PaintedLineChange()
+  }
+
   resetCurrentPaintedLineChange() {
     this.currentPaintedLineChange = new PaintedLineChange()
   }

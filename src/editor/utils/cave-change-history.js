@@ -6,6 +6,11 @@ export class CaveChangeHistory {
     this.currentChangeIndex = -1
   }
 
+  clear() {
+    this.changes = []
+    this.currentChangeIndex = -1
+  }
+
   numberOfChanges() {
     return this.changes.length
   }

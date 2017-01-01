@@ -26,8 +26,9 @@ export function loadCaves() {
 
 export function loadCaveIntoGrid(cave) {
   return function (dispatch, getState) {
-    const grid = getState().editor.grid
+    const { grid, changeController } = getState().editor
     grid.rebuildCaveFromCaveString(cave.text)
+    changeController.clear()
     dispatch(setCaveWidth(grid.width))
     dispatch(setCaveHeight(grid.height))
     dispatch({ type: 'LOAD_CAVE_INTO_GRID' })
