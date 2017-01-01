@@ -13,16 +13,15 @@ export class ApiError extends ExtendableError {
 }
 
 export async function apiRequest(getState, endpoint, options = {}) {
-  // const { authentication } = getState()
+  const { authentication } = getState()
 
   // attach the authorization header if we have a token...
-  /* if (authentication.token) {
+  if (authentication.token) {
     options.headers = {
       Authorization: `Bearer ${authentication.token}`,
       ...options.headers
     }
-  }*/
-
+  }
   // decamelize the keys & stringify if the body isn't a string
   if (options.hasOwnProperty('body') && !isString(options.body)) {
     options.body = JSON.stringify(decamelizeKeys(options.body))
