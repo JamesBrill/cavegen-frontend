@@ -13,10 +13,12 @@ import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 import EditorBanner from 'src/editor/components/EditorBanner'
 import Button from 'src/components/Button'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
+import { Cave } from 'src/editor/utils/cave'
 
 import styles from 'src/editor/components/EditorPage.css'
 
 import {
+  setGrid,
   setCurrentBrush,
   setBrushSize,
   setCaveWidth,
@@ -43,6 +45,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
+  dispatchSetGrid: setGrid,
   dispatchSetCurrentBrush: setCurrentBrush,
   dispatchSetBrushSize: setBrushSize,
   dispatchSetCaveWidth: setCaveWidth,
@@ -68,6 +71,7 @@ export default class EditorPage extends PureComponent {
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
+    dispatchSetGrid: PropTypes.func,
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetBrushSize: PropTypes.func,
     dispatchSetCaveWidth: PropTypes.func,
@@ -95,10 +99,11 @@ export default class EditorPage extends PureComponent {
 
   @autobind
   handleRebuild(width, height) {
-    const { dispatchSetCaveWidth, dispatchSetCaveHeight, dispatchStartRebuild } = this.props
+    const { dispatchSetGrid, dispatchSetCaveWidth, dispatchSetCaveHeight, dispatchStartRebuild } = this.props
     dispatchSetCaveWidth(width)
     dispatchSetCaveHeight(height)
     dispatchStartRebuild()
+    dispatchSetGrid(new Cave(width, height))
   }
 
   @autobind
