@@ -1,4 +1,5 @@
 import { apiRequest } from 'src/utils/api'
+import { getNewCaveCode } from 'src/editor/utils/cave-code'
 import {
   setCaveWidth,
   setCaveHeight
@@ -56,7 +57,9 @@ export function loadCaves() {
   return async function (dispatch, getState) {
     try {
       const { json } = await apiRequest(getState, '/my-caves/')
-
+      if (json.length === 0) {
+        dispatch(newCave(getNewCaveCode()))
+      }
       return dispatch({
         type: 'LOAD_CAVES',
         payload: {
