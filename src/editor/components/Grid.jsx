@@ -1,7 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
-import { preloadImages } from 'src/editor/utils/image-preloader'
 import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
 import { getCaveCode } from 'src/editor/utils/cave-code'
@@ -37,7 +36,8 @@ function mapStateToProps(state) {
     brushSize: state.editor.brushSize,
     lastUsedBrushSize: state.editor.lastUsedBrushSize,
     previousCursor: state.editor.previousCursor,
-    needsRebuild: state.editor.needsRebuild
+    needsRebuild: state.editor.needsRebuild,
+    imageMap: state.editor.imageMap
   }
 }
 
@@ -55,7 +55,8 @@ export default class Grid extends PureComponent {
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,
     currentBrush: PropTypes.object,
-    needsRebuild: PropTypes.bool
+    needsRebuild: PropTypes.bool,
+    imageMap: PropTypes.object
   };
 
   constructor(props) {
@@ -67,7 +68,6 @@ export default class Grid extends PureComponent {
   }
 
   componentDidMount() {
-    preloadImages()
     const changeController = new ChangeController(this.rebuildCave)
     this.props.dispatch(setChangeController(changeController))
     const newCaveView = this.rebuildCave()
@@ -75,12 +75,12 @@ export default class Grid extends PureComponent {
     window.addEventListener('resize', this.handleWindowResize)
   }
 
-  componentWillReceiveProps({ caveView, caveWidth, caveHeight, needsRebuild }) {
+  componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {
     const { dispatch } = this.props
     if (this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
     } else if (needsRebuild) {
-      this.rebuildCave(caveWidth, caveHeight)
+      this.rebuildCave(caveWidth, caveHeight, grid)
       this.setState({ redrawCanvas: false })
       dispatch(stopRebuild())
     } else {
@@ -110,7 +110,8 @@ export default class Grid extends PureComponent {
       scalingFactor: 1,
       canvas: this.canvas,
       grid,
-      updateCursor: this.updateCursor
+      updateCursor: this.updateCursor,
+      imageMap: this.props.imageMap
     })
   }
 
@@ -147,7 +148,7 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleWindowResize() {
-    const { caveWidth, caveHeight } = this.props
+    const { caveWidth, caveHeight, imageMap } = this.props
     const unscaledTileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
     const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
     const newCaveView = new CaveView({
@@ -160,7 +161,8 @@ export default class Grid extends PureComponent {
       canvas: this.canvas,
       grid: this.props.grid,
       updateCursor: this.updateCursor,
-      zoomer: this.props.caveView.zoomer
+      zoomer: this.props.caveView.zoomer,
+      imageMap
     })
     this.props.dispatch(setCaveView(newCaveView))
     newCaveView.zoomer.resize(newCaveView)
@@ -277,7 +279,7 @@ export default class Grid extends PureComponent {
   }
 
   updateDimensions(cave) {
-    const { dispatch, grid } = this.props
+    const { dispatch, grid, imageMap } = this.props
     const width = grid.width
     const height = grid.height
     const border = getBorder(width, height, this.getCanvasWidth(), this.getCanvasHeight())
@@ -291,7 +293,8 @@ export default class Grid extends PureComponent {
       border,
       canvas: this.canvas,
       grid,
-      updateCursor: this.updateCursor
+      updateCursor: this.updateCursor,
+      imageMap
     })
     dispatch(setCaveView(newCaveView))
     newCaveView.draw({ grid: cave || new Cave(width, height) })

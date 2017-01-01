@@ -3,10 +3,9 @@
 import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
-import { getImageFromFileName } from 'src/editor/utils/image-preloader'
 
 export class CaveView {
-  constructor({ x, y, tileSize, unscaledTileSize, border, scalingFactor, canvas, grid, updateCursor, zoomer }) {
+  constructor({ x, y, tileSize, unscaledTileSize, border, scalingFactor, canvas, grid, updateCursor, zoomer, imageMap }) {
     this.grid = grid
     this.location = { x: 0, y: 0 }
     this.tileSize = tileSize
@@ -24,6 +23,7 @@ export class CaveView {
     this.scalingFactor = scalingFactor || 1
     this.MIN_SCALING_FACTOR = 1
     this.MAX_SCALING_FACTOR = this.setMaxScalingFactor()
+    this.imageMap = imageMap
   }
 
   @autobind
@@ -89,8 +89,12 @@ export class CaveView {
   }
 
   drawImage = function (left, top, size, fileName) {
-    const image = getImageFromFileName(fileName)
+    const image = this.getImageFromFileName(fileName)
     this.context.drawImage(image, left + 1, top + 1, size - 1, size - 1)
+  }
+
+  getImageFromFileName = function (fileName) {
+    return this.imageMap.filter(x => x.fileName === fileName)[0].image
   }
 
   getGridX = function (pixelX) {

@@ -11,7 +11,8 @@ export default combineReducers({
   brushSize,
   lastUsedBrushSize,
   previousCursor,
-  needsRebuild
+  needsRebuild,
+  imageMap
 })
 
 function grid(state = null, { type, payload }) {
@@ -126,10 +127,21 @@ function previousCursor(state = { size: 1, position: { x: 0, y: 0 } }, { type, p
 function needsRebuild(state = false, { type }) {
   switch (type) {
     case 'START_REBUILD':
+    case 'LOAD_CAVE_INTO_GRID':
       return true
 
     case 'STOP_REBUILD':
       return false
+
+    default:
+      return state
+  }
+}
+
+function imageMap(state = [], { type, payload }) {
+  switch (type) {
+    case 'LOAD_IMAGES':
+      return payload.imageMap
 
     default:
       return state

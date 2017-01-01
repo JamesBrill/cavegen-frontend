@@ -24,16 +24,21 @@ import {
   startRebuild,
   undoCaveChange,
   redoCaveChange,
-  playCave
+  playCave,
+  loadImages
 } from 'src/editor/actions'
 import { logout } from 'src/authentication/actions'
-import { loadCaves } from 'src/caves/actions'
+import {
+  loadCaves,
+  loadCaveIntoGrid
+} from 'src/caves/actions'
 
 function mapStateToProps(state) {
   return {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
-    caveCode: state.editor.caveCode
+    caveCode: state.editor.caveCode,
+    caves: state.caves.caves
   }
 }
 
@@ -47,7 +52,9 @@ const mapDispatchToProps = {
   dispatchRedo: redoCaveChange,
   dispatchPlayCave: playCave,
   dispatchLogout: logout,
-  dispatchLoadCaves: loadCaves
+  dispatchLoadCaves: loadCaves,
+  dispatchLoadCaveIntoGrid: loadCaveIntoGrid,
+  dispatchLoadImages: loadImages
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -60,6 +67,7 @@ export default class EditorPage extends PureComponent {
     className: PropTypes.string,
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
+    caves: PropTypes.arrayOf(PropTypes.object),
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetBrushSize: PropTypes.func,
     dispatchSetCaveWidth: PropTypes.func,
@@ -69,11 +77,20 @@ export default class EditorPage extends PureComponent {
     dispatchRedo: PropTypes.func,
     dispatchPlayCave: PropTypes.func,
     dispatchLogout: PropTypes.func,
-    dispatchLoadCaves: PropTypes.func
+    dispatchLoadCaves: PropTypes.func,
+    dispatchLoadCaveIntoGrid: PropTypes.func,
+    dispatchLoadImages: PropTypes.func
   };
 
   componentWillMount() {
-    this.props.dispatchLoadCaves()
+    this.props.dispatchLoadImages().then(this.props.dispatchLoadCaves)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.caves.length === 0 && nextProps.caves.length > 0) {
+      const mostRecentlyOpenedCave = nextProps.caves[0] // TODO: actually get most recently opened cave
+      this.props.dispatchLoadCaveIntoGrid(mostRecentlyOpenedCave)
+    }
   }
 
   @autobind
