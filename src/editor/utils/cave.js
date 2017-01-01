@@ -22,9 +22,8 @@ export class Cave {
   }
 
   rebuildCaveFromCaveString(caveString) {
-    const caveLines = caveString.split('\n')
+    const caveLines = caveString.split('\n').map(x => x.replace('\r', ''))
     caveLines.splice(0, 4)
-    caveLines.pop() // Remove empty line at the end
     this.width = caveLines[0].length
     this.height = caveLines.length // Assumes lines all equal length
     this.grid = Array(this.width).fill().map(() => Array(this.height))
