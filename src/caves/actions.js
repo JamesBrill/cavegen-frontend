@@ -13,17 +13,42 @@ export function newCave(text) {
         body: { text }
       })
 
-      const dispatchedAction = dispatch({
+      await dispatch(loadCaves())
+      return dispatch({
         type: 'NEW_CAVE',
         payload: {
-          cave: json
+          uuid: json.uuid
         }
       })
-      dispatch(loadCaves())
-      return dispatchedAction
     } catch (e) {
       return dispatch({
         type: 'NEW_CAVE_ERROR',
+        error: e
+      })
+    }
+  }
+}
+
+export function updateCave(cave) {
+  return async function (dispatch, getState) {
+    try {
+      const uuid = getState().caves.currentCaveUuid
+      const { json } = await apiRequest(getState, `/caves/${uuid}/`, {
+        method: 'put',
+        headers: { 'content-type': 'application/json' },
+        body: cave
+      })
+
+      return dispatch({
+        type: 'UPDATE_CAVE',
+        payload: {
+          uuid,
+          updatedCave: json
+        }
+      })
+    } catch (e) {
+      return dispatch({
+        type: 'UPDATE_CAVE_ERROR',
         error: e
       })
     }
@@ -59,7 +84,7 @@ export function loadCaveIntoGrid(cave) {
     dispatch(setCaveHeight(grid.height))
     dispatch({
       type: 'LOAD_CAVE_INTO_GRID',
-      payload: { cave }
+      payload: { uuid: cave.uuid }
     })
   }
 }

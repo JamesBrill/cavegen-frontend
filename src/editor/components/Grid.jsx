@@ -22,6 +22,7 @@ import {
   setCaveCode,
   stopRebuild
 } from 'src/editor/actions'
+import { updateCave } from 'src/caves/actions'
 
 import styles from 'src/editor/components/Grid.css'
 
@@ -197,6 +198,7 @@ export default class Grid extends PureComponent {
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
+      dispatch(updateCave({ text: caveCode }))
     }
     caveView.isMouseDown = false
     caveView.paintLineMode = false
