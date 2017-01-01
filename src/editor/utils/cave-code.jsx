@@ -10,6 +10,18 @@ export function getCaveCode(grid, name, terrainType, waterType) {
   return addMissingDoorAndStartingPosition(caveCode)
 }
 
+export function getNewCaveCode() {
+  let caveCode = 'Untitled\nterrain 1\nbackground 1\nwater clear\n'
+
+  for (let i = 0; i < 40; i++) {
+    for (let j = 0; j < 40; j++) {
+      caveCode += 'x'
+    }
+    caveCode += '\n'
+  }
+  return caveCode
+}
+
 function validatedCaveName(text) {
   if (text === '') {
     return '_'

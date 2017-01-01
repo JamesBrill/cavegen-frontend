@@ -9,6 +9,14 @@
   align-items: center;
 }
 
+.newCave {
+  width: 10em;
+  height: 2.57em;
+  margin: 1em;
+  background-color: #567cde !important; /* stylelint-disable-line declaration-no-important */
+  color: white;
+}
+
 .myCaves {
   margin: 1em;
   width: 20%;

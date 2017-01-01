@@ -2,10 +2,15 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
+import { getNewCaveCode } from 'src/editor/utils/cave-code'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
+import Button from 'src/components/Button'
 
-import { loadCaveIntoGrid } from 'src/caves/actions'
+import {
+  loadCaveIntoGrid,
+  newCave
+} from 'src/caves/actions'
 
 import styles from 'src/editor/components/EditorBanner.css'
 
@@ -20,7 +25,8 @@ export default class EditorBanner extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     dispatch: PropTypes.func,
-    caves: PropTypes.arrayOf(PropTypes.object)
+    caves: PropTypes.arrayOf(PropTypes.object),
+    onCaveRebuild: PropTypes.func.isRequired
   };
 
   getCaveSelectOptions(cave) {
@@ -28,6 +34,13 @@ export default class EditorBanner extends PureComponent {
       value: cave.id,
       label: cave.name
     }
+  }
+
+  @autobind
+  handleNewCave() {
+    const { dispatch, onCaveRebuild } = this.props
+    onCaveRebuild(40, 40) // TODO: would be nice not to use literals here
+    dispatch(newCave(getNewCaveCode()))
   }
 
   @autobind
@@ -44,6 +57,7 @@ export default class EditorBanner extends PureComponent {
 
     return (
       <div className={computedClassName}>
+        <Button className={styles.newCave} onClick={this.handleNewCave}>New Cave</Button>
         <div className={styles.myCaves}>
           <Select
             options={options}

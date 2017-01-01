@@ -99,11 +99,18 @@ export default class EditorPage extends PureComponent {
 
   @autobind
   handleRebuild(width, height) {
-    const { dispatchSetGrid, dispatchSetCaveWidth, dispatchSetCaveHeight, dispatchStartRebuild } = this.props
-    dispatchSetCaveWidth(width)
-    dispatchSetCaveHeight(height)
+    const {
+      caveWidth,
+      caveHeight,
+      dispatchSetGrid,
+      dispatchSetCaveWidth,
+      dispatchSetCaveHeight,
+      dispatchStartRebuild
+    } = this.props
+    dispatchSetCaveWidth(width || caveWidth)
+    dispatchSetCaveHeight(height || caveHeight)
     dispatchStartRebuild()
-    dispatchSetGrid(new Cave(width, height))
+    dispatchSetGrid(new Cave(width || caveWidth, height || caveHeight))
   }
 
   @autobind
@@ -142,7 +149,7 @@ export default class EditorPage extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <EditorBanner />
+        <EditorBanner onCaveRebuild={this.handleRebuild} />
         <div className={styles.editor}>
           <div className={styles.editorControls}>
             <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
