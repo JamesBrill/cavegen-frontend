@@ -27,6 +27,7 @@ import {
   playCave
 } from 'src/editor/actions'
 import { logout } from 'src/authentication/actions'
+import { loadCaves } from 'src/caves/actions'
 
 function mapStateToProps(state) {
   return {
@@ -45,7 +46,8 @@ const mapDispatchToProps = {
   dispatchUndo: undoCaveChange,
   dispatchRedo: redoCaveChange,
   dispatchPlayCave: playCave,
-  dispatchLogout: logout
+  dispatchLogout: logout,
+  dispatchLoadCaves: loadCaves
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -66,8 +68,13 @@ export default class EditorPage extends PureComponent {
     dispatchUndo: PropTypes.func,
     dispatchRedo: PropTypes.func,
     dispatchPlayCave: PropTypes.func,
-    dispatchLogout: PropTypes.func
+    dispatchLogout: PropTypes.func,
+    dispatchLoadCaves: PropTypes.func
   };
+
+  componentWillMount() {
+    this.props.dispatchLoadCaves()
+  }
 
   @autobind
   handleRebuild(width, height) {
