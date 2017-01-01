@@ -53,7 +53,8 @@ export default class EditorBanner extends PureComponent {
   render() {
     const { className, caves } = this.props
     const computedClassName = classNames(styles.EditorBanner, className)
-    const options = caves.map(this.getCaveSelectOptions)
+    // This is a bit cheeky as it reorders an array in the Redux store
+    const options = caves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
 
     return (
       <div className={computedClassName}>
