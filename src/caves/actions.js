@@ -55,6 +55,9 @@ export function loadCaveIntoGrid(cave) {
     changeController.clear()
     dispatch(setCaveWidth(grid.width))
     dispatch(setCaveHeight(grid.height))
-    dispatch({ type: 'LOAD_CAVE_INTO_GRID' })
+    dispatch({
+      type: 'LOAD_CAVE_INTO_GRID',
+      payload: { cave }
+    })
   }
 }
