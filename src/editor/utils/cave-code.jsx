@@ -10,16 +10,20 @@ export function getCaveCode(grid, name, terrainType, waterType) {
   return caveCode
 }
 
-export function getNewCaveCode() {
+export function getCaveCodeOfDimensions(width, height) {
   let caveCode = 'Untitled\nterrain 1\nbackground 1\nwater clear\n'
 
-  for (let i = 0; i < 40; i++) {
-    for (let j = 0; j < 40; j++) {
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
       caveCode += 'x'
     }
     caveCode += '\n'
   }
   return caveCode
+}
+
+export function getNewCaveCode() {
+  return getCaveCodeOfDimensions(40, 40)
 }
 
 function validatedCaveName(text) {

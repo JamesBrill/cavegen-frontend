@@ -14,6 +14,7 @@ import EditorBanner from 'src/editor/components/EditorBanner'
 import Button from 'src/components/Button'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
+import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -32,7 +33,8 @@ import {
 import { logout } from 'src/authentication/actions'
 import {
   loadCaves,
-  loadCaveIntoGrid
+  loadCaveIntoGrid,
+  updateCave
 } from 'src/caves/actions'
 
 function mapStateToProps(state) {
@@ -57,7 +59,8 @@ const mapDispatchToProps = {
   dispatchLogout: logout,
   dispatchLoadCaves: loadCaves,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid,
-  dispatchLoadImages: loadImages
+  dispatchLoadImages: loadImages,
+  dispatchUpdateCave: updateCave
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -83,7 +86,8 @@ export default class EditorPage extends PureComponent {
     dispatchLogout: PropTypes.func,
     dispatchLoadCaves: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func,
-    dispatchLoadImages: PropTypes.func
+    dispatchLoadImages: PropTypes.func,
+    dispatchUpdateCave: PropTypes.func
   };
 
   componentWillMount() {
@@ -111,6 +115,12 @@ export default class EditorPage extends PureComponent {
     dispatchSetCaveHeight(height || caveHeight)
     dispatchStartRebuild()
     dispatchSetGrid(new Cave(width || caveWidth, height || caveHeight))
+  }
+
+  @autobind
+  handleUpdateCave(width, height) {
+    const caveCode = getCaveCodeOfDimensions(width, height)
+    this.props.dispatchUpdateCave({ text: caveCode })
   }
 
   @autobind
@@ -156,6 +166,7 @@ export default class EditorPage extends PureComponent {
             <CaveDimensionsInput
               className={styles.dimensions}
               onCaveRebuild={this.handleRebuild}
+              updateCave={this.handleUpdateCave}
               caveWidth={caveWidth}
               caveHeight={caveHeight} />
             <CopyToClipboard caveCode={caveCode} />

@@ -10,6 +10,7 @@ export default class CaveDimensionsInput extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     onCaveRebuild: PropTypes.func,
+    updateCave: PropTypes.func,
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number
   };
@@ -37,9 +38,16 @@ export default class CaveDimensionsInput extends PureComponent {
     })
   }
 
-  render() {
-    const { className, onCaveRebuild, caveWidth, caveHeight } = this.props
+  @autobind
+  handleRebuild() {
+    const { onCaveRebuild, updateCave } = this.props
     const { width, height } = this.state
+    onCaveRebuild(width, height)
+    updateCave(width, height)
+  }
+
+  render() {
+    const { className, caveWidth, caveHeight } = this.props
     const computedClassName = classNames(styles.CaveDimensionsInput, className)
 
     return (
@@ -48,7 +56,7 @@ export default class CaveDimensionsInput extends PureComponent {
         <Input onChange={this.handleWidthChange} key={`width: ${caveWidth}`} defaultValue={caveWidth} />
         <h2 className={styles.title}>Height</h2>
         <Input onChange={this.handleHeightChange} key={`height: ${caveHeight}`} defaultValue={caveHeight} />
-        <Button className={styles.button} onClick={() => onCaveRebuild(width, height)}>Rebuild</Button>
+        <Button className={styles.button} onClick={this.handleRebuild}>Rebuild</Button>
       </div>
     )
   }
