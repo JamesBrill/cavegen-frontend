@@ -13,12 +13,14 @@ export function newCave(text) {
         body: { text }
       })
 
-      return dispatch({
+      const dispatchedAction = dispatch({
         type: 'NEW_CAVE',
         payload: {
           cave: json
         }
       })
+      dispatch(loadCaves())
+      return dispatchedAction
     } catch (e) {
       return dispatch({
         type: 'NEW_CAVE_ERROR',
