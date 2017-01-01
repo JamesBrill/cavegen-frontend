@@ -2,6 +2,8 @@ import { createAction } from 'redux-actions'
 import { apiRequest } from 'src/utils/api'
 import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
 import { PALETTE_BRUSHES, PALETTE_IMAGES_PATH } from 'src/utils/ImageLoader'
+import { getCaveCode } from 'src/editor/utils/cave-code'
+import { updateCave } from 'src/caves/actions'
 
 export const setGrid = createAction(
   'SET_GRID',
@@ -62,6 +64,8 @@ export function undoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor
     changeController.applyUndo(grid, caveView)
+    const caveCode = getCaveCode(grid, 'Untitled')
+    dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'UNDO_CAVE_CHANGE' })
   }
 }
@@ -70,6 +74,8 @@ export function redoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor
     changeController.applyRedo(grid, caveView)
+    const caveCode = getCaveCode(grid, 'Untitled')
+    dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'REDO_CAVE_CHANGE' })
   }
 }
