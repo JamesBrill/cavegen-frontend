@@ -9,6 +9,12 @@ function caves(state = [], { type, payload }) {
   let currentCave
   let currentCaveIndex
   switch (type) {
+    case 'NEW_CAVE':
+      return [
+        ...state,
+        payload.newCave
+      ]
+
     case 'LOAD_CAVES':
       return payload.caves
 
@@ -29,6 +35,8 @@ function caves(state = [], { type, payload }) {
 function currentCaveUuid(state = -1, { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
+      return payload.newCave.uuid
+
     case 'UPDATE_CAVE':
     case 'LOAD_CAVE_INTO_GRID':
       return payload.uuid

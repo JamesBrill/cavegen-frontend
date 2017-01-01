@@ -13,12 +13,9 @@ export function newCave(text) {
         body: { text }
       })
 
-      await dispatch(loadCaves())
       return dispatch({
         type: 'NEW_CAVE',
-        payload: {
-          uuid: json.uuid
-        }
+        payload: { newCave: json }
       })
     } catch (e) {
       return dispatch({
