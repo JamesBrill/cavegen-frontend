@@ -27,12 +27,15 @@ function caves(state = [], { type, payload }) {
         ...state.slice(currentCaveIndex + 1)
       ]
 
+    case 'LOGOUT':
+      return []
+
     default:
       return state
   }
 }
 
-function currentCaveUuid(state = -1, { type, payload }) {
+function currentCaveUuid(state = null, { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
       return payload.newCave.uuid
@@ -40,6 +43,9 @@ function currentCaveUuid(state = -1, { type, payload }) {
     case 'UPDATE_CAVE':
     case 'LOAD_CAVE_INTO_GRID':
       return payload.uuid
+
+    case 'LOGOUT':
+      return null
 
     default:
       return state
