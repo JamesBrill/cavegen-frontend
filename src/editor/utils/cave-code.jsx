@@ -7,7 +7,7 @@ export function getCaveCode(grid, name, terrainType, waterType) {
     }
     caveCode += '\n'
   }
-  return addMissingDoorAndStartingPosition(caveCode)
+  return caveCode
 }
 
 export function getNewCaveCode() {
@@ -35,15 +35,4 @@ function validatedCaveName(text) {
     validName = '_'
   }
   return validName
-}
-
-function addMissingDoorAndStartingPosition(caveString) {
-  let additionalCharacters = ''
-  if (caveString.indexOf('#') === -1) {
-    additionalCharacters += '#'
-  }
-  if (caveString.indexOf('D') === -1) {
-    additionalCharacters += 'D'
-  }
-  return `${caveString}${additionalCharacters}`
 }
