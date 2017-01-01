@@ -6,7 +6,6 @@ export default combineReducers({
   caveHeight,
   caveCode,
   caveView,
-  caveViewModel,
   changeController,
   currentBrush,
   brushSize,
@@ -59,16 +58,6 @@ function caveView(state = null, { type, payload }) {
   switch (type) {
     case 'SET_CAVE_VIEW':
       return payload.caveView
-
-    default:
-      return state
-  }
-}
-
-function caveViewModel(state = null, { type, payload }) {
-  switch (type) {
-    case 'SET_CAVE_VIEWMODEL':
-      return payload.caveViewModel
 
     default:
       return state
