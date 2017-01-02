@@ -137,10 +137,20 @@ export default class EditorPage extends PureComponent {
   @autobind
   @keydown(TILE_KEYS)
   handleTileKeyPress(e) {
-    if (e.key === 's') {
-      this.props.dispatchSetCurrentBrush(getTileFromSymbol(' '))
-    } else {
-      this.props.dispatchSetCurrentBrush(e.key)
+    let tile
+    switch (e.key) {
+      case 's':
+        tile = getTileFromSymbol(' ')
+        break
+      case ';':
+        tile = getTileFromSymbol('\"')
+        break
+
+      default:
+        tile = getTileFromSymbol(e.key)
+    }
+    if (tile) {
+      this.props.dispatchSetCurrentBrush(tile)
     }
   }
 
