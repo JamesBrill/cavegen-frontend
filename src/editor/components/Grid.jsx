@@ -45,7 +45,8 @@ function mapStateToProps(state) {
     previousCursor: state.editor.previousCursor,
     needsRebuild: state.editor.needsRebuild,
     imageMap: state.editor.imageMap,
-    currentCave
+    currentCave,
+    currentCaveName: state.caves.currentCaveName
   }
 }
 
@@ -65,7 +66,8 @@ export default class Grid extends PureComponent {
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
-    currentCave: PropTypes.object
+    currentCave: PropTypes.object,
+    currentCaveName: PropTypes.string
   };
 
   constructor(props) {
@@ -139,7 +141,7 @@ export default class Grid extends PureComponent {
 
   @autobind
   rebuildCave(width, height, grid) {
-    const { dispatch, caveView } = this.props
+    const { dispatch, caveView, currentCaveName } = this.props
     const caveWidth = width || this.props.caveWidth
     const caveHeight = height || this.props.caveHeight
     if (caveView) {
@@ -150,7 +152,7 @@ export default class Grid extends PureComponent {
     dispatch(setCaveHeight(caveHeight))
     const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
-    const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
+    const caveCode = getCaveCode(newGrid, currentCaveName, '1', 'clear')
     dispatch(setCaveCode(caveCode))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
@@ -204,8 +206,8 @@ export default class Grid extends PureComponent {
   }
 
   finishPainting() {
-    const { dispatch, caveView, grid, changeController } = this.props
-    const caveCode = getCaveCode(grid, 'Test', '1', 'clear')
+    const { dispatch, caveView, grid, changeController, currentCaveName } = this.props
+    const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
