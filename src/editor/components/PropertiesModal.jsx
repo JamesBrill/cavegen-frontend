@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { updateCave } from 'src/caves/actions'
 import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
-import styles from './DetailsModal.css'
+import styles from './PropertiesModal.css'
 
 function mapStateToProps(state) {
   return {
@@ -21,7 +21,7 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps, { updateCave })
-export default class DetailsModal extends PureComponent {
+export default class PropertiesModal extends PureComponent {
   static propTypes = {
     logout: PropTypes.func,
     displayName: PropTypes.string,
@@ -73,8 +73,8 @@ export default class DetailsModal extends PureComponent {
     const { isOpen } = this.state
 
     return (
-      <div className={styles.DetailsModal}>
-        <Button className={styles.openButton} onClick={this.handleClick}>Details</Button>
+      <div className={styles.PropertiesModal}>
+        <Button className={styles.openButton} onClick={this.handleClick}>Properties</Button>
         <Modal className={styles.modal} isOpen={isOpen} onRequestClose={this.handleClose}>
           <div className={styles.modalContents}>
             <div>
