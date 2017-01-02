@@ -27,9 +27,11 @@
 }
 
 .newCave {
-  width: 10em;
+  width: 8em;
   height: 2.57em;
   margin: 1em;
+  padding-left: 1em !important; /* stylelint-disable-line declaration-no-important */
+  padding-right: 1em !important; /* stylelint-disable-line declaration-no-important */
   background-color: #567cde !important; /* stylelint-disable-line declaration-no-important */
   color: white;
 }
