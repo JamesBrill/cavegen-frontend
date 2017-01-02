@@ -7,7 +7,7 @@ import analyticsMiddleware from 'src/middleware/analytics'
 import * as reducers from 'src/reducers'
 
 const store = compose(
-  persistState(['caves', 'authentication']),
+  persistState(['caves', 'authentication', 'profile']),
   applyMiddleware(
     analyticsMiddleware,
     thunkMiddleware,

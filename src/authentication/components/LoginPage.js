@@ -1,11 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react'
-import Auth0 from 'auth0-js'
-import { createAuth0Lock, getProfile } from 'src/authentication/utils/auth0Lock'
+import { createAuth0Lock } from 'src/authentication/utils/auth0Lock'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import { withRouter, locationShape, browserHistory } from 'react-router'
-import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from 'src/config'
-import { storeToken, storeUser } from 'src/authentication/actions'
+import { storeToken } from 'src/authentication/actions'
+import { loadUserProfile } from 'src/profile/actions'
 
 function mapStateToProps(state) {
   return {
@@ -32,9 +31,7 @@ export default class LoginPage extends PureComponent {
     const token = this.props.token || this.props.location.query.token
     if (token) {
       this.props.dispatch(storeToken(token))
-      getProfile(createAuth0Lock(), token).then(profile => {
-        this.props.dispatch(storeUser(profile))
-      })
+      this.props.dispatch(loadUserProfile())
       browserHistory.replace('/')
     } else {
       this.showAuth0Lock()

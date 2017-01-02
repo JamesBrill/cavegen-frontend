@@ -16,13 +16,3 @@ export function createAuth0Lock() {
     }
   })
 }
-
-export function getProfile(lock, token) {
-  return new Promise(resolve => {
-    lock.getProfile(token, (error, profile) => {
-      if (!error) {
-        resolve(profile)
-      }
-    })
-  })
-}
