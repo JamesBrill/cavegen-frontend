@@ -6,6 +6,7 @@ import { getNewCaveCode } from 'src/editor/utils/cave-code'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import Button from 'src/components/Button'
+import ProfileModal from 'src/profile/components/ProfileModal'
 
 import {
   loadCaveIntoGrid,
@@ -58,12 +59,17 @@ export default class EditorBanner extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <Button className={styles.newCave} onClick={this.handleNewCave}>New Cave</Button>
-        <div className={styles.myCaves}>
-          <Select
-            options={options}
-            placeholder='My Caves'
-            onChange={this.handleChange} />
+        <div className={styles.left}>
+          <Button className={styles.newCave} onClick={this.handleNewCave}>New Cave</Button>
+          <div className={styles.myCaves}>
+            <Select
+              options={options}
+              placeholder='My Caves'
+              onChange={this.handleChange} />
+          </div>
+        </div>
+        <div className={styles.right}>
+          <ProfileModal />
         </div>
       </div>
     )

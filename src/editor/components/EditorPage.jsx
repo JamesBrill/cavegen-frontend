@@ -2,7 +2,6 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import keydown from 'react-keydown'
-import { browserHistory } from 'react-router'
 import { autobind } from 'core-decorators'
 import Palette from 'src/editor/components/Palette'
 import Grid from 'src/editor/components/Grid'
@@ -30,7 +29,6 @@ import {
   redoCaveChange,
   playCave
 } from 'src/editor/actions'
-import { logout } from 'src/authentication/actions'
 import {
   loadCaves,
   loadCaveIntoGrid,
@@ -58,7 +56,6 @@ const mapDispatchToProps = {
   dispatchUndo: undoCaveChange,
   dispatchRedo: redoCaveChange,
   dispatchPlayCave: playCave,
-  dispatchLogout: logout,
   dispatchLoadCaves: loadCaves,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid,
   dispatchUpdateCave: updateCave
@@ -86,7 +83,6 @@ export default class EditorPage extends PureComponent {
     dispatchUndo: PropTypes.func,
     dispatchRedo: PropTypes.func,
     dispatchPlayCave: PropTypes.func,
-    dispatchLogout: PropTypes.func,
     dispatchLoadCaves: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func,
     dispatchUpdateCave: PropTypes.func
@@ -162,12 +158,6 @@ export default class EditorPage extends PureComponent {
   }
 
   @autobind
-  handleLogout() {
-    this.props.dispatchLogout()
-    browserHistory.replace('/')
-  }
-
-  @autobind
   handleNameChange(e) {
     const name = e.target.value
     this.props.dispatchUpdateCave({ name })
@@ -200,9 +190,6 @@ export default class EditorPage extends PureComponent {
             </div>
             <div className={styles.playButtonContainer}>
               <Button className={styles.playButton} onClick={dispatchPlayCave}>Play</Button>
-            </div>
-            <div className={styles.playButtonContainer}>
-              <Button className={styles.playButton} onClick={this.handleLogout}>Logout</Button>
             </div>
             <Palette onTileClick={dispatchSetCurrentBrush} />
           </div>
