@@ -1,6 +1,8 @@
 import { apiRequest } from 'src/utils/api'
 import { getNewCaveCode } from 'src/editor/utils/cave-code'
+import { Cave } from 'src/editor/utils/cave'
 import {
+  setGrid,
   setCaveWidth,
   setCaveHeight
 } from 'src/editor/actions'
@@ -77,8 +79,9 @@ export function loadCaves() {
 
 export function loadCaveIntoGrid(cave) {
   return function (dispatch, getState) {
-    const { grid, changeController } = getState().editor
-    grid.rebuildCaveFromCaveString(cave.text)
+    const { changeController } = getState().editor
+    const grid = new Cave({ caveString: cave.text })
+    dispatch(setGrid(grid))
     changeController.clear()
     dispatch(setCaveWidth(grid.width))
     dispatch(setCaveHeight(grid.height))

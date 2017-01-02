@@ -5,8 +5,12 @@ import { getTileFromSpikeFiller, getTileFromSpikeRemover } from 'src/editor/util
 import { getFileNameFromSymbol, getTileFromSymbol } from 'src/editor/utils/tiles'
 
 export class Cave {
-  constructor(width, height) {
-    this.rebuildCaveFromCoordinates(width, height)
+  constructor({ width, height, caveString }) {
+    if (caveString) {
+      this.rebuildCaveFromCaveString(caveString)
+    } else {
+      this.rebuildCaveFromCoordinates(width, height)
+    }
   }
 
   rebuildCaveFromCoordinates(x, y) {

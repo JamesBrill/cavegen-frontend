@@ -110,7 +110,10 @@ export default class EditorPage extends PureComponent {
     dispatchSetCaveWidth(width || caveWidth)
     dispatchSetCaveHeight(height || caveHeight)
     dispatchStartRebuild()
-    dispatchSetGrid(new Cave(width || caveWidth, height || caveHeight))
+    dispatchSetGrid(new Cave({
+      width: width || caveWidth,
+      height: height || caveHeight
+    }))
   }
 
   @autobind

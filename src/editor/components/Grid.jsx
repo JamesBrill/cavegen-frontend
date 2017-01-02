@@ -149,7 +149,7 @@ export default class Grid extends PureComponent {
     }
     dispatch(setCaveWidth(caveWidth))
     dispatch(setCaveHeight(caveHeight))
-    const newGrid = grid || new Cave(caveWidth, caveHeight)
+    const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
     const caveCode = getCaveCode(newGrid, 'Test', '1', 'clear')
     dispatch(setCaveCode(caveCode))
@@ -298,7 +298,7 @@ export default class Grid extends PureComponent {
     const border = getBorder(width, height, this.getCanvasWidth(), this.getCanvasHeight())
     const tileSize = getTileSize(width, height, this.getCanvasWidth(), this.getCanvasHeight())
 
-    dispatch(setGrid(cave || new Cave(width, height)))
+    dispatch(setGrid(cave || new Cave({ width, height })))
     const newCaveView = new CaveView({
       x: width,
       y: height,
@@ -310,7 +310,7 @@ export default class Grid extends PureComponent {
       imageMap
     })
     dispatch(setCaveView(newCaveView))
-    newCaveView.draw({ grid: cave || new Cave(width, height) })
+    newCaveView.draw({ grid: cave || new Cave({ width, height }) })
   }
 
   @autobind
