@@ -63,8 +63,9 @@ export const setPreviousCursorPosition = createAction(
 export function undoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor
+    const { currentCaveName } = getState().caves
     changeController.applyUndo(grid, caveView)
-    const caveCode = getCaveCode(grid, 'Untitled')
+    const caveCode = getCaveCode(grid, currentCaveName)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'UNDO_CAVE_CHANGE' })
   }
@@ -73,8 +74,9 @@ export function undoCaveChange() {
 export function redoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor
+    const { currentCaveName } = getState().caves
     changeController.applyRedo(grid, caveView)
-    const caveCode = getCaveCode(grid, 'Untitled')
+    const caveCode = getCaveCode(grid, currentCaveName)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'REDO_CAVE_CHANGE' })
   }

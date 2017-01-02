@@ -56,7 +56,7 @@ function currentCaveUuid(state = null, { type, payload }) {
 function currentCaveName(state = null, { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
-      return 'Untitled' // TODO: replace these everywhere
+      return 'Untitled'
 
     case 'UPDATE_CAVE':
       return payload.updatedCave.name
