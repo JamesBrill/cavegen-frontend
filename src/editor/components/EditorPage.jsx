@@ -12,6 +12,7 @@ import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 import EditorBanner from 'src/editor/components/EditorBanner'
 import Button from 'src/components/Button'
+import Input from 'src/components/Input'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
 import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
@@ -41,6 +42,8 @@ function mapStateToProps(state) {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
     caveCode: state.editor.caveCode,
+    currentCaveName: state.caves.currentCaveName,
+    currentCaveUuid: state.caves.currentCaveUuid,
     caves: state.caves.caves
   }
 }
@@ -72,6 +75,8 @@ export default class EditorPage extends PureComponent {
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
+    currentCaveName: PropTypes.string,
+    currentCaveUuid: PropTypes.string,
     dispatchSetGrid: PropTypes.func,
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetBrushSize: PropTypes.func,
@@ -160,8 +165,14 @@ export default class EditorPage extends PureComponent {
     browserHistory.replace('/')
   }
 
+  @autobind
+  handleNameChange(e) {
+    const name = e.target.value
+    this.props.dispatchUpdateCave({ name })
+  }
+
   render() {
-    const { className, caveWidth, caveHeight, caveCode,
+    const { className, caveWidth, caveHeight, caveCode, currentCaveName, currentCaveUuid,
             dispatchSetCurrentBrush, dispatchSetBrushSize,
             dispatchPlayCave } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
@@ -172,6 +183,8 @@ export default class EditorPage extends PureComponent {
         <div className={styles.editor}>
           <div className={styles.editorControls}>
             <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
+            <h2 className={styles.title}>Name</h2>
+            <Input onChange={this.handleNameChange} key={currentCaveUuid} defaultValue={currentCaveName} />
             <CaveDimensionsInput
               className={styles.dimensions}
               onCaveRebuild={this.handleRebuild}

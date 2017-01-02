@@ -33,10 +33,12 @@ export function updateCave(cave) {
   return async function (dispatch, getState) {
     try {
       const uuid = getState().caves.currentCaveUuid
+      const caves = getState().caves.caves
+      const currentCave = caves && caves.filter(c => c.uuid === uuid)[0]
       const { json } = await apiRequest(getState, `/caves/${uuid}/`, {
         method: 'put',
         headers: { 'content-type': 'application/json' },
-        body: cave
+        body: Object.assign({}, currentCave, cave)
       })
 
       return dispatch({
@@ -87,7 +89,10 @@ export function loadCaveIntoGrid(cave) {
     dispatch(setCaveHeight(grid.height))
     dispatch({
       type: 'LOAD_CAVE_INTO_GRID',
-      payload: { uuid: cave.uuid }
+      payload: {
+        uuid: cave.uuid,
+        name: cave.name
+      }
     })
   }
 }
