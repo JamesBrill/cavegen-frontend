@@ -43,3 +43,9 @@
 .logoutButton {
   background-color: var(--alizarin-crimson) !important; /* stylelint-disable-line declaration-no-important */
 }
+
+.title {
+  margin-bottom: 0.5em;
+  font-size: 0.9em;
+  font-weight: normal;
+}
