@@ -138,6 +138,12 @@ export class Zoomer {
   }
 
   zoom(mouseWheelDelta) {
+    const gridX = this.caveView.getGridX(this.lastX)
+    const gridY = this.caveView.getGridY(this.lastY)
+    if (!this.caveView.grid.withinLimits(gridX, gridY)) {
+      return
+    }
+
     if (mouseWheelDelta >= 1) {
       this.caveView.multiplyScalingFactor(1 + (0.2 * mouseWheelDelta))
     } else {
