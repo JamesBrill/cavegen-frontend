@@ -53,7 +53,7 @@ function currentCaveUuid(state = null, { type, payload }) {
   }
 }
 
-function currentCaveName(state = null, { type, payload }) {
+function currentCaveName(state = 'Untitled', { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
       return 'Untitled'
@@ -65,7 +65,7 @@ function currentCaveName(state = null, { type, payload }) {
       return payload.name
 
     case 'LOGOUT':
-      return null
+      return 'Untitled'
 
     default:
       return state
