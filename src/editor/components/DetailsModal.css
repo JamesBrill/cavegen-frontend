@@ -1,0 +1,27 @@
+@import 'src/palette.css';
+
+.modal {
+  width: 20em;
+  height: 20em;
+  padding-top: 1.75em;
+}
+
+.modalContents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.openButton {
+  width: 8em;
+  height: 2.57em;
+  color: white;
+  margin: 1em;
+  background-color: var(--cornflower-blue) !important; /* stylelint-disable-line declaration-no-important */
+}
+
+.title {
+  margin-bottom: 0.5em;
+  font-size: 0.9em;
+  font-weight: normal;
+}

@@ -7,14 +7,11 @@ import Palette from 'src/editor/components/Palette'
 import Grid from 'src/editor/components/Grid'
 import { getTileFromSymbol, TILE_KEYS } from 'src/editor/utils/tiles'
 import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
-import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 import EditorBanner from 'src/editor/components/EditorBanner'
 import Button from 'src/components/Button'
-import Input from 'src/components/Input'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
-import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -31,8 +28,7 @@ import {
 } from 'src/editor/actions'
 import {
   loadCaves,
-  loadCaveIntoGrid,
-  updateCave
+  loadCaveIntoGrid
 } from 'src/caves/actions'
 
 function mapStateToProps(state) {
@@ -40,8 +36,6 @@ function mapStateToProps(state) {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
     caveCode: state.editor.caveCode,
-    currentCaveName: state.caves.currentCaveName,
-    currentCaveUuid: state.caves.currentCaveUuid,
     caves: state.caves.caves
   }
 }
@@ -57,8 +51,7 @@ const mapDispatchToProps = {
   dispatchRedo: redoCaveChange,
   dispatchPlayCave: playCave,
   dispatchLoadCaves: loadCaves,
-  dispatchLoadCaveIntoGrid: loadCaveIntoGrid,
-  dispatchUpdateCave: updateCave
+  dispatchLoadCaveIntoGrid: loadCaveIntoGrid
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -72,8 +65,6 @@ export default class EditorPage extends PureComponent {
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
-    currentCaveName: PropTypes.string,
-    currentCaveUuid: PropTypes.string,
     dispatchSetGrid: PropTypes.func,
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetBrushSize: PropTypes.func,
@@ -84,8 +75,7 @@ export default class EditorPage extends PureComponent {
     dispatchRedo: PropTypes.func,
     dispatchPlayCave: PropTypes.func,
     dispatchLoadCaves: PropTypes.func,
-    dispatchLoadCaveIntoGrid: PropTypes.func,
-    dispatchUpdateCave: PropTypes.func
+    dispatchLoadCaveIntoGrid: PropTypes.func
   };
 
   componentWillMount() {
@@ -115,12 +105,6 @@ export default class EditorPage extends PureComponent {
       width: width || caveWidth,
       height: height || caveHeight
     }))
-  }
-
-  @autobind
-  handleUpdateCave(width, height) {
-    const caveCode = getCaveCodeOfDimensions(width, height)
-    this.props.dispatchUpdateCave({ text: caveCode })
   }
 
   @autobind
@@ -157,16 +141,9 @@ export default class EditorPage extends PureComponent {
     }
   }
 
-  @autobind
-  handleNameChange(e) {
-    const name = e.target.value
-    this.props.dispatchUpdateCave({ name })
-  }
-
   render() {
-    const { className, caveWidth, caveHeight, caveCode, currentCaveName, currentCaveUuid,
-            dispatchSetCurrentBrush, dispatchSetBrushSize,
-            dispatchPlayCave } = this.props
+    const { className, caveCode, dispatchSetCurrentBrush,
+            dispatchSetBrushSize, dispatchPlayCave } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
@@ -175,14 +152,6 @@ export default class EditorPage extends PureComponent {
         <div className={styles.editor}>
           <div className={styles.editorControls}>
             <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
-            <h2 className={styles.title}>Name</h2>
-            <Input onChange={this.handleNameChange} key={currentCaveUuid} defaultValue={currentCaveName} />
-            <CaveDimensionsInput
-              className={styles.dimensions}
-              onCaveRebuild={this.handleRebuild}
-              updateCave={this.handleUpdateCave}
-              caveWidth={caveWidth}
-              caveHeight={caveHeight} />
             <CopyToClipboard caveCode={caveCode} />
             <div className={styles.undoRedoContainer}>
               <Button className={styles.undoRedoButton} onClick={this.handleUndo}>Undo</Button>
