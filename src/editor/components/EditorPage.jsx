@@ -129,13 +129,15 @@ export default class EditorPage extends PureComponent {
 
   @autobind
   @keydown(UNDO_KEYS)
-  handleUndo() {
+  handleUndo(e) {
+    e.preventDefault()
     this.props.dispatchUndo()
   }
 
   @autobind
   @keydown(REDO_KEYS)
-  handleRedo() {
+  handleRedo(e) {
+    e.preventDefault()
     this.props.dispatchRedo()
   }
 
