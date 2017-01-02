@@ -12,7 +12,8 @@
 
 .editorControls {
   width: 18%;
-  height: 100%;
+  max-height: calc(100vh - 4em);
+  overflow: scroll;
   padding-left: 0.2em;
   padding-right: 0.2em;
 }
