@@ -77,12 +77,16 @@ export default class PropertiesModal extends PureComponent {
         <Button className={styles.openButton} onClick={this.handleClick}>Properties</Button>
         <Modal className={styles.modal} isOpen={isOpen} onRequestClose={this.handleClose}>
           <div className={styles.modalContents}>
-            <div>
+            <div className={styles.content}>
               <h2 className={styles.title}>Name</h2>
               <Input onChange={this.handleNameChange} key={currentCaveUuid} defaultValue={currentCaveName} />
             </div>
+            <div className={styles.content}>
+              <h2 className={styles.title}>Public</h2>
+              <input type='checkbox' />
+            </div>
             <CaveDimensionsInput
-              className={styles.dimensions}
+              className={styles.content}
               onCaveRebuild={this.handleRebuild}
               updateCave={this.handleUpdateCave}
               caveWidth={caveWidth}

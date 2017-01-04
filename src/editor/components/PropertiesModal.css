@@ -2,7 +2,7 @@
 
 .modal {
   width: 20em;
-  height: 20em;
+  height: 23em;
   padding-top: 1.75em;
 }
 
@@ -26,4 +26,8 @@
   margin-bottom: 0.5em;
   font-size: 0.9em;
   font-weight: normal;
+}
+
+.content {
+  width: 12em;
 }
