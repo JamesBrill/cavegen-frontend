@@ -15,6 +15,7 @@ import { Cave } from 'src/editor/utils/cave'
 import Play from 'src/editor/components/icons/Play'
 import Undo from 'src/editor/components/icons/Undo'
 import Redo from 'src/editor/components/icons/Redo'
+import ReactTooltip from 'react-tooltip'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -156,16 +157,17 @@ export default class EditorPage extends PureComponent {
           <div className={styles.editorControls}>
             <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
             <div className={styles.buttonContainer}>
-              <CopyToClipboard caveCode={caveCode} />
-              <Button className={styles.iconButton} onClick={this.handleUndo}>
+              <CopyToClipboard caveCode={caveCode} data-tip='Undo' />
+              <Button className={styles.iconButton} onClick={this.handleUndo} data-tip='Undo'>
                 <Undo className={styles.icon} />
               </Button>
-              <Button className={styles.iconButton} onClick={this.handleRedo}>
+              <Button className={styles.iconButton} onClick={this.handleRedo} data-tip='Redo'>
                 <Redo className={styles.icon} />
               </Button>
-              <Button className={styles.iconButton} onClick={dispatchPlayCave}>
+              <Button className={styles.iconButton} onClick={dispatchPlayCave} data-tip='Play'>
                 <Play className={styles.icon} />
               </Button>
+              <ReactTooltip effect='solid' delayShow='250' />
             </div>
             <Palette onTileClick={dispatchSetCurrentBrush} />
           </div>
