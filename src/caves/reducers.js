@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 
 export default combineReducers({
-  caves,
+  caves, // TODO: rename to userCaves
+  publicCaves,
   currentCaveUuid,
   currentCaveName,
   isCurrentCavePublic
@@ -28,6 +29,19 @@ function caves(state = [], { type, payload }) {
         payload.updatedCave,
         ...state.slice(currentCaveIndex + 1)
       ]
+
+    case 'LOGOUT':
+      return []
+
+    default:
+      return state
+  }
+}
+
+function publicCaves(state = [], { type, payload }) {
+  switch (type) {
+    case 'LOAD_PUBLIC_CAVES':
+      return payload.caves
 
     case 'LOGOUT':
       return []

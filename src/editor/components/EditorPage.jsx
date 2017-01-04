@@ -32,6 +32,7 @@ import {
 } from 'src/editor/actions'
 import {
   loadCaves,
+  loadPublicCaves,
   loadCaveIntoGrid
 } from 'src/caves/actions'
 
@@ -55,6 +56,7 @@ const mapDispatchToProps = {
   dispatchRedo: redoCaveChange,
   dispatchPlayCave: playCave,
   dispatchLoadCaves: loadCaves,
+  dispatchLoadPublicCaves: loadPublicCaves,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid
 }
 
@@ -79,11 +81,13 @@ export default class EditorPage extends PureComponent {
     dispatchRedo: PropTypes.func,
     dispatchPlayCave: PropTypes.func,
     dispatchLoadCaves: PropTypes.func,
+    dispatchLoadPublicCaves: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func
   };
 
   componentWillMount() {
     this.props.dispatchLoadCaves()
+    this.props.dispatchLoadPublicCaves()
   }
 
   componentWillReceiveProps(nextProps) {

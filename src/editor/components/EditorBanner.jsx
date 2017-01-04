@@ -18,7 +18,8 @@ import styles from 'src/editor/components/EditorBanner.css'
 
 function mapStateToProps(state) {
   return {
-    caves: state.caves.caves
+    caves: state.caves.caves,
+    publicCaves: state.caves.publicCaves
   }
 }
 
@@ -28,6 +29,7 @@ export default class EditorBanner extends PureComponent {
     className: PropTypes.string,
     dispatch: PropTypes.func,
     caves: PropTypes.arrayOf(PropTypes.object),
+    publicCaves: PropTypes.arrayOf(PropTypes.object),
     onCaveRebuild: PropTypes.func.isRequired
   };
 
@@ -46,17 +48,25 @@ export default class EditorBanner extends PureComponent {
   }
 
   @autobind
-  handleChange(value) {
+  handleUserCaveChange(value) {
     const { caves, dispatch } = this.props
     const cave = caves.filter(c => c.id === value)[0]
     dispatch(loadCaveIntoGrid(cave))
   }
 
+  @autobind
+  handlePublicCaveChange(value) {
+    const { publicCaves, dispatch } = this.props
+    const cave = publicCaves.filter(c => c.id === value)[0]
+    dispatch(loadCaveIntoGrid(cave))
+  }
+
   render() {
-    const { className, caves } = this.props
+    const { className, caves, publicCaves } = this.props
     const computedClassName = classNames(styles.EditorBanner, className)
     // This is a bit cheeky as it reorders an array in the Redux store
-    const options = caves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
+    const userCaveOptions = caves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
+    const publicCaveOptions = publicCaves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
 
     return (
       <div className={computedClassName}>
@@ -65,9 +75,15 @@ export default class EditorBanner extends PureComponent {
           <PropertiesModal onCaveRebuild={this.props.onCaveRebuild} />
           <div className={styles.myCaves}>
             <Select
-              options={options}
+              options={userCaveOptions}
               placeholder='My Caves'
-              onChange={this.handleChange} />
+              onChange={this.handleUserCaveChange} />
+          </div>
+          <div className={styles.myCaves}>
+            <Select
+              options={publicCaveOptions}
+              placeholder='Public Caves'
+              onChange={this.handlePublicCaveChange} />
           </div>
         </div>
         <div className={styles.right}>

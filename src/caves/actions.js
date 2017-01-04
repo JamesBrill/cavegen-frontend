@@ -79,6 +79,25 @@ export function loadCaves() {
   }
 }
 
+export function loadPublicCaves() {
+  return async function (dispatch, getState) {
+    try {
+      const { json } = await apiRequest(getState, '/public-caves/')
+      return dispatch({
+        type: 'LOAD_PUBLIC_CAVES',
+        payload: {
+          caves: json
+        }
+      })
+    } catch (e) {
+      return dispatch({
+        type: 'LOAD_PUBLIC_CAVES_ERROR',
+        error: e
+      })
+    }
+  }
+}
+
 export function loadCaveIntoGrid(cave) {
   return function (dispatch, getState) {
     const { changeController } = getState().editor
