@@ -3,7 +3,8 @@ import { combineReducers } from 'redux'
 export default combineReducers({
   caves,
   currentCaveUuid,
-  currentCaveName
+  currentCaveName,
+  isCurrentCavePublic
 })
 
 function caves(state = [], { type, payload }) {
@@ -64,6 +65,23 @@ function currentCaveName(state = 'Untitled', { type, payload }) {
 
     case 'LOAD_CAVE_INTO_GRID':
       return payload.name
+
+    default:
+      return state
+  }
+}
+
+function isCurrentCavePublic(state = false, { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+    case 'LOGOUT':
+      return false
+
+    case 'UPDATE_CAVE':
+      return payload.updatedCave.isPublic
+
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.isPublic
 
     default:
       return state

@@ -91,7 +91,8 @@ export function loadCaveIntoGrid(cave) {
       type: 'LOAD_CAVE_INTO_GRID',
       payload: {
         uuid: cave.uuid,
-        name: cave.name
+        name: cave.name,
+        isPublic: cave.isPublic
       }
     })
   }
