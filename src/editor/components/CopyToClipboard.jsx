@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import ReactZeroClipboard from 'react-zeroclipboard'
 import 'src/components/ZeroClipboard.css'
 import Button from 'src/components/Button'
+import CopyIcon from 'src/editor/components/icons/CopyIcon'
 
 import styles from 'src/editor/components/CopyToClipboard.css'
 
@@ -19,7 +20,9 @@ export default class CopyToClipboard extends PureComponent {
     return (
       <div className={computedClassName}>
         <ReactZeroClipboard text={caveCode} swfPath='static/zero-clipboard/ZeroClipboard.swf'>
-          <Button className={styles.button}>Copy to clipboard</Button>
+          <Button className={styles.button}>
+            <CopyIcon className={styles.copyIcon} />
+          </Button>
         </ReactZeroClipboard>
       </div>
     )

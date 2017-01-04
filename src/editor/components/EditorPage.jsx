@@ -12,6 +12,9 @@ import EditorBanner from 'src/editor/components/EditorBanner'
 import Button from 'src/components/Button'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
+import Play from 'src/editor/components/icons/Play'
+import Undo from 'src/editor/components/icons/Undo'
+import Redo from 'src/editor/components/icons/Redo'
 
 import styles from 'src/editor/components/EditorPage.css'
 
@@ -152,13 +155,17 @@ export default class EditorPage extends PureComponent {
         <div className={styles.editor}>
           <div className={styles.editorControls}>
             <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
-            <CopyToClipboard caveCode={caveCode} />
-            <div className={styles.undoRedoContainer}>
-              <Button className={styles.undoRedoButton} onClick={this.handleUndo}>Undo</Button>
-              <Button className={styles.undoRedoButton} onClick={this.handleRedo}>Redo</Button>
-            </div>
-            <div className={styles.playButtonContainer}>
-              <Button className={styles.playButton} onClick={dispatchPlayCave}>Play</Button>
+            <div className={styles.buttonContainer}>
+              <CopyToClipboard caveCode={caveCode} />
+              <Button className={styles.iconButton} onClick={this.handleUndo}>
+                <Undo className={styles.icon} />
+              </Button>
+              <Button className={styles.iconButton} onClick={this.handleRedo}>
+                <Redo className={styles.icon} />
+              </Button>
+              <Button className={styles.iconButton} onClick={dispatchPlayCave}>
+                <Play className={styles.icon} />
+              </Button>
             </div>
             <Palette onTileClick={dispatchSetCurrentBrush} />
           </div>
