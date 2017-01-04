@@ -167,7 +167,7 @@ export default class EditorPage extends PureComponent {
               <Button className={styles.iconButton} onClick={dispatchPlayCave} data-tip='Play'>
                 <Play className={styles.icon} />
               </Button>
-              <ReactTooltip effect='solid' delayShow='250' />
+              <ReactTooltip effect='solid' delayShow={250} />
             </div>
             <Palette onTileClick={dispatchSetCurrentBrush} />
           </div>
