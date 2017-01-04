@@ -50,6 +50,12 @@
   height: 2em;
 }
 
+.iconButton:hover {
+  & > * {
+    opacity: 0.5;
+  }
+}
+
 .buttonContainer {
   display: flex;
   flex-direction: row;
