@@ -46,7 +46,8 @@ function mapStateToProps(state) {
     needsRebuild: state.editor.needsRebuild,
     imageMap: state.editor.imageMap,
     currentCave,
-    currentCaveName: state.caves.currentCaveName
+    currentCaveName: state.caves.currentCaveName,
+    userId: state.profile.userId
   }
 }
 
@@ -67,7 +68,8 @@ export default class Grid extends PureComponent {
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
     currentCave: PropTypes.object,
-    currentCaveName: PropTypes.string
+    currentCaveName: PropTypes.string,
+    userId: PropTypes.number
   };
 
   constructor(props) {
@@ -249,7 +251,10 @@ export default class Grid extends PureComponent {
 
   @autobind
   startPaintingAtMousePosition(pixelX, pixelY) {
-    const { dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
+    const { userId, currentCave, dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
+    if (userId !== currentCave.author) {
+      return
+    }
     caveView.isMouseDown = true
     const gridX = caveView.getGridX(pixelX)
     const gridY = caveView.getGridY(pixelY)
