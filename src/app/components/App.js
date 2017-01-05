@@ -59,7 +59,16 @@ export default class App extends PureComponent {
   }
 
   render() {
-    const { logout, tokenExpiryTime, isEditorOpen } = this.props // eslint-disable-line no-shadow
+    const { logout, isAuthenticated, tokenExpiryTime, isEditorOpen } = this.props // eslint-disable-line no-shadow
+
+    if (isEditorOpen && !isAuthenticated) {
+      return (
+        <div className={styles.spinnerContainer}>
+          <Spinner className={styles.spinner} />
+          Redirecting to login...
+        </div>
+      )
+    }
 
     if (isEditorOpen && !this.state.imagesLoaded) {
       return (
