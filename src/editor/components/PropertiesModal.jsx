@@ -17,7 +17,8 @@ function mapStateToProps(state) {
     currentCaveName: state.caves.currentCaveName,
     isCurrentCavePublic: state.caves.isCurrentCavePublic,
     caveWidth: state.editor.caveWidth,
-    caveHeight: state.editor.caveHeight
+    caveHeight: state.editor.caveHeight,
+    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser
   }
 }
 
@@ -31,7 +32,8 @@ export default class PropertiesModal extends PureComponent {
     isCurrentCavePublic: PropTypes.bool,
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
-    onCaveRebuild: PropTypes.func.isRequired
+    onCaveRebuild: PropTypes.func.isRequired,
+    isOwnedByAnotherUser: PropTypes.bool
   };
 
   constructor(props) {
@@ -77,8 +79,25 @@ export default class PropertiesModal extends PureComponent {
   }
 
   render() {
-    const { currentCaveUuid, currentCaveName, isCurrentCavePublic, caveWidth, caveHeight } = this.props
+    const { currentCaveUuid, currentCaveName, isCurrentCavePublic,
+            caveWidth, caveHeight, isOwnedByAnotherUser } = this.props
     const { isOpen } = this.state
+
+    if (isOwnedByAnotherUser) {
+      return (
+        <div className={styles.PropertiesModal}>
+          <Button className={styles.openButton} onClick={this.handleClick}>Properties</Button>
+          <Modal className={styles.reducedModal} isOpen={isOpen} onRequestClose={this.handleClose}>
+            <div className={styles.modalContents}>
+              <div className={styles.content}>
+                <h2 className={styles.title}>Name</h2>
+                <span className={styles.immutableProperty}>{currentCaveName}</span>
+              </div>
+            </div>
+          </Modal>
+        </div>
+      )
+    }
 
     return (
       <div className={styles.PropertiesModal}>
