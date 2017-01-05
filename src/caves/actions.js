@@ -101,6 +101,8 @@ export function loadPublicCaves() {
 export function loadCaveIntoGrid(cave) {
   return function (dispatch, getState) {
     const { changeController } = getState().editor
+    const { userId } = getState().profile
+    const isOwnedByAnotherUser = userId !== cave.author
     const grid = new Cave({ caveString: cave.text })
     dispatch(setGrid(grid))
     changeController.clear()
@@ -111,7 +113,8 @@ export function loadCaveIntoGrid(cave) {
       payload: {
         uuid: cave.uuid,
         name: cave.name,
-        isPublic: cave.isPublic
+        isPublic: cave.isPublic,
+        isOwnedByAnotherUser
       }
     })
   }

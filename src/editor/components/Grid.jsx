@@ -31,7 +31,8 @@ import styles from 'src/editor/components/Grid.css'
 
 function mapStateToProps(state) {
   const currentCaveUuid = state.caves.currentCaveUuid
-  const caves = state.caves.caves
+  const isOwnedByAnotherUser = state.caves.isOwnedByAnotherUser
+  const caves = isOwnedByAnotherUser ? state.caves.publicCaves : state.caves.caves
   const currentCave = caves && caves.filter(cave => cave.uuid === currentCaveUuid)[0]
   return {
     grid: state.editor.grid,
@@ -47,7 +48,7 @@ function mapStateToProps(state) {
     imageMap: state.editor.imageMap,
     currentCave,
     currentCaveName: state.caves.currentCaveName,
-    userId: state.profile.userId
+    isOwnedByAnotherUser
   }
 }
 
@@ -69,7 +70,7 @@ export default class Grid extends PureComponent {
     imageMap: PropTypes.object,
     currentCave: PropTypes.object,
     currentCaveName: PropTypes.string,
-    userId: PropTypes.number
+    isOwnedByAnotherUser: PropTypes.bool
   };
 
   constructor(props) {
@@ -251,8 +252,8 @@ export default class Grid extends PureComponent {
 
   @autobind
   startPaintingAtMousePosition(pixelX, pixelY) {
-    const { userId, currentCave, dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
-    if (userId !== currentCave.author) {
+    const { isOwnedByAnotherUser, dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
+    if (isOwnedByAnotherUser) {
       return
     }
     caveView.isMouseDown = true

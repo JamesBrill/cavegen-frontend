@@ -5,7 +5,8 @@ export default combineReducers({
   publicCaves,
   currentCaveUuid,
   currentCaveName,
-  isCurrentCavePublic
+  isCurrentCavePublic,
+  isOwnedByAnotherUser
 })
 
 function caves(state = [], { type, payload }) {
@@ -96,6 +97,20 @@ function isCurrentCavePublic(state = false, { type, payload }) {
 
     case 'LOAD_CAVE_INTO_GRID':
       return payload.isPublic
+
+    default:
+      return state
+  }
+}
+
+function isOwnedByAnotherUser(state = false, { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+    case 'LOGOUT':
+      return false
+
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.isOwnedByAnotherUser
 
     default:
       return state
