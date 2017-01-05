@@ -19,7 +19,8 @@ import styles from 'src/editor/components/EditorBanner.css'
 function mapStateToProps(state) {
   return {
     caves: state.caves.caves,
-    publicCaves: state.caves.publicCaves
+    publicCaves: state.caves.publicCaves,
+    userId: state.profile.userId
   }
 }
 
@@ -30,7 +31,8 @@ export default class EditorBanner extends PureComponent {
     dispatch: PropTypes.func,
     caves: PropTypes.arrayOf(PropTypes.object),
     publicCaves: PropTypes.arrayOf(PropTypes.object),
-    onCaveRebuild: PropTypes.func.isRequired
+    onCaveRebuild: PropTypes.func.isRequired,
+    userId: PropTypes.number
   };
 
   getCaveSelectOptions(cave) {
@@ -56,9 +58,14 @@ export default class EditorBanner extends PureComponent {
 
   @autobind
   handlePublicCaveChange(value) {
-    const { publicCaves, dispatch } = this.props
+    const { publicCaves, caves, dispatch, userId } = this.props
     const cave = publicCaves.filter(c => c.id === value)[0]
-    dispatch(loadCaveIntoGrid(cave))
+    if (userId === cave.author) {
+      const userCave = caves.filter(c => c.id === value)[0]
+      dispatch(loadCaveIntoGrid(userCave))
+    } else {
+      dispatch(loadCaveIntoGrid(cave))
+    }
   }
 
   render() {
