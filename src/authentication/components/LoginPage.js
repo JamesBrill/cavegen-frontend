@@ -39,10 +39,6 @@ export default class LoginPage extends PureComponent {
   }
 
   render() {
-    return (
-      <div>
-
-      </div>
-    )
+    return null
   }
 }
