@@ -62,7 +62,12 @@ export default class App extends PureComponent {
     const { logout, tokenExpiryTime, isEditorOpen } = this.props // eslint-disable-line no-shadow
 
     if (isEditorOpen && !this.state.imagesLoaded) {
-      return null
+      return (
+        <div className={styles.spinnerContainer}>
+          <Spinner className={styles.spinner} />
+          Loading tiles...
+        </div>
+      )
     }
 
     return (
