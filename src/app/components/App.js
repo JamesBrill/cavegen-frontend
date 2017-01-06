@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes, Children, cloneElement } from 'react'
 import { logout } from 'src/authentication/actions'
 import { loadImages } from 'src/editor/actions'
 import { connect } from 'react-redux'
+import { autobind } from 'core-decorators'
 import { withRouter } from 'react-router'
 import moment from 'moment'
 import ScheduledEvent from 'src/utils/ScheduledEvent'
@@ -44,18 +45,16 @@ export default class App extends PureComponent {
   }
 
   componentWillMount() {
-    const { isEditorOpen, isAuthenticated, loadImages, isEmailVerified } = this.props // eslint-disable-line no-shadow
-
-    if (isEditorOpen) {
-      if ((isAuthenticated && !isEmailVerified) || !isAuthenticated) {
-        window.location = LOGIN_URL
-      }
-      loadImages().then(() => this.setState({ imagesLoaded: true }))
-    }
+    this.loadImagesOrRedirectToLogin(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isEditorOpen, isAuthenticated, loadImages, isEmailVerified } = nextProps // eslint-disable-line no-shadow
+    this.loadImagesOrRedirectToLogin(nextProps)
+  }
+
+  @autobind
+  loadImagesOrRedirectToLogin(props) {
+    const { isEditorOpen, isAuthenticated, loadImages, isEmailVerified } = props // eslint-disable-line no-shadow
     if (isEditorOpen) {
       if ((isAuthenticated && !isEmailVerified) || !isAuthenticated) {
         window.location = LOGIN_URL
