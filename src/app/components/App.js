@@ -55,8 +55,11 @@ export default class App extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isEditorOpen, loadImages } = nextProps // eslint-disable-line no-shadow
+    const { isEditorOpen, isAuthenticated, loadImages, isEmailVerified } = nextProps // eslint-disable-line no-shadow
     if (isEditorOpen) {
+      if ((isAuthenticated && !isEmailVerified) || !isAuthenticated) {
+        window.location = LOGIN_URL
+      }
       loadImages().then(() => this.setState({ imagesLoaded: true }))
     }
   }
