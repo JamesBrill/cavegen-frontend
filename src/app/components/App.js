@@ -17,6 +17,7 @@ function mapStateToProps(state) {
   return {
     tokenExpiryTime: state.authentication.claims.exp,
     isAuthenticated,
+    isEmailVerified: state.authentication.claims['email_verified'],
     isEditorOpen
   }
 }
@@ -28,6 +29,7 @@ export default class App extends PureComponent {
     children: PropTypes.node,
     tokenExpiryTime: PropTypes.number,
     isAuthenticated: PropTypes.bool,
+    isEmailVerified: PropTypes.bool,
     isEditorOpen: PropTypes.bool,
     logout: PropTypes.func,
     loadImages: PropTypes.func
@@ -42,9 +44,10 @@ export default class App extends PureComponent {
   }
 
   componentWillMount() {
-    const { isEditorOpen, isAuthenticated, loadImages } = this.props // eslint-disable-line no-shadow
+    const { isEditorOpen, isAuthenticated, loadImages, isEmailVerified } = this.props // eslint-disable-line no-shadow
+
     if (isEditorOpen) {
-      if (!isAuthenticated) {
+      if ((isAuthenticated && !isEmailVerified) || !isAuthenticated) {
         window.location = LOGIN_URL
       }
       loadImages().then(() => this.setState({ imagesLoaded: true }))
@@ -59,7 +62,16 @@ export default class App extends PureComponent {
   }
 
   render() {
-    const { logout, isAuthenticated, tokenExpiryTime, isEditorOpen } = this.props // eslint-disable-line no-shadow
+    const { logout, isAuthenticated, tokenExpiryTime, isEmailVerified, isEditorOpen } = this.props // eslint-disable-line no-shadow
+
+    if (isEditorOpen && isAuthenticated && !isEmailVerified) {
+      return (
+        <div className={styles.spinnerContainer}>
+          <Spinner className={styles.spinner} />
+          Please verify your email. Redirecting to login...
+        </div>
+      )
+    }
 
     if (isEditorOpen && !isAuthenticated) {
       return (
