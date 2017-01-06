@@ -74,7 +74,7 @@ export default class PropertiesModal extends PureComponent {
 
   @autobind
   handlePublicChange(e) {
-    const isPublic = e.target.value
+    const isPublic = e.target.checked
     this.props.updateCave({ isPublic })
   }
 
