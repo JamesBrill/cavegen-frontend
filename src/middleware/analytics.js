@@ -1,16 +1,6 @@
-import { LOCATION_CHANGE } from 'react-router-redux'
-import { SEGMENT_WRITE_KEY } from 'src/config'
-
-if (window && window.analytics) {
-  window.analytics.load(SEGMENT_WRITE_KEY)
-}
+/* eslint-disable no-undef */
 
 export default function analyticsMiddleware(store) {
-  // This allows us to assume that window.analytics is always a thing.
-  if (!window || !window.analytics) {
-    return f => f
-  }
-
   const initialState = store.getState()
 
   if (initialState.authentication.token) {
@@ -18,29 +8,57 @@ export default function analyticsMiddleware(store) {
   }
 
   return next => action => {
-    const prevState = store.getState()
     const result = next(action)
     const nextState = store.getState()
 
     switch (action.type) {
       case 'STORE_TOKEN':
         handleAuthentication(nextState)
-        handleLogin()
-        break
-
-      case 'BEGIN_GOOGLE_LOGIN':
-        handleBeginGoogleLogin()
         break
 
       case 'LOGOUT':
-        handleLogout()
+        handleLogout(nextState)
         break
 
-      case LOCATION_CHANGE:
-        handlePathChange(action, prevState)
+      case 'NEW_CAVE':
+        handleNewCave()
         break
 
-      // no default
+      case 'UPDATE_CAVE':
+        handleUpdateCave(result.payload.change, nextState)
+        break
+
+      case 'LOAD_CAVE_INTO_GRID':
+        handleLoadCave(result.payload.name)
+        break
+
+      case 'SET_CAVE_WIDTH':
+        handleSetCaveWidth(result.payload.caveWidth)
+        break
+
+      case 'SET_CAVE_HEIGHT':
+        handleSetCaveHeight(result.payload.caveHeight)
+        break
+
+      case 'SET_CURRENT_BRUSH':
+        handleSetCurrentBrush(result.payload.currentBrush.fileName)
+        break
+
+      case 'SET_BRUSH_SIZE':
+        handleSetBrushSize(result.payload.brushSize)
+        break
+
+      case 'START_REBUILD':
+        handleRebuild(result.payload.area, nextState)
+        break
+
+      case 'PLAY_CAVE':
+        handlePlayCave(nextState)
+        break
+
+      case 'UPDATE_USER_PROFILE':
+        handleUpdateProfile(result.payload.change)
+        break
     }
 
     return result
@@ -48,35 +66,66 @@ export default function analyticsMiddleware(store) {
 }
 
 function handleAuthentication(newState) {
-  const analytics = window.analytics
-  const { sub, email } = newState.authentication.claims
-  const emailDomain = email.substring(email.lastIndexOf('@') + 1)
-
-  analytics.identify(sub, { email, emailDomain })
-  analytics.alias(sub)
-  analytics.group(emailDomain)
+  ga('set', 'userId', newState.authentication.claims.sub)
+  ga('send', 'event', 'CaveGen', 'login', newState.authentication.claims.sub)
 }
 
-function handleLogin() {
-  window.analytics.track('Signed In')
+function handleLogout(newState) {
+  ga('send', 'event', 'CaveGen', 'logout', newState.authentication.claims.sub)
 }
 
-function handleBeginGoogleLogin() {
-  window.analytics.track('Started Google OAuth')
+function handleNewCave() {
+  ga('send', 'event', 'Caves', 'new cave')
 }
 
-function handleLogout() {
-  window.analytics.reset()
+function handleUpdateCave(change, newState) {
+  if (change.text) {
+    ga('send', 'event', 'Caves', 'update cave text', newState.caves.currentCaveName)
+  }
+  if (change.name) {
+    ga('send', 'event', 'Caves', 'update cave name', change.name)
+  }
+  if (change.isPublic) {
+    ga('send', 'event', 'Caves', 'make cave public', newState.caves.currentCaveName)
+  }
+  if (change.isPublic === false) {
+    ga('send', 'event', 'Caves', 'make cave private', newState.caves.currentCaveName)
+  }
 }
 
-function handlePathChange(action, prevState) {
-  const { pathname: path, search } = action.payload
-  const { locationBeforeTransitions } = prevState.routing
+function handleLoadCave(name) {
+  ga('send', 'event', 'Caves', 'load', name)
+}
 
-  if (locationBeforeTransitions) {
-    const { pathname: oldPath, search: oldSearch } = locationBeforeTransitions
-    window.analytics.page({ path, search, oldPath, oldSearch })
-  } else {
-    window.analytics.page({ path, search })
+function handleSetCaveWidth(width) {
+  ga('send', 'event', 'Caves', 'set width', width)
+}
+
+function handleSetCaveHeight(height) {
+  ga('send', 'event', 'Caves', 'set height', height)
+}
+
+function handleSetCurrentBrush(brush) {
+  ga('send', 'event', 'Editor', 'set brush type', brush)
+}
+
+function handleSetBrushSize(size) {
+  ga('send', 'event', 'Editor', 'set brush size', size)
+}
+
+function handleRebuild(area, newState) {
+  ga('send', 'event', 'Caves', 'rebuild', newState.caves.currentCaveName, area)
+}
+
+function handlePlayCave(newState) {
+  ga('send', 'event', 'Caves', 'play', newState.caves.currentCaveName)
+}
+
+function handleUpdateProfile(change) {
+  if (change.displayName) {
+    ga('send', 'event', 'Profile', 'update display name', change.displayName)
+  }
+  if (change.picture) {
+    ga('send', 'event', 'Profile', 'update picture', change.picture)
   }
 }
