@@ -33,8 +33,10 @@
 }
 
 .iconButton {
-  width: 3em;
-  height: 3em;
+  width: calc(4.5vw - 0.5em);
+  height: calc(4.5vw - 0.5em);
+  margin-left: 0.25em;
+  margin-right: 0.25em;
   padding: 0 !important;
   font-size: 16px !important;
   background-color: #567cde !important;
@@ -42,12 +44,13 @@
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  align-items: center !important;
 }
 
 .icon {
-  width: 2em;
-  height: 2em;
+  width: 80%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .iconButton:hover {
