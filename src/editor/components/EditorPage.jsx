@@ -140,6 +140,9 @@ export default class EditorPage extends PureComponent {
       case ';':
         tile = getTileFromSymbol('\"')
         break
+      case ':':
+        tile = getTileFromSymbol('\'')
+        break
 
       default:
         tile = getTileFromSymbol(e.key)

@@ -4,7 +4,8 @@ export const TILE_KEYS = ['x', 'b', 'k', 'shift+=', 'm', 'w', '/', 'shift+\\', '
                           'o', 'shift+6', 'shift+,', 'shift+.', 'v', ';',
                           'n', 'shift+9', 'shift+0', 'u',
                           '1', '2', '3', '4', '5', 'shift+2', 'shift+1', 'shift+`', 't', '.',
-                          'z', 's', 'c', '0', 'alt+3', 'shift+d', 'l', 'g', 'f', 'r']
+                          'z', 's', 'c', '0', 'alt+3', 'shift+d', 'l', 'g', 'f', 'r',
+                          ',', 'shift+;', 'shift+[', 'shift+]']
 
 export function getFileNameFromSymbol(symbol) {
   for (let i = 0; i < PALETTE_BRUSHES.length; i++) {
