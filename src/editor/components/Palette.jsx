@@ -31,7 +31,9 @@ export default class Palette extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        {PALETTE_IMAGE_PATHS.map(this.renderTileImage)}
+        <div className={styles.tiles}>
+          {PALETTE_IMAGE_PATHS.map(this.renderTileImage)}
+        </div>
       </div>
     )
   }
