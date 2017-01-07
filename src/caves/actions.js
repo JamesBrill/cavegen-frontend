@@ -15,7 +15,7 @@ export function newCave(text) {
         headers: { 'content-type': 'application/json' },
         body: { text }
       })
-
+      debugger
       return dispatch({
         type: 'NEW_CAVE',
         payload: { newCave: json }

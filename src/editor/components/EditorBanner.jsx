@@ -13,6 +13,7 @@ import {
   loadCaveIntoGrid,
   newCave
 } from 'src/caves/actions'
+import { undoCaveChange } from 'src/editor/actions'
 
 import styles from 'src/editor/components/EditorBanner.css'
 
@@ -53,7 +54,11 @@ export default class EditorBanner extends PureComponent {
   handleNewCave() {
     const { dispatch, onCaveRebuild } = this.props
     onCaveRebuild(40, 40) // TODO: would be nice not to use literals here
-    dispatch(newCave(getNewCaveCode()))
+    dispatch(newCave(getNewCaveCode())).then(response => {
+      if (response.error) {
+        dispatch(undoCaveChange()) // TODO: ideally wouldn't build a new cave at all
+      }
+    })
   }
 
   @autobind
