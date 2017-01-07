@@ -5,7 +5,7 @@ import Input from 'src/components/Input'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
-import { updateCave } from 'src/caves/actions'
+import { updateCave, loadPublicCaves } from 'src/caves/actions'
 import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
 import styles from './PropertiesModal.css'
@@ -22,7 +22,7 @@ function mapStateToProps(state) {
   }
 }
 
-@connect(mapStateToProps, { updateCave })
+@connect(mapStateToProps, { updateCave, loadPublicCaves })
 export default class PropertiesModal extends PureComponent {
   static propTypes = {
     logout: PropTypes.func,
@@ -33,14 +33,17 @@ export default class PropertiesModal extends PureComponent {
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     onCaveRebuild: PropTypes.func.isRequired,
-    isOwnedByAnotherUser: PropTypes.bool
+    isOwnedByAnotherUser: PropTypes.bool,
+    updateCave: PropTypes.func,
+    loadPublicCaves: PropTypes.func
   };
 
   constructor(props) {
     super(props)
 
     this.state = {
-      isOpen: false
+      isOpen: false,
+      publicCavesNeedUpdating: false
     }
   }
 
@@ -51,13 +54,17 @@ export default class PropertiesModal extends PureComponent {
 
   @autobind
   handleClose() {
-    this.setState({ isOpen: false })
+    if (this.state.publicCavesNeedUpdating) {
+      this.props.loadPublicCaves()
+    }
+    this.setState({ isOpen: false, publicCavesNeedUpdating: false })
   }
 
   @autobind
   handleNameChange(e) {
     const name = e.target.value
     this.props.updateCave({ name })
+    this.setState({ publicCavesNeedUpdating: true })
   }
 
   @autobind
@@ -76,6 +83,7 @@ export default class PropertiesModal extends PureComponent {
   handlePublicChange(e) {
     const isPublic = e.target.checked
     this.props.updateCave({ isPublic })
+    this.setState({ publicCavesNeedUpdating: true })
   }
 
   render() {

@@ -7,6 +7,7 @@ import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
 import { logout } from 'src/authentication/actions'
 import { updateUserProfile } from 'src/profile/actions'
+import { loadPublicCaves } from 'src/caves/actions'
 
 import styles from './ProfileModal.css'
 
@@ -16,10 +17,12 @@ function mapStateToProps(state) {
   }
 }
 
-@connect(mapStateToProps, { logout, updateUserProfile })
+@connect(mapStateToProps, { logout, updateUserProfile, loadPublicCaves })
 export default class ProfileModal extends PureComponent {
   static propTypes = {
     logout: PropTypes.func,
+    updateUserProfile: PropTypes.func,
+    loadPublicCaves: PropTypes.func,
     displayName: PropTypes.string
   };
 
@@ -27,7 +30,8 @@ export default class ProfileModal extends PureComponent {
     super(props)
 
     this.state = {
-      isOpen: false
+      isOpen: false,
+      publicCavesNeedUpdating: false
     }
   }
 
@@ -38,7 +42,10 @@ export default class ProfileModal extends PureComponent {
 
   @autobind
   handleClose() {
-    this.setState({ isOpen: false })
+    if (this.state.publicCavesNeedUpdating) {
+      this.props.loadPublicCaves()
+    }
+    this.setState({ isOpen: false, publicCavesNeedUpdating: false })
   }
 
   @autobind
@@ -51,6 +58,7 @@ export default class ProfileModal extends PureComponent {
   handleDisplayNameChange(e) {
     const displayName = e.target.value
     this.props.updateUserProfile({ displayName })
+    this.setState({ publicCavesNeedUpdating: true })
   }
 
   render() {
