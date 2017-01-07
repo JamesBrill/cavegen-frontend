@@ -45,7 +45,8 @@ export function updateCave(cave) {
         type: 'UPDATE_CAVE',
         payload: {
           uuid,
-          updatedCave: json
+          updatedCave: json,
+          change: cave
         }
       })
     } catch (e) {

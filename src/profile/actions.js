@@ -29,7 +29,10 @@ export function updateUserProfile(profile) {
 
       return dispatch({
         type: 'UPDATE_USER_PROFILE',
-        payload: json
+        payload: {
+          ...json,
+          change: profile
+        }
       })
     } catch (e) {
       return dispatch({
