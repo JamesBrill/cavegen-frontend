@@ -102,7 +102,7 @@ export function playCave() {
         body: { text }
       })
 
-      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/caves/${json.id}/`)
+      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${json.id}/`)
       const playerUrl = `http://droidfreak36.com/HATPC/reborn.php?cave=${caveUrl}`
       window.open(playerUrl, 'HATPC Reborn', 'height=440,width=600')
 
