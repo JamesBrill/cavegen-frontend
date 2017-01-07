@@ -21,7 +21,7 @@ export function updateUserProfile(profile) {
   return async function (dispatch, getState) {
     try {
       const currentProfile = getState().profile
-      const { json } = await apiRequest(getState, `/my-profile/`, {
+      const { json } = await apiRequest(getState, '/my-profile/', {
         method: 'put',
         headers: { 'content-type': 'application/json' },
         body: Object.assign({}, currentProfile, profile)
