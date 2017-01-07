@@ -42,6 +42,13 @@ export default class EditorBanner extends PureComponent {
     }
   }
 
+  getPublicCaveSelectOptions(cave) {
+    return {
+      value: cave.id,
+      label: `${cave.name} (${cave.authorName})`
+    }
+  }
+
   @autobind
   handleNewCave() {
     const { dispatch, onCaveRebuild } = this.props
@@ -73,7 +80,7 @@ export default class EditorBanner extends PureComponent {
     const computedClassName = classNames(styles.EditorBanner, className)
     // This is a bit cheeky as it reorders an array in the Redux store
     const userCaveOptions = caves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
-    const publicCaveOptions = publicCaves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
+    const publicCaveOptions = publicCaves.sort((a, b) => a.id - b.id).map(this.getPublicCaveSelectOptions)
 
     return (
       <div className={computedClassName}>
