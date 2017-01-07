@@ -39,7 +39,7 @@ gulp.task('publish:s3', ['build'], () => {
     secret: AWS.config.credentials.secretAccessKey,
     region: 'eu-west-1',
     params: {
-      Bucket: 'cavegen'
+      Bucket: 'cavegen.com'
     }
   }
 
