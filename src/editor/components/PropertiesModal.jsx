@@ -123,6 +123,7 @@ export default class PropertiesModal extends PureComponent {
             <CaveDimensionsInput
               className={styles.content}
               onCaveRebuild={this.handleRebuild}
+              onSave={this.handleClose}
               updateCave={this.handleUpdateCave}
               caveWidth={caveWidth}
               caveHeight={caveHeight} />
