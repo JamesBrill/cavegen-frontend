@@ -5,5 +5,4 @@
 .canvas {
   width: 100%;
   max-height: calc(100vh - 4.3em);
-  cursor: none;
 }
