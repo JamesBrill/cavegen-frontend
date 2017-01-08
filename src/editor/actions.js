@@ -98,23 +98,13 @@ export function startRebuild() {
 export const stopRebuild = createAction('STOP_REBUILD')
 
 export function playCave() {
-  return async function (dispatch, getState) {
+  return function (dispatch, getState) {
     try {
-      const text = getState().editor.caveCode
-      const { json } = await apiRequest(getState, '/caves/', {
-        method: 'post',
-        headers: { 'content-type': 'application/json' },
-        body: { text }
-      })
-
-      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${json.uuid}/`)
+      const uuid = getState().caves.currentCaveUuid
+      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${uuid}/`)
       const playerUrl = `http://droidfreak36.com/HATPC/reborn.php?cave=${caveUrl}`
       window.open(playerUrl, 'HATPC Reborn', 'height=440,width=600')
-
-      return dispatch({
-        type: 'PLAY_CAVE',
-        payload: text
-      })
+      return dispatch({ type: 'PLAY_CAVE' })
     } catch (e) {
       return dispatch({
         type: 'PLAY_CAVE_ERROR',
