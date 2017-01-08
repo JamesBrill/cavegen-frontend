@@ -1,4 +1,4 @@
-export const API_ROOT = 'http://cavegen-django-env.cpkepspdmm.eu-west-1.elasticbeanstalk.com/api'
+export const API_ROOT = 'https://cavegen.com/api'
 
 export const LOGIN_URL = 'https://cavegen.com/login/'
 export const AUTH0_CALLBACK_URL = `${API_ROOT}/auth`
