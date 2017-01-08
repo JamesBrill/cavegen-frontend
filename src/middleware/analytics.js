@@ -1,16 +1,19 @@
 /* eslint-disable no-undef */
 
 export default function analyticsMiddleware(store) {
+  const isProduction = process.env.NODE_ENV === 'production'
   const initialState = store.getState()
 
-  if (initialState.authentication.token) {
+  if (initialState.authentication.token && isProduction) {
     handleAuthentication(initialState)
   }
 
   return next => action => {
     const result = next(action)
     const nextState = store.getState()
-
+    if (!isProduction) {
+      return result
+    }
     switch (action.type) {
       case 'STORE_TOKEN':
         handleAuthentication(nextState)
