@@ -8,6 +8,7 @@ import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
 import { connect } from 'react-redux'
+import KeyHandler, { KEYDOWN, KEYUP } from 'react-key-handler'
 
 // TODO: add to validation
 import {
@@ -77,7 +78,10 @@ export default class Grid extends PureComponent {
     super(props)
 
     this.state = {
-      redrawCanvas: false
+      redrawCanvas: false,
+      pixelX: 0,
+      pixelY: 0,
+      deleting: false
     }
   }
 
@@ -208,6 +212,7 @@ export default class Grid extends PureComponent {
     dispatch(setPreviousCursorPosition({ x, y }))
   }
 
+  @autobind
   finishPainting() {
     const { dispatch, caveView, grid, changeController, currentCaveName } = this.props
     const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
@@ -251,8 +256,9 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
-  startPaintingAtMousePosition(pixelX, pixelY) {
+  startPaintingAtMousePosition(optionalBrush) {
     const { isOwnedByAnotherUser, dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
+    const { pixelX, pixelY } = this.state
     if (isOwnedByAnotherUser) {
       return
     }
@@ -260,7 +266,7 @@ export default class Grid extends PureComponent {
     const gridX = caveView.getGridX(pixelX)
     const gridY = caveView.getGridY(pixelY)
     if (grid.withinLimits(gridX, gridY)) {
-      this.applyBrushAtPosition(gridX, gridY, currentBrush)
+      this.applyBrushAtPosition(gridX, gridY, optionalBrush || currentBrush)
       caveView.paintLineMode = true
     }
 
@@ -270,8 +276,10 @@ export default class Grid extends PureComponent {
     }
   }
 
-  continuePaintingAtMousePosition(pixelX, pixelY) {
+  continuePaintingAtMousePosition() {
     const { caveView, previousCursor, grid, currentBrush } = this.props
+    const { pixelX, pixelY, deleting } = this.state
+    const spaceBrush = { fileName: 'space', symbol: ' ' }
     const gridX = caveView.getGridX(pixelX)
     const gridY = caveView.getGridY(pixelY)
 
@@ -290,7 +298,7 @@ export default class Grid extends PureComponent {
     }
 
     if (caveView.isMouseDown && grid.withinLimits(gridX, gridY)) {
-      this.applyBrushAtPosition(gridX, gridY, currentBrush)
+      this.applyBrushAtPosition(gridX, gridY, deleting ? spaceBrush : currentBrush)
     }
 
     if (grid.withinLimits(gridX, gridY)) {
@@ -321,12 +329,35 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  handleDeleteKeyDown() {
+    this.setState({ deleting: true })
+    const spaceBrush = { fileName: 'space', symbol: ' ' }
+    this.startPaintingAtMousePosition(spaceBrush)
+  }
+
+  @autobind
+  handleDeleteKeyUp() {
+    this.setState({ deleting: false })
+    this.finishPainting()
+  }
+
+  @autobind
+  handleInsertKeyDown() {
+    this.startPaintingAtMousePosition()
+  }
+
+  @autobind
+  handleInsertKeyUp() {
+    this.finishPainting()
+  }
+
+  @autobind
   handleMouseDown(e) {
     const { caveView } = this.props
     if (!caveView.zoomer.panning) {
-      const pixelX = e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
-      const pixelY = e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
-      this.startPaintingAtMousePosition(pixelX, pixelY)
+      this.setState({ pixelX: e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft })
+      this.setState({ pixelY: e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop })
+      this.startPaintingAtMousePosition()
     }
   }
 
@@ -337,9 +368,9 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleMouseMove(e) {
-    const pixelX = e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
-    const pixelY = e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
-    this.continuePaintingAtMousePosition(pixelX, pixelY)
+    this.setState({ pixelX: e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft })
+    this.setState({ pixelY: e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop })
+    this.continuePaintingAtMousePosition()
   }
 
   render() {
@@ -350,6 +381,12 @@ export default class Grid extends PureComponent {
 
     return (
       <div className={computedClassName}>
+        <KeyHandler keyEventName={KEYDOWN} keyValue='Insert' onKeyHandle={this.handleInsertKeyDown} />
+        <KeyHandler keyEventName={KEYUP} keyValue='Insert' onKeyHandle={this.handleInsertKeyUp} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='Delete' onKeyHandle={this.handleDeleteKeyDown} />
+        <KeyHandler keyEventName={KEYUP} keyValue='Delete' onKeyHandle={this.handleDeleteKeyUp} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyDown} />
+        <KeyHandler keyEventName={KEYUP} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyUp} />
         <canvas
           className={styles.canvas}
           width={newCanvasWidth}
