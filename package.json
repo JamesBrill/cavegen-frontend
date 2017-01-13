@@ -29,6 +29,7 @@
     "react-addons-css-transition-group": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-imation": "^0.5.3",
+    "react-key-handler": "^0.3.0",
     "react-keydown": "^1.6.5",
     "react-modal": "^1.4.0",
     "react-radio-group": "^3.0.1",
