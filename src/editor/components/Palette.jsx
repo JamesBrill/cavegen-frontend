@@ -21,7 +21,13 @@ export default class Palette extends PureComponent {
   renderTileImage(src, index) {
     const brush = PALETTE_BRUSHES[index]
     return (
-      <img className={styles.tile} key={brush.fileName} src={src} onClick={() => this.handlePaletteTileClick(brush)} />
+      <img
+        className={styles.tile}
+        key={brush.fileName}
+        src={src}
+        onClick={() => this.handlePaletteTileClick(brush)}
+        data-tip={brush.tooltip}
+        data-effect='float' />
     )
   }
 
