@@ -1,5 +1,9 @@
 @import '../../viewport.css';
 
+body { /* stylelint-disable-line selector-no-type */
+  background-color: black;
+}
+
 .App {
   z-index: 0;
 
