@@ -7,6 +7,7 @@ import Grid from 'src/editor/components/Grid'
 import { getTileFromSymbol, TILE_KEYS } from 'src/editor/utils/tiles'
 import EditorBanner from 'src/editor/components/EditorBanner'
 import EditorControls from 'src/editor/components/EditorControls'
+import CaveInformation from 'src/editor/components/CaveInformation'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
 
@@ -29,7 +30,8 @@ function mapStateToProps(state) {
   return {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
-    caves: state.caves.caves
+    caves: state.caves.caves,
+    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser
   }
 }
 
@@ -52,6 +54,7 @@ export default class EditorPage extends PureComponent {
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
+    isOwnedByAnotherUser: PropTypes.bool,
     dispatchSetGrid: PropTypes.func,
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetCaveWidth: PropTypes.func,
@@ -116,14 +119,18 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className } = this.props
+    const { className, isOwnedByAnotherUser } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
+
+    const controls = isOwnedByAnotherUser ?
+      <CaveInformation className={styles.editorControls} /> :
+      <EditorControls className={styles.editorControls} />
 
     return (
       <div className={computedClassName}>
         <EditorBanner onCaveRebuild={this.handleRebuild} />
         <div className={styles.editor}>
-          <EditorControls className={styles.editorControls} />
+          {controls}
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
         </div>
       </div>
