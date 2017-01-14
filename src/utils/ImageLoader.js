@@ -51,8 +51,7 @@ export const PALETTE_BRUSHES = {
     { fileName: 'secret', symbol: 'z', tooltip: 'Secret Area' },
     { fileName: 'heart', symbol: 'l', tooltip: 'Heart' },
     { fileName: 'gem', symbol: 'g', tooltip: 'Gem' },
-    { fileName: 'clone', symbol: 'c', tooltip: 'Fake Crate' },
-    { fileName: 'shockwave', symbol: '0', tooltip: 'Shockwave Error' }
+    { fileName: 'clone', symbol: 'c', tooltip: 'Fake Crate' }
   ]
 }
 const ASSETS_PATH = 'static'
