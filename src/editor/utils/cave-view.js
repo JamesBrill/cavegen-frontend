@@ -72,9 +72,7 @@ export class CaveView {
     const left = x * this.tileSize + this.leftBorder()
     const top = y * this.tileSize + this.topBorder()
     const size = this.tileSize
-    if (tile.symbol === 'x') {
-      this.drawSquare(left, top, size, 'gray')
-    } else if (tile.symbol === ' ') {
+    if (tile.symbol === ' ') {
       this.drawSquare(left, top, size, 'black')
     } else {
       this.drawImage(left, top, size, tile.fileName)
