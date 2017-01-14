@@ -62,7 +62,7 @@ body:global(.ReactModal__Body--open) { /* stylelint-disable-line selector-no-typ
   position: absolute;
   color: var(--brownish-grey);
   top: 0.3125em;
-  left: 0.3125em;
+  right: 0.3125em;
   width: 1em;
   z-index: 1;
   font-size: 2em;
