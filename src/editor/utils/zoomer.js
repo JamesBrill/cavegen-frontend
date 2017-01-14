@@ -153,8 +153,8 @@ export class Zoomer {
     const tilesBetweenMouseAndContextLeft = this.getNumberOfTilesFromContextLeft(this.lastX)
     const tilesBetweenMouseAndContextTop = this.getNumberOfTilesFromContextTop(this.lastY)
     this.caveView.scaleTileSize()
-    const oldXContextMouseDistance = this.lastX - this.totalXTranslation
-    const oldYContextMouseDistance = this.lastY - this.totalYTranslation
+    const oldXContextMouseDistance = this.lastX - this.totalXTranslation - this.caveView.border.left
+    const oldYContextMouseDistance = this.lastY - this.totalYTranslation - this.caveView.border.top
     const newXContextMouseDistance = this.caveView.tileSize * tilesBetweenMouseAndContextLeft
     const newYContextMouseDistance = this.caveView.tileSize * tilesBetweenMouseAndContextTop
     const xDifference = Math.round(newXContextMouseDistance - oldXContextMouseDistance)
@@ -197,12 +197,12 @@ export class Zoomer {
   }
 
   getNumberOfTilesFromContextLeft(mouseX) {
-    const distanceFromContextLeft = mouseX - this.totalXTranslation
+    const distanceFromContextLeft = mouseX - this.totalXTranslation - this.caveView.border.left
     return distanceFromContextLeft / this.caveView.tileSize
   }
 
   getNumberOfTilesFromContextTop(mouseY) {
-    const distanceFromContextTop = mouseY - this.totalYTranslation
+    const distanceFromContextTop = mouseY - this.totalYTranslation - this.caveView.border.top
     return distanceFromContextTop / this.caveView.tileSize
   }
 

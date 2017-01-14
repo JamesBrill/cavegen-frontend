@@ -28,12 +28,12 @@ export class CaveView {
 
   @autobind
   leftBorder() {
-    return Math.round(this.border.left * this.scalingFactor)
+    return this.border.left
   }
 
   @autobind
   topBorder() {
-    return Math.round(this.border.top * this.scalingFactor)
+    return this.border.top
   }
 
   draw = function ({ grid, canvas }) {
