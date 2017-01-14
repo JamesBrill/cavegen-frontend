@@ -174,8 +174,22 @@ export class Zoomer {
   centreOnZoomOut() {
     const zoomDepth = this.caveView.scalingFactor / this.caveView.MAX_SCALING_FACTOR
     if (zoomDepth < 0.2) {
-      const xCentringCompensation = Math.floor(0.1 * this.totalXTranslation)
-      const yCentringCompensation = Math.floor(0.1 * this.totalYTranslation)
+      let xCentringCompensation
+      if (this.totalXTranslation === 0) {
+        xCentringCompensation = 0
+      } else if (this.totalXTranslation > 0) {
+        xCentringCompensation = Math.max(Math.round(0.1 * this.totalXTranslation), 1)
+      } else {
+        xCentringCompensation = Math.min(Math.round(0.1 * this.totalXTranslation), -1)
+      }
+      let yCentringCompensation
+      if (this.totalYTranslation === 0) {
+        yCentringCompensation = 0
+      } else if (this.totalYTranslation > 0) {
+        yCentringCompensation = Math.max(Math.round(0.1 * this.totalYTranslation), 1)
+      } else {
+        yCentringCompensation = Math.min(Math.round(0.1 * this.totalYTranslation), -1)
+      }
       this.context.translate(-xCentringCompensation, -yCentringCompensation)
       this.totalXTranslation -= xCentringCompensation
       this.totalYTranslation -= yCentringCompensation
