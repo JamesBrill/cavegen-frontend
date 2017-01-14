@@ -20,7 +20,7 @@ export default class CopyToClipboard extends PureComponent {
     return (
       <div className={computedClassName}>
         <ReactZeroClipboard text={caveCode} swfPath='static/zero-clipboard/ZeroClipboard.swf'>
-          <Button className={styles.button}>
+          <Button className={styles.button} data-tip='Copy'>
             <CopyIcon className={styles.copyIcon} />
           </Button>
         </ReactZeroClipboard>
