@@ -13,14 +13,14 @@
 }
 
 .editorControls {
-  width: 18%;
+  width: 22%;
   max-height: calc(100vh - 4.3em);
   padding-left: 0.2em;
   padding-right: 0.2em;
 }
 
 .grid {
-  width: 82%;
+  width: 78%;
 }
 
 .dimensions {

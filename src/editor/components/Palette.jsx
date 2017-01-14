@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { autobind } from 'core-decorators'
 import classNames from 'classnames'
-import { PALETTE_BRUSHES, PALETTE_IMAGE_PATHS } from 'src/utils/ImageLoader'
+import { PALETTE_BRUSHES } from 'src/utils/ImageLoader'
 
 import styles from 'src/editor/components/Palette.css'
 
@@ -18,13 +18,25 @@ export default class Palette extends PureComponent {
   }
 
   @autobind
-  renderTileImage(src, index) {
-    const brush = PALETTE_BRUSHES[index]
+  renderTiles(category) {
+    const brushes = PALETTE_BRUSHES[category]
+    return (
+      <div>
+        <h2 className={styles.title}>{category}</h2>
+        <div className={styles.tiles}>
+          {brushes.map(this.renderTile)}
+        </div>
+      </div>
+    )
+  }
+
+  @autobind
+  renderTile(brush) {
     return (
       <img
         className={styles.tile}
         key={brush.fileName}
-        src={src}
+        src={brush.imagePath}
         onClick={() => this.handlePaletteTileClick(brush)}
         data-tip={brush.tooltip}
         data-effect='float' />
@@ -37,8 +49,8 @@ export default class Palette extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <div className={styles.tiles}>
-          {PALETTE_IMAGE_PATHS.map(this.renderTileImage)}
+        <div>
+          {Object.keys(PALETTE_BRUSHES).map(this.renderTiles)}
         </div>
       </div>
     )

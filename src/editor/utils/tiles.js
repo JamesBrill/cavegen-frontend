@@ -1,4 +1,4 @@
-import { PALETTE_BRUSHES } from 'src/utils/ImageLoader'
+import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 
 export const TILE_KEYS = ['x', 'b', 'k', 'shift+=', 'm', 'w', '/', 'shift+\\', '=',
                           'o', 'shift+6', 'shift+,', 'shift+.', 'v', ';',
@@ -8,18 +8,18 @@ export const TILE_KEYS = ['x', 'b', 'k', 'shift+=', 'm', 'w', '/', 'shift+\\', '
                           ',', 'shift+;', 'shift+[', 'shift+]']
 
 export function getFileNameFromSymbol(symbol) {
-  for (let i = 0; i < PALETTE_BRUSHES.length; i++) {
-    if (PALETTE_BRUSHES[i].symbol === symbol) {
-      return (symbol === ' ') ? 'black' : PALETTE_BRUSHES[i].fileName
+  for (let i = 0; i < PALETTE_BRUSHES_LIST.length; i++) {
+    if (PALETTE_BRUSHES_LIST[i].symbol === symbol) {
+      return (symbol === ' ') ? 'black' : PALETTE_BRUSHES_LIST[i].fileName
     }
   }
   return null
 }
 
 export function getTileFromSymbol(symbol) {
-  for (let i = 0; i < PALETTE_BRUSHES.length; i++) {
-    if (PALETTE_BRUSHES[i].symbol === symbol) {
-      return PALETTE_BRUSHES[i]
+  for (let i = 0; i < PALETTE_BRUSHES_LIST.length; i++) {
+    if (PALETTE_BRUSHES_LIST[i].symbol === symbol) {
+      return PALETTE_BRUSHES_LIST[i]
     }
   }
   return null

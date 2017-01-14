@@ -13,12 +13,19 @@
 }
 
 .tile {
-  width: calc(3.6vw - 2px);
-  height: calc(3.6vw - 2px);
+  width: 2.4vw;
+  height: 2.4vw;
   border: solid 3px black;
   display: block;
 
   &:hover {
     border: solid 3px white;
   }
+}
+
+.title {
+  margin-bottom: 0.15em;
+  color: white;
+  font-size: 0.8125em;
+  font-weight: normal;
 }

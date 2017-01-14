@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import { apiRequest } from 'src/utils/api'
 import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
-import { PALETTE_BRUSHES, PALETTE_IMAGES_PATH } from 'src/utils/ImageLoader'
+import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { getCaveCode } from 'src/editor/utils/cave-code'
 import { updateCave } from 'src/caves/actions'
 
@@ -117,13 +117,13 @@ export function playCave() {
 export function loadImages() {
   return async function (dispatch) {
     try {
-      const imageMap = await Promise.all(PALETTE_BRUSHES.map(brush => new Promise(resolve => {
+      const imageMap = await Promise.all(PALETTE_BRUSHES_LIST.map(brush => new Promise(resolve => {
         const fileName = brush.fileName
         const image = new Image()
         image.onload = function () {
           resolve({ fileName, image: this })
         }
-        image.src = `${PALETTE_IMAGES_PATH}/${fileName}.png`
+        image.src = brush.imagePath
       })))
 
       return dispatch({
