@@ -164,7 +164,22 @@ export class Zoomer {
     this.totalXTranslation -= xDifference
     this.totalYTranslation -= yDifference
 
+    if (mouseWheelDelta < 1) {
+      this.centreOnZoomOut()
+    }
+
     this.redraw()
+  }
+
+  centreOnZoomOut() {
+    const zoomDepth = this.caveView.scalingFactor / this.caveView.MAX_SCALING_FACTOR
+    if (zoomDepth < 0.2) {
+      const xCentringCompensation = Math.floor(0.1 * this.totalXTranslation)
+      const yCentringCompensation = Math.floor(0.1 * this.totalYTranslation)
+      this.context.translate(-xCentringCompensation, -yCentringCompensation)
+      this.totalXTranslation -= xCentringCompensation
+      this.totalYTranslation -= yCentringCompensation
+    }
   }
 
   getNumberOfTilesFromContextLeft(mouseX) {
