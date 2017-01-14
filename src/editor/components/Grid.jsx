@@ -272,7 +272,6 @@ export default class Grid extends PureComponent {
 
     if (brushSize !== lastUsedBrushSize) {
       dispatch(setLastUsedBrushSize(brushSize))
-      // _gaq.push(['_trackEvent', 'Painting', 'Use New Brush Size', this.caveName(), brushSize])
     }
   }
 
