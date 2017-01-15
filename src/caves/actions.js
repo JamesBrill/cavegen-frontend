@@ -114,9 +114,32 @@ export function loadCaveIntoGrid(cave) {
       payload: {
         uuid: cave.uuid,
         name: cave.name,
+        likes: cave.likes,
         isPublic: cave.isPublic,
         isOwnedByAnotherUser
       }
     })
+  }
+}
+
+export function likeCave() {
+  return async function (dispatch, getState) {
+    try {
+      const uuid = getState().caves.currentCaveUuid
+      const { json } = await apiRequest(getState, `/caves/${uuid}/like/`)
+
+      return dispatch({
+        type: 'LIKE_CAVE',
+        payload: {
+          uuid,
+          newLikedCave: json
+        }
+      })
+    } catch (e) {
+      return dispatch({
+        type: 'LIKE_CAVE_ERROR',
+        error: e
+      })
+    }
   }
 }

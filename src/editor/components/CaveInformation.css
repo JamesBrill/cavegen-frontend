@@ -25,6 +25,29 @@
   margin-right: auto;
 }
 
+.like {
+  width: 2em;
+  height: 2em;
+}
+
+.like:hover {
+  animation: pop 0.3s ease-in;
+}
+
+@keyframes pop {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(0, -3px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 .iconButton:hover {
   & > * {
     opacity: 0.5;

@@ -6,7 +6,8 @@ export default combineReducers({
   currentCaveUuid,
   currentCaveName,
   isCurrentCavePublic,
-  isOwnedByAnotherUser
+  isOwnedByAnotherUser,
+  currentCaveLikes
 })
 
 function caves(state = [], { type, payload }) {
@@ -40,9 +41,20 @@ function caves(state = [], { type, payload }) {
 }
 
 function publicCaves(state = [], { type, payload }) {
+  let currentCave
+  let currentCaveIndex
   switch (type) {
     case 'LOAD_PUBLIC_CAVES':
       return payload.caves
+
+    case 'LIKE_CAVE':
+      currentCave = state.filter(cave => cave.uuid === payload.uuid)[0]
+      currentCaveIndex = state.indexOf(currentCave)
+      return [
+        ...state.slice(0, currentCaveIndex),
+        payload.newLikedCave,
+        ...state.slice(currentCaveIndex + 1)
+      ]
 
     case 'LOGOUT':
       return []
@@ -111,6 +123,23 @@ function isOwnedByAnotherUser(state = false, { type, payload }) {
 
     case 'LOAD_CAVE_INTO_GRID':
       return payload.isOwnedByAnotherUser
+
+    default:
+      return state
+  }
+}
+
+function currentCaveLikes(state = 0, { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+    case 'LOGOUT':
+      return 0
+
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.likes
+
+    case 'LIKE_CAVE':
+      return state + 1
 
     default:
       return state

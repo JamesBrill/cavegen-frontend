@@ -1,5 +1,4 @@
 import { createAction } from 'redux-actions'
-import { apiRequest } from 'src/utils/api'
 import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { getCaveCode } from 'src/editor/utils/cave-code'
