@@ -68,7 +68,7 @@ export default class CaveInformation extends PureComponent {
           <h2 className={styles.title}>Date created:</h2>
           <h2 className={styles.informationValue}>{moment(currentCave.dateCreated).format('MM/DD/YYYY, h:mm a')}</h2>
         </div>
-        <div className={styles.information}>
+        <div className={styles.likesContainer}>
           <Like className={styles.like} color={likeColour} onClick={dispatchLikeCave} />
           <h2 className={styles.informationValue}>{currentCaveLikes}</h2>
         </div>

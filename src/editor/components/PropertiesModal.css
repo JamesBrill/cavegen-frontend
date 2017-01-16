@@ -2,7 +2,7 @@
 
 .modal {
   width: 20em;
-  height: 24em;
+  height: 28em;
   padding-top: 1.75em;
 }
 
@@ -42,4 +42,38 @@
 
 .content {
   width: 12em;
+}
+
+.like {
+  width: 2em;
+  height: 2em;
+}
+
+.like:hover {
+  animation: pop 0.3s ease-in;
+}
+
+@keyframes pop {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(0, -3px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.likesContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.likesValue {
+  padding-left: 0.75em;
+  font-weight: normal;
 }

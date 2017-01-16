@@ -3,6 +3,7 @@ import Modal from 'src/components/Modal'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
+import Like from 'src/editor/components/icons/Like'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
 import { updateCave, loadPublicCaves } from 'src/caves/actions'
@@ -18,7 +19,8 @@ function mapStateToProps(state) {
     isCurrentCavePublic: state.caves.isCurrentCavePublic,
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
-    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser
+    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser,
+    currentCaveLikes: state.caves.currentCaveLikes
   }
 }
 
@@ -35,7 +37,8 @@ export default class PropertiesModal extends PureComponent {
     onCaveRebuild: PropTypes.func.isRequired,
     isOwnedByAnotherUser: PropTypes.bool,
     updateCave: PropTypes.func,
-    loadPublicCaves: PropTypes.func
+    loadPublicCaves: PropTypes.func,
+    currentCaveLikes: PropTypes.number
   };
 
   constructor(props) {
@@ -88,7 +91,7 @@ export default class PropertiesModal extends PureComponent {
 
   render() {
     const { currentCaveUuid, currentCaveName, isCurrentCavePublic,
-            caveWidth, caveHeight, isOwnedByAnotherUser } = this.props
+            caveWidth, caveHeight, isOwnedByAnotherUser, currentCaveLikes } = this.props
     const { isOpen } = this.state
 
     if (isOwnedByAnotherUser) {
@@ -119,6 +122,13 @@ export default class PropertiesModal extends PureComponent {
             <div className={styles.content}>
               <h2 className={styles.title}>Public</h2>
               <input type='checkbox' onChange={this.handlePublicChange} defaultChecked={isCurrentCavePublic} />
+            </div>
+            <div className={styles.content}>
+              <h2 className={styles.title}>Likes</h2>
+              <div className={styles.likesContainer}>
+                <Like className={styles.like} color='red' />
+                <h2 className={styles.likesValue}>{currentCaveLikes}</h2>
+              </div>
             </div>
             <CaveDimensionsInput
               className={styles.content}
