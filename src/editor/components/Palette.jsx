@@ -21,7 +21,7 @@ export default class Palette extends PureComponent {
   renderTiles(category) {
     const brushes = PALETTE_BRUSHES[category]
     return (
-      <div>
+      <div key={category}>
         <h2 className={styles.title}>{category}</h2>
         <div className={styles.tiles}>
           {brushes.map(this.renderTile)}
