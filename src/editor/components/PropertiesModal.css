@@ -2,7 +2,13 @@
 
 .modal {
   width: 20em;
-  height: 28em;
+  height: 29em;
+  padding-top: 1.75em;
+}
+
+.privateModal {
+  width: 20em;
+  height: 24em;
   padding-top: 1.75em;
 }
 

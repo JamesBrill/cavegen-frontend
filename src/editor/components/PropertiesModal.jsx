@@ -110,10 +110,11 @@ export default class PropertiesModal extends PureComponent {
       )
     }
 
+    const modalStyle = isCurrentCavePublic ? styles.modal : styles.privateModal
     return (
       <div className={styles.PropertiesModal}>
         <Button className={styles.openButton} onClick={this.handleClick}>Properties</Button>
-        <Modal className={styles.modal} isOpen={isOpen} onRequestClose={this.handleClose}>
+        <Modal className={modalStyle} isOpen={isOpen} onRequestClose={this.handleClose}>
           <div className={styles.modalContents}>
             <div className={styles.content}>
               <h2 className={styles.title}>Name</h2>
@@ -123,13 +124,13 @@ export default class PropertiesModal extends PureComponent {
               <h2 className={styles.title}>Public</h2>
               <input type='checkbox' onChange={this.handlePublicChange} defaultChecked={isCurrentCavePublic} />
             </div>
-            <div className={styles.content}>
+            {isCurrentCavePublic && <div className={styles.content}>
               <h2 className={styles.title}>Likes</h2>
               <div className={styles.likesContainer}>
                 <Like className={styles.like} color='red' />
                 <h2 className={styles.likesValue}>{currentCaveLikes}</h2>
               </div>
-            </div>
+            </div>}
             <CaveDimensionsInput
               className={styles.content}
               onCaveRebuild={this.handleRebuild}
