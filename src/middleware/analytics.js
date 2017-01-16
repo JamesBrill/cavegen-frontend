@@ -62,6 +62,10 @@ export default function analyticsMiddleware(store) {
       case 'UPDATE_USER_PROFILE':
         handleUpdateProfile(result.payload.change)
         break
+
+      case 'LIKE_CAVE':
+        handleLikeCave(result.payload.newLikedCave.name)
+        break
     }
 
     return result
@@ -131,4 +135,8 @@ function handleUpdateProfile(change) {
   if (change.picture) {
     ga('send', 'event', 'Profile', 'update picture', change.picture)
   }
+}
+
+function handleLikeCave(likedCave) {
+  ga('send', 'event', 'Caves', 'like', likedCave)
 }
