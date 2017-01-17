@@ -54,8 +54,8 @@ function mapStateToProps(state) {
   }
 }
 
-const ZOOM_IN_KEYS = ['ctrl+=', 'cmd+=', 'alt+=']
-const ZOOM_OUT_KEYS = ['ctrl+-', 'cmd+-', 'alt+-']
+const ZOOM_IN_KEYS = ['ctrl+=', 'cmd+=', 'ctrl+alt+=', 'cmd+alt+=']
+const ZOOM_OUT_KEYS = ['ctrl+-', 'cmd+-', 'ctrl+alt+-', 'cmd+alt+-']
 
 @connect(mapStateToProps)
 export default class Grid extends PureComponent {
