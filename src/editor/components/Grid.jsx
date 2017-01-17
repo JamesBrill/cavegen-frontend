@@ -56,6 +56,10 @@ function mapStateToProps(state) {
 
 const ZOOM_IN_KEYS = ['ctrl+=', 'cmd+=', 'ctrl+alt+=', 'cmd+alt+=']
 const ZOOM_OUT_KEYS = ['ctrl+-', 'cmd+-', 'ctrl+alt+-', 'cmd+alt+-']
+const MOVE_LEFT_KEYS = ['left', 'alt+left']
+const MOVE_UP_KEYS = ['up', 'alt+up']
+const MOVE_RIGHT_KEYS = ['right', 'alt+right']
+const MOVE_DOWN_KEYS = ['down', 'alt+down']
 
 @connect(mapStateToProps)
 export default class Grid extends PureComponent {
@@ -375,34 +379,54 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
-  handleArrowKeyPanLeft() {
+  @keydown(MOVE_LEFT_KEYS)
+  handleArrowKeyPanLeft(e) {
+    e.preventDefault()
     const cursorPosition = this.state.cursorPosition
     if (this.props.grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
       this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
+      if (e.altKey) {
+        this.props.caveView.zoomer.panLeft()
+      }
     }
   }
 
   @autobind
-  handleArrowKeyPanUp() {
+  @keydown(MOVE_UP_KEYS)
+  handleArrowKeyPanUp(e) {
+    e.preventDefault()
     const cursorPosition = this.state.cursorPosition
     if (this.props.grid.withinLimits(cursorPosition.x, cursorPosition.y - 1)) {
       this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
+      if (e.altKey) {
+        this.props.caveView.zoomer.panUp()
+      }
     }
   }
 
   @autobind
-  handleArrowKeyPanRight() {
+  @keydown(MOVE_RIGHT_KEYS)
+  handleArrowKeyPanRight(e) {
+    e.preventDefault()
     const cursorPosition = this.state.cursorPosition
     if (this.props.grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
       this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
+      if (e.altKey) {
+        this.props.caveView.zoomer.panRight()
+      }
     }
   }
 
   @autobind
-  handleArrowKeyPanDown() {
+  @keydown(MOVE_DOWN_KEYS)
+  handleArrowKeyPanDown(e) {
+    e.preventDefault()
     const cursorPosition = this.state.cursorPosition
     if (this.props.grid.withinLimits(cursorPosition.x, cursorPosition.y + 1)) {
       this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
+      if (e.altKey) {
+        this.props.caveView.zoomer.panDown()
+      }
     }
   }
 
@@ -442,10 +466,6 @@ export default class Grid extends PureComponent {
         <KeyHandler keyEventName={KEYUP} keyValue='Delete' onKeyHandle={this.handleDeleteKeyUp} />
         <KeyHandler keyEventName={KEYDOWN} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyDown} />
         <KeyHandler keyEventName={KEYUP} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyUp} />
-        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowLeft' onKeyHandle={this.handleArrowKeyPanLeft} />
-        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowUp' onKeyHandle={this.handleArrowKeyPanUp} />
-        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowRight' onKeyHandle={this.handleArrowKeyPanRight} />
-        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowDown' onKeyHandle={this.handleArrowKeyPanDown} />
         <canvas
           className={styles.canvas}
           width={newCanvasWidth}
