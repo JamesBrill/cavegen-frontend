@@ -85,7 +85,11 @@ export default class Grid extends PureComponent {
       redrawCanvas: false,
       pixelX: 0,
       pixelY: 0,
-      deleting: false
+      deleting: false,
+      cursorPosition: {
+        x: 0,
+        y: 0
+      }
     }
   }
 
@@ -214,6 +218,7 @@ export default class Grid extends PureComponent {
     caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y, '#FFFFFF', brushSize)
     caveView.drawCursor(x, y, brushSize)
     dispatch(setPreviousCursorPosition({ x, y }))
+    this.setState({ cursorPosition: { x, y } })
   }
 
   @autobind
@@ -267,8 +272,9 @@ export default class Grid extends PureComponent {
       return
     }
     caveView.isMouseDown = true
-    const gridX = caveView.getGridX(pixelX)
-    const gridY = caveView.getGridY(pixelY)
+    const cursorPosition = this.state.cursorPosition
+    const gridX = cursorPosition.x || caveView.getGridX(pixelX)
+    const gridY = cursorPosition.y || caveView.getGridY(pixelY)
     if (grid.withinLimits(gridX, gridY)) {
       this.applyBrushAtPosition(gridX, gridY, optionalBrush || currentBrush)
       caveView.paintLineMode = true
@@ -369,6 +375,38 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  handleArrowKeyPanLeft() {
+    const cursorPosition = this.state.cursorPosition
+    if (this.props.grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
+      this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
+    }
+  }
+
+  @autobind
+  handleArrowKeyPanUp() {
+    const cursorPosition = this.state.cursorPosition
+    if (this.props.grid.withinLimits(cursorPosition.x, cursorPosition.y - 1)) {
+      this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
+    }
+  }
+
+  @autobind
+  handleArrowKeyPanRight() {
+    const cursorPosition = this.state.cursorPosition
+    if (this.props.grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
+      this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
+    }
+  }
+
+  @autobind
+  handleArrowKeyPanDown() {
+    const cursorPosition = this.state.cursorPosition
+    if (this.props.grid.withinLimits(cursorPosition.x, cursorPosition.y + 1)) {
+      this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
+    }
+  }
+
+  @autobind
   handleMouseDown(e) {
     const { caveView } = this.props
     if (!caveView.zoomer.panning) {
@@ -404,6 +442,10 @@ export default class Grid extends PureComponent {
         <KeyHandler keyEventName={KEYUP} keyValue='Delete' onKeyHandle={this.handleDeleteKeyUp} />
         <KeyHandler keyEventName={KEYDOWN} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyDown} />
         <KeyHandler keyEventName={KEYUP} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyUp} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowLeft' onKeyHandle={this.handleArrowKeyPanLeft} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowUp' onKeyHandle={this.handleArrowKeyPanUp} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowRight' onKeyHandle={this.handleArrowKeyPanRight} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='ArrowDown' onKeyHandle={this.handleArrowKeyPanDown} />
         <canvas
           className={styles.canvas}
           width={newCanvasWidth}
