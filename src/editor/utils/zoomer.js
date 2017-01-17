@@ -137,6 +137,14 @@ export class Zoomer {
     }
   }
 
+  zoomIn() {
+    this.zoom(1)
+  }
+
+  zoomOut() {
+    this.zoom(-1)
+  }
+
   zoom(mouseWheelDelta) {
     const gridX = this.caveView.getGridX(this.lastX)
     const gridY = this.caveView.getGridY(this.lastY)

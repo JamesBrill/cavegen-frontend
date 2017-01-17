@@ -9,6 +9,7 @@ import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
 import { connect } from 'react-redux'
 import KeyHandler, { KEYDOWN, KEYUP } from 'react-key-handler'
+import keydown from 'react-keydown'
 
 // TODO: add to validation
 import {
@@ -52,6 +53,9 @@ function mapStateToProps(state) {
     isOwnedByAnotherUser
   }
 }
+
+const ZOOM_IN_KEYS = ['ctrl+=', 'cmd+=']
+const ZOOM_OUT_KEYS = ['ctrl+-', 'cmd+-']
 
 @connect(mapStateToProps)
 export default class Grid extends PureComponent {
@@ -348,6 +352,20 @@ export default class Grid extends PureComponent {
   @autobind
   handleInsertKeyUp() {
     this.finishPainting()
+  }
+
+  @autobind
+  @keydown(ZOOM_IN_KEYS)
+  handleZoomIn(e) {
+    e.preventDefault()
+    this.props.caveView.zoomer.zoomIn()
+  }
+
+  @autobind
+  @keydown(ZOOM_OUT_KEYS)
+  handleZoomOut(e) {
+    e.preventDefault()
+    this.props.caveView.zoomer.zoomOut()
   }
 
   @autobind
