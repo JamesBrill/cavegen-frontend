@@ -7,6 +7,7 @@ import { getCaveCode } from 'src/editor/utils/cave-code'
 import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
+import { setUpTileKeyListeners } from 'src/editor/utils/keyHandler'
 import { connect } from 'react-redux'
 import KeyHandler, { KEYDOWN, KEYUP } from 'react-key-handler'
 import keydown from 'react-keydown'
@@ -17,6 +18,7 @@ import {
   setCaveView,
   setCaveWidth,
   setCaveHeight,
+  setCurrentBrush,
   setChangeController,
   setPreviousCursorSize,
   setPreviousCursorPosition,
@@ -105,6 +107,7 @@ export default class Grid extends PureComponent {
     if (currentCave) {
       dispatch(loadCaveIntoGrid(currentCave))
     }
+    setUpTileKeyListeners(brush => dispatch(setCurrentBrush(brush)), this.handleInsertTile)
   }
 
   componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {
@@ -346,6 +349,12 @@ export default class Grid extends PureComponent {
     this.setState({ deleting: true })
     const spaceBrush = { fileName: 'space', symbol: ' ' }
     this.startPaintingAtMousePosition(spaceBrush)
+  }
+
+  @autobind
+  handleInsertTile(brush) {
+    this.startPaintingAtMousePosition(brush)
+    this.finishPainting()
   }
 
   @autobind

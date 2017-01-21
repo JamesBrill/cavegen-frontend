@@ -1,10 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import keydown from 'react-keydown'
 import { autobind } from 'core-decorators'
 import Grid from 'src/editor/components/Grid'
-import { getTileFromSymbol, TILE_KEYS } from 'src/editor/utils/tiles'
 import EditorBanner from 'src/editor/components/EditorBanner'
 import EditorControls from 'src/editor/components/EditorControls'
 import CaveInformation from 'src/editor/components/CaveInformation'
@@ -93,29 +91,6 @@ export default class EditorPage extends PureComponent {
       width: width || caveWidth,
       height: height || caveHeight
     }))
-  }
-
-  @autobind
-  @keydown(TILE_KEYS)
-  handleTileKeyPress(e) {
-    let tile
-    switch (e.key) {
-      case 's':
-        tile = getTileFromSymbol(' ')
-        break
-      case ';':
-        tile = getTileFromSymbol('\"')
-        break
-      case ':':
-        tile = getTileFromSymbol('\'')
-        break
-
-      default:
-        tile = getTileFromSymbol(e.key)
-    }
-    if (tile) {
-      this.props.dispatchSetCurrentBrush(tile)
-    }
   }
 
   render() {
