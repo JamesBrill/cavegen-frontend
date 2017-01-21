@@ -7,6 +7,7 @@ import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import Button from 'src/components/Button'
 import PropertiesModal from 'src/editor/components/PropertiesModal'
+import HotkeysModal from 'src/editor/components/HotkeysModal'
 import ProfileModal from 'src/profile/components/ProfileModal'
 
 import {
@@ -106,6 +107,7 @@ export default class EditorBanner extends PureComponent {
           </div>
         </div>
         <div className={styles.right}>
+          <HotkeysModal />
           <ProfileModal />
         </div>
       </div>
