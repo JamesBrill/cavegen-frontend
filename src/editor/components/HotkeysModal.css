@@ -38,7 +38,30 @@
   text-align: center;
 }
 
+.actionTable {
+  border-collapse: collapse;
+
+  & > tbody {
+    & > :not(:first-child) {
+      & > * {
+        border-left: 1pt solid black;
+        border-right: 1pt solid black;
+      }
+    }
+  }
+}
+
 .cell {
   text-align: center;
   padding-bottom: 1em;
+}
+
+.title {
+  margin-bottom: 0.5em;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.actionDividerRow {
+  border-bottom: 1pt solid black;
 }
