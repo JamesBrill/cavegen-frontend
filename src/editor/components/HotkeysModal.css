@@ -51,6 +51,10 @@
   }
 }
 
+.actionTile {
+  max-width: 9em;
+}
+
 .cell {
   text-align: center;
   padding-bottom: 1em;

@@ -88,7 +88,7 @@ export default class HotkeysModal extends PureComponent {
                   <td className={styles.actionTile}>Ctrl + Shift + z</td>
                 </tr>
                 <tr key='Insert' className={styles.actionDividerRow}>
-                  <td className={styles.actionTile}>Insert selected tile</td>
+                  <td className={styles.actionTile}>Insert tile of selected type</td>
                   <td className={styles.actionTile}>Insert</td>
                 </tr>
                 <tr key='Delete'>
