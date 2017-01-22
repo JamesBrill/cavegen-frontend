@@ -141,7 +141,5 @@ export function setUpTileKeyListeners(selectBrush, insertTile) {
         applyHotkey(e, brush)
       }
     }
-
-    e.preventDefault()
   }, true)
 }
