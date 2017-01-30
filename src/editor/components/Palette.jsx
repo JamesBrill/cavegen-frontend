@@ -8,7 +8,8 @@ import styles from 'src/editor/components/Palette.css'
 export default class Palette extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    onTileClick: PropTypes.func
+    onTileClick: PropTypes.func,
+    selectedTile: PropTypes.object
   };
 
   @autobind
@@ -32,9 +33,12 @@ export default class Palette extends PureComponent {
 
   @autobind
   renderTile(brush) {
+    const tileStyle = brush.symbol === this.props.selectedTile.symbol ?
+      styles.selectedTile :
+      styles.tile
     return (
       <img
-        className={styles.tile}
+        className={tileStyle}
         key={brush.fileName}
         src={brush.imagePath}
         onClick={() => this.handlePaletteTileClick(brush)}

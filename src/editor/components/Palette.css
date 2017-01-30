@@ -12,15 +12,23 @@
   flex-wrap: wrap;
 }
 
-.tile {
+.tile,
+.selectedTile {
   width: 2.4vw;
   height: 2.4vw;
-  border: solid 3px black;
   display: block;
 
   &:hover {
     border: solid 3px white;
   }
+}
+
+.tile {
+  border: solid 3px black;
+}
+
+.selectedTile {
+  border: solid 3px gold;
 }
 
 .title {

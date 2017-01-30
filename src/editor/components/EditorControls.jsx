@@ -24,7 +24,8 @@ import {
 
 function mapStateToProps(state) {
   return {
-    caveCode: state.editor.caveCode
+    caveCode: state.editor.caveCode,
+    currentBrush: state.editor.currentBrush
   }
 }
 
@@ -66,8 +67,8 @@ export default class EditorControls extends PureComponent {
   }
 
   render() {
-    const { className, caveCode, dispatchSetBrushSize, dispatchPlayCave,
-            dispatchSetCurrentBrush } = this.props
+    const { className, caveCode, currentBrush, dispatchSetBrushSize,
+            dispatchPlayCave, dispatchSetCurrentBrush } = this.props
     const computedClassName = classNames(styles.EditorControls, className)
 
     return (
@@ -86,7 +87,7 @@ export default class EditorControls extends PureComponent {
           </Button>
           <ReactTooltip effect='solid' delayShow={250} />
         </div>
-        <Palette onTileClick={dispatchSetCurrentBrush} />
+        <Palette onTileClick={dispatchSetCurrentBrush} selectedTile={currentBrush} />
       </div>
     )
   }
