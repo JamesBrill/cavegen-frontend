@@ -9,11 +9,7 @@ import styles from 'src/editor/components/CaveDimensionsInput.css'
 export default class CaveDimensionsInput extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    onCaveRebuild: PropTypes.func,
-    onSave: PropTypes.func,
-    updateCave: PropTypes.func,
-    caveWidth: PropTypes.number,
-    caveHeight: PropTypes.number
+    onCreate: PropTypes.func
   };
 
   constructor(props) {
@@ -40,26 +36,24 @@ export default class CaveDimensionsInput extends PureComponent {
   }
 
   @autobind
-  handleRebuild() {
-    const { onCaveRebuild, updateCave } = this.props
+  handleCreate() {
     const { width, height } = this.state
-    onCaveRebuild(width, height)
-    updateCave(width, height)
+    this.props.onCreate(width, height)
   }
 
   render() {
-    const { className, caveWidth, caveHeight, onSave } = this.props
+    const { className } = this.props
+    const { width, height } = this.state
     const computedClassName = classNames(styles.CaveDimensionsInput, className)
 
     return (
       <div className={computedClassName}>
         <h2 className={styles.title}>Width</h2>
-        <Input onChange={this.handleWidthChange} key={`width: ${caveWidth}`} defaultValue={caveWidth} />
+        <Input onChange={this.handleWidthChange} key='width' value={width} />
         <h2 className={styles.title}>Height</h2>
-        <Input onChange={this.handleHeightChange} key={`height: ${caveHeight}`} defaultValue={caveHeight} />
+        <Input onChange={this.handleHeightChange} key='height' value={height} />
         <div className={styles.buttons}>
-          <Button className={styles.rebuildButton} onClick={this.handleRebuild}>Rebuild</Button>
-          <Button className={styles.saveButton} onClick={onSave}>Save</Button>
+          <Button className={styles.createButton} onClick={this.handleCreate}>Create</Button>
         </div>
       </div>
     )

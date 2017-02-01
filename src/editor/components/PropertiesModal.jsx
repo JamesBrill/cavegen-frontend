@@ -2,12 +2,10 @@ import React, { PureComponent, PropTypes } from 'react'
 import Modal from 'src/components/Modal'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
-import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import Like from 'src/editor/components/icons/Like'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
 import { updateCave, loadPublicCaves } from 'src/caves/actions'
-import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
 import styles from './PropertiesModal.css'
 
@@ -34,7 +32,6 @@ export default class PropertiesModal extends PureComponent {
     isCurrentCavePublic: PropTypes.bool,
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
-    onCaveRebuild: PropTypes.func.isRequired,
     isOwnedByAnotherUser: PropTypes.bool,
     updateCave: PropTypes.func,
     loadPublicCaves: PropTypes.func,
@@ -71,18 +68,6 @@ export default class PropertiesModal extends PureComponent {
   }
 
   @autobind
-  handleUpdateCave(width, height) {
-    const caveCode = getCaveCodeOfDimensions(width, height)
-    this.props.updateCave({ text: caveCode })
-  }
-
-  @autobind
-  handleRebuild(width, height) {
-    this.props.onCaveRebuild(width, height)
-    this.handleClose()
-  }
-
-  @autobind
   handlePublicChange(e) {
     const isPublic = e.target.checked
     this.props.updateCave({ isPublic })
@@ -91,7 +76,7 @@ export default class PropertiesModal extends PureComponent {
 
   render() {
     const { currentCaveUuid, currentCaveName, isCurrentCavePublic,
-            caveWidth, caveHeight, isOwnedByAnotherUser, currentCaveLikes } = this.props
+            isOwnedByAnotherUser, currentCaveLikes } = this.props
     const { isOpen } = this.state
 
     if (isOwnedByAnotherUser) {
@@ -131,13 +116,6 @@ export default class PropertiesModal extends PureComponent {
                 <h2 className={styles.likesValue}>{currentCaveLikes}</h2>
               </div>
             </div>}
-            <CaveDimensionsInput
-              className={styles.content}
-              onCaveRebuild={this.handleRebuild}
-              onSave={this.handleClose}
-              updateCave={this.handleUpdateCave}
-              caveWidth={caveWidth}
-              caveHeight={caveHeight} />
           </div>
         </Modal>
       </div>

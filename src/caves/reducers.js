@@ -84,6 +84,8 @@ function currentCaveUuid(state = null, { type, payload }) {
 function currentCaveName(state = 'Untitled', { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
+      return payload.newCave.name
+
     case 'LOGOUT':
       return 'Untitled'
 

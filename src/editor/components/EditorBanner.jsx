@@ -2,19 +2,16 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
-import { getNewCaveCode } from 'src/editor/utils/cave-code'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
-import Button from 'src/components/Button'
 import PropertiesModal from 'src/editor/components/PropertiesModal'
 import HotkeysModal from 'src/editor/components/HotkeysModal'
+import NewCaveModal from 'src/editor/components/NewCaveModal'
 import ProfileModal from 'src/profile/components/ProfileModal'
 
 import {
-  loadCaveIntoGrid,
-  newCave
+  loadCaveIntoGrid
 } from 'src/caves/actions'
-import { undoCaveChange } from 'src/editor/actions'
 
 import styles from 'src/editor/components/EditorBanner.css'
 
@@ -52,17 +49,6 @@ export default class EditorBanner extends PureComponent {
   }
 
   @autobind
-  handleNewCave() {
-    const { dispatch, onCaveRebuild } = this.props
-    onCaveRebuild(40, 40) // TODO: would be nice not to use literals here
-    dispatch(newCave(getNewCaveCode())).then(response => {
-      if (response.error) {
-        dispatch(undoCaveChange()) // TODO: ideally wouldn't build a new cave at all
-      }
-    })
-  }
-
-  @autobind
   handleUserCaveChange(value) {
     const { caves, dispatch } = this.props
     const cave = caves.filter(c => c.id === value)[0]
@@ -91,8 +77,8 @@ export default class EditorBanner extends PureComponent {
     return (
       <div className={computedClassName}>
         <div className={styles.left}>
-          <Button className={styles.newCave} onClick={this.handleNewCave}>New Cave</Button>
-          <PropertiesModal onCaveRebuild={this.props.onCaveRebuild} />
+          <NewCaveModal onCaveRebuild={this.props.onCaveRebuild} />
+          <PropertiesModal />
           <div className={styles.myCaves}>
             <Select
               options={userCaveOptions}

@@ -1,5 +1,5 @@
 import { apiRequest } from 'src/utils/api'
-import { getNewCaveCode } from 'src/editor/utils/cave-code'
+import { getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 import { Cave } from 'src/editor/utils/cave'
 import {
   setGrid,
@@ -7,13 +7,14 @@ import {
   setCaveHeight
 } from 'src/editor/actions'
 
-export function newCave(text) {
+export function newCave(name, width, height) {
   return async function (dispatch, getState) {
     try {
+      const text = getCaveCodeOfDimensions(width || 40, height || 40)
       const { json } = await apiRequest(getState, '/caves/', {
         method: 'post',
         headers: { 'content-type': 'application/json' },
-        body: { text }
+        body: { name, text }
       })
 
       return dispatch({
@@ -63,7 +64,7 @@ export function loadCaves() {
     try {
       const { json } = await apiRequest(getState, '/my-caves/')
       if (json.length === 0) {
-        dispatch(newCave(getNewCaveCode()))
+        dispatch(newCave('Untitled'))
       }
       return dispatch({
         type: 'LOAD_CAVES',

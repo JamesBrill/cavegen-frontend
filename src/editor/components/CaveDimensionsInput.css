@@ -19,20 +19,11 @@
   margin-left: 3em;
 }
 
-.rebuildButton,
-.saveButton {
-  width: 10em;
+.createButton {
+  width: 8em;
   height: 2.57em;
   margin-top: 1.75em;
   margin-left: 1em;
-  margin-right: auto;
   color: white;
-}
-
-.rebuildButton {
-  background-color: var(--alizarin-crimson) !important; /* stylelint-disable-line declaration-no-important */
-}
-
-.saveButton {
   background-color: var(--cornflower-blue) !important; /* stylelint-disable-line declaration-no-important */
 }
