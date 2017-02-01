@@ -4,6 +4,11 @@ import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { getCaveCode } from 'src/editor/utils/cave-code'
 import { updateCave } from 'src/caves/actions'
 
+export const setOpenTab = createAction(
+  'SET_OPEN_TAB',
+  openTab => ({ openTab })
+)
+
 export const setGrid = createAction(
   'SET_GRID',
   grid => ({ grid })

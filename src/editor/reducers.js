@@ -12,7 +12,8 @@ export default combineReducers({
   lastUsedBrushSize,
   previousCursor,
   needsRebuild,
-  imageMap
+  imageMap,
+  openTab
 })
 
 function grid(state = null, { type, payload }) {
@@ -142,6 +143,16 @@ function imageMap(state = [], { type, payload }) {
   switch (type) {
     case 'LOAD_IMAGES':
       return payload.imageMap
+
+    default:
+      return state
+  }
+}
+
+function openTab(state = 'palette', { type, payload }) {
+  switch (type) {
+    case 'SET_OPEN_TAB':
+      return payload.openTab
 
     default:
       return state

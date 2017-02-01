@@ -64,6 +64,7 @@
   padding-left: 0.5em;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .likesContainer {
@@ -82,4 +83,8 @@
   color: white;
   padding-left: 0.75em;
   font-weight: normal;
+}
+
+.propertyInput {
+  margin-left: 1em;
 }

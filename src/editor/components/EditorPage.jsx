@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import Grid from 'src/editor/components/Grid'
 import EditorBanner from 'src/editor/components/EditorBanner'
-import EditorControls from 'src/editor/components/EditorControls'
-import CaveInformation from 'src/editor/components/CaveInformation'
+import SidePanel from 'src/editor/components/SidePanel'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
 
@@ -29,7 +28,8 @@ function mapStateToProps(state) {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
     caves: state.caves.caves,
-    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser
+    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser,
+    openTab: state.editor.openTab
   }
 }
 
@@ -60,7 +60,8 @@ export default class EditorPage extends PureComponent {
     dispatchStartRebuild: PropTypes.func,
     dispatchLoadCaves: PropTypes.func,
     dispatchLoadPublicCaves: PropTypes.func,
-    dispatchLoadCaveIntoGrid: PropTypes.func
+    dispatchLoadCaveIntoGrid: PropTypes.func,
+    openTab: PropTypes.oneOf(['palette', 'properties'])
   };
 
   componentWillMount() {
@@ -94,18 +95,14 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, isOwnedByAnotherUser } = this.props
+    const { className, isOwnedByAnotherUser, openTab } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
-
-    const controls = isOwnedByAnotherUser ?
-      <CaveInformation className={styles.editorControls} /> :
-      <EditorControls className={styles.editorControls} />
 
     return (
       <div className={computedClassName}>
         <EditorBanner onCaveRebuild={this.handleRebuild} />
         <div className={styles.editor}>
-          {controls}
+          <SidePanel isOwnedByAnotherUser={isOwnedByAnotherUser} openTab={openTab} />
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
         </div>
       </div>

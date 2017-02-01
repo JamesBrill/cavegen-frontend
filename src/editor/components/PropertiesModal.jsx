@@ -5,6 +5,7 @@ import Input from 'src/components/Input'
 import Like from 'src/editor/components/icons/Like'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
+import { setOpenTab } from 'src/editor/actions'
 import { updateCave, loadPublicCaves } from 'src/caves/actions'
 
 import styles from './PropertiesModal.css'
@@ -18,11 +19,12 @@ function mapStateToProps(state) {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
     isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser,
-    currentCaveLikes: state.caves.currentCaveLikes
+    currentCaveLikes: state.caves.currentCaveLikes,
+    openTab: state.editor.openTab
   }
 }
 
-@connect(mapStateToProps, { updateCave, loadPublicCaves })
+@connect(mapStateToProps, { updateCave, loadPublicCaves, setOpenTab })
 export default class PropertiesModal extends PureComponent {
   static propTypes = {
     logout: PropTypes.func,
@@ -35,7 +37,9 @@ export default class PropertiesModal extends PureComponent {
     isOwnedByAnotherUser: PropTypes.bool,
     updateCave: PropTypes.func,
     loadPublicCaves: PropTypes.func,
-    currentCaveLikes: PropTypes.number
+    setOpenTab: PropTypes.func,
+    currentCaveLikes: PropTypes.number,
+    openTab: PropTypes.oneOf(['palette', 'properties'])
   };
 
   constructor(props) {
@@ -49,7 +53,8 @@ export default class PropertiesModal extends PureComponent {
 
   @autobind
   handleClick() {
-    this.setState({ isOpen: !this.state.isOpen })
+    this.props.setOpenTab(this.props.openTab === 'palette' ? 'properties' : 'palette')
+    //this.setState({ isOpen: !this.state.isOpen })
   }
 
   @autobind

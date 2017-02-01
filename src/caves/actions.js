@@ -42,6 +42,10 @@ export function updateCave(cave) {
         body: Object.assign({}, currentCave, cave)
       })
 
+      if (cave.isPublic !== undefined) {
+        dispatch(loadPublicCaves())
+      }
+
       return dispatch({
         type: 'UPDATE_CAVE',
         payload: {
