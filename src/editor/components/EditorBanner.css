@@ -40,3 +40,13 @@
   margin: 1em;
   width: 20%;
 }
+
+.button {
+  width: 8em;
+  height: 2.57em;
+  color: white;
+  margin: 1em;
+  padding-left: 0.5em !important; /* stylelint-disable-line declaration-no-important */
+  padding-right: 0.5em !important; /* stylelint-disable-line declaration-no-important */
+  background-color: var(--cornflower-blue) !important; /* stylelint-disable-line declaration-no-important */
+}
