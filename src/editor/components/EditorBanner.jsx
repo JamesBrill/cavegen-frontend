@@ -24,7 +24,8 @@ function mapStateToProps(state) {
     caves: state.caves.caves,
     publicCaves: state.caves.publicCaves,
     userId: state.profile.userId,
-    openTab: state.editor.openTab
+    openTab: state.editor.openTab,
+    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser
   }
 }
 
@@ -37,7 +38,8 @@ export default class EditorBanner extends PureComponent {
     publicCaves: PropTypes.arrayOf(PropTypes.object),
     onCaveRebuild: PropTypes.func.isRequired,
     userId: PropTypes.number,
-    openTab: PropTypes.oneOf(['palette', 'properties'])
+    openTab: PropTypes.oneOf(['palette', 'properties']),
+    isOwnedByAnotherUser: PropTypes.bool
   };
 
   getCaveSelectOptions(cave) {
@@ -80,12 +82,12 @@ export default class EditorBanner extends PureComponent {
   }
 
   render() {
-    const { className, caves, publicCaves, openTab } = this.props
+    const { className, caves, publicCaves, openTab, isOwnedByAnotherUser } = this.props
     const computedClassName = classNames(styles.EditorBanner, className)
     // This is a bit cheeky as it reorders an array in the Redux store
     const userCaveOptions = caves.sort((a, b) => a.id - b.id).map(this.getCaveSelectOptions)
     const publicCaveOptions = publicCaves.sort((a, b) => a.id - b.id).map(this.getPublicCaveSelectOptions)
-    const tabText = openTab === 'properties' ? 'Palette' : 'Properties'
+    const tabText = (!isOwnedByAnotherUser && openTab === 'properties') ? 'Palette' : 'Properties'
 
     return (
       <div className={computedClassName}>
