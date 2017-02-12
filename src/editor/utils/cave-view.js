@@ -136,6 +136,18 @@ export class CaveView {
   }
 
   drawNewColumnLine(pixelX, colour) {
+    const linePixelX = this.getColumnInsertionPixelX(pixelX)
+    this.previousColumnLineX = pixelX
+    this.linePainter.setColour(colour || '#50F442', this)
+    if (linePixelX - this.leftBorder() >= this.tileSize && linePixelX - this.leftBorder() <= this.tileSize * (this.width - 1)) {
+      this.linePainter.plotVerticalLine(linePixelX,
+                                        this.topBorder() + this.tileSize,
+                                        this.topBorder() + this.tileSize * (this.height - 1),
+                                        this)
+    }
+  }
+
+  getColumnInsertionPixelX(pixelX) {
     const transformedPixel = this.zoomer.transformPixelX(pixelX)
     const distanceToPreviousVerticalGridLineX = ((transformedPixel - this.leftBorder()) % this.tileSize)
     const previousVerticalGridLineX = transformedPixel - distanceToPreviousVerticalGridLineX
@@ -145,14 +157,12 @@ export class CaveView {
     } else {
       linePixelX = previousVerticalGridLineX + this.tileSize
     }
-    this.previousColumnLineX = pixelX
-    this.linePainter.setColour(colour || '#50F442', this)
-    if (linePixelX - this.leftBorder() >= this.tileSize && linePixelX - this.leftBorder() <= this.tileSize * (this.width - 1)) {
-      this.linePainter.plotVerticalLine(linePixelX,
-                                        this.topBorder() + this.tileSize,
-                                        this.topBorder() + this.tileSize * (this.height - 1),
-                                        this)
-    }
+    return linePixelX
+  }
+
+  getColumnInsertionX(pixelX) {
+    const columnInsertionPixelX = this.getColumnInsertionPixelX(pixelX) - this.leftBorder()
+    return Math.floor(columnInsertionPixelX / this.tileSize)
   }
 
   drawSquareOutline = function (column, row, colour, squareSize) {

@@ -383,7 +383,8 @@ export default class Grid extends PureComponent {
     const { pixelX, pixelY } = this.state
     // TODO: add change to change history
     // TODO: fix dimensions when zooming
-    caveView.addColumn(x)
+    const columnInsertionX = caveView.getColumnInsertionX(pixelX)
+    caveView.addColumn(columnInsertionX)
     caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setCaveWidth(caveWidth + 1))
   }
