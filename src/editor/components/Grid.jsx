@@ -137,7 +137,7 @@ export default class Grid extends PureComponent {
   @autobind
   buildCaveView(grid, caveWidth, caveHeight) {
     const tileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
-    const border = getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
+    const border = getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight(), tileSize)
     return new CaveView({
       x: caveWidth,
       y: caveHeight,
@@ -185,7 +185,7 @@ export default class Grid extends PureComponent {
   handleWindowResize() {
     const { caveWidth, caveHeight, imageMap } = this.props
     const unscaledTileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
-    const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
+    const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight(), unscaledTileSize)
     const newCaveView = new CaveView({
       x: caveWidth,
       y: caveHeight,
@@ -330,8 +330,8 @@ export default class Grid extends PureComponent {
     const { dispatch, grid, imageMap } = this.props
     const width = grid.width
     const height = grid.height
-    const border = getBorder(width, height, this.getCanvasWidth(), this.getCanvasHeight())
     const tileSize = getTileSize(width, height, this.getCanvasWidth(), this.getCanvasHeight())
+    const border = getBorder(width, height, this.getCanvasWidth(), this.getCanvasHeight(), tileSize)
 
     dispatch(setGrid(cave || new Cave({ width, height })))
     const newCaveView = new CaveView({

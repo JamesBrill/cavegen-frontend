@@ -170,8 +170,8 @@ export class CaveView {
   addColumn(x) {
     this.grid.addColumn(x)
     this.width++
-    this.border = getBorder(this.width, this.height, this.canvas.width, this.canvas.height)
     this.unscaledTileSize = getTileSize(this.width, this.height, this.canvas.width, this.canvas.height)
+    this.border = getBorder(this.width, this.height, this.canvas.width, this.canvas.height, this.unscaledTileSize)
     this.scaleTileSize()
     this.clear()
     this.draw({})

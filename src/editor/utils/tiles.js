@@ -18,21 +18,21 @@ export function getTileFromSymbol(symbol) {
   return null
 }
 
-export function getBorder(caveWidth, caveHeight, canvasWidth, canvasHeight) {
+export function getBorder(caveWidth, caveHeight, canvasWidth, canvasHeight, tileSize) {
   const displayWidthHeightRatio = canvasWidth / canvasHeight
   const caveWidthHeightRatio = caveWidth / caveHeight
   const widthHeightRatio = caveWidthHeightRatio / displayWidthHeightRatio
-  let border
+  let topBorderThickness, leftBorderThickness
   if (widthHeightRatio > 1) {
     const displayHeight = canvasHeight / widthHeightRatio
-    const borderThickness = Math.floor((canvasHeight - displayHeight) / 2)
-    border = { top: borderThickness, left: 0 }
+    topBorderThickness = (canvasHeight - displayHeight) / 2
+    leftBorderThickness = (canvasWidth - (caveWidth * tileSize)) / 2
   } else {
     const displayWidth = canvasWidth * widthHeightRatio
-    const borderThickness = Math.floor((canvasWidth - displayWidth) / 2)
-    border = { top: 0, left: borderThickness }
+    topBorderThickness = (canvasHeight - (caveHeight * tileSize)) / 2
+    leftBorderThickness = (canvasWidth - displayWidth) / 2
   }
-  return border
+  return { top: Math.floor(topBorderThickness), left: Math.floor(leftBorderThickness) }
 }
 
 export function getTileSize(caveWidth, caveHeight, canvasWidth, canvasHeight) {
