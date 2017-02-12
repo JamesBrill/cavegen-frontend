@@ -265,7 +265,7 @@ export default class Grid extends PureComponent {
 
   applyBrushAtPosition(x, y, brush) {
     if (brush.symbol === '6') {
-      this.addColumn(x)
+      this.addColumn(x, y)
       return
     }
     const { grid, caveView, changeController } = this.props
@@ -348,11 +348,12 @@ export default class Grid extends PureComponent {
     newCaveView.draw({ grid: cave || new Cave({ width, height }) })
   }
 
-  addColumn(x) {
-    const { dispatch, caveWidth, caveView } = this.props
+  addColumn(x, y) {
+    const { dispatch, caveWidth, caveView, brushSize } = this.props
     // TODO: add change to change history
     // TODO: fix dimensions when zooming
     caveView.addColumn(x)
+    caveView.drawCursor(x, y, brushSize)
     dispatch(setCaveWidth(caveWidth + 1))
   }
 
