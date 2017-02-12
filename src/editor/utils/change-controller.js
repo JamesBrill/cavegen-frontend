@@ -65,7 +65,7 @@ export class ChangeController {
     if (currentChange instanceof PaintedLineChange) {
       this.applyPaintedLineChange(currentChange, isUndo, grid, caveView)
     } else if (currentChange instanceof CaveChange) {
-      this.applyCaveChange(currentChange, isUndo, grid)
+      this.applyCaveChange(currentChange, isUndo, caveView)
     }
 
     if (isUndo) {
@@ -88,19 +88,8 @@ export class ChangeController {
     caveView.paintPositions(paintedPositions)
   }
 
-  applyCaveChange(currentChange, isUndo, grid) {
-    let width, height
-    if (isUndo) {
-      width = currentChange.beforeWidth
-      height = currentChange.beforeHeight
-      grid.rebuildCaveFromGrid(currentChange.before)
-    } else {
-      width = currentChange.afterWidth
-      height = currentChange.afterHeight
-      grid.rebuildCaveFromGrid(currentChange.after)
-    }
-    const newCaveView = this.rebuildCave(width, height, grid)
-    newCaveView.zoomer.resize(newCaveView)
-    newCaveView.draw({ grid })
+  applyCaveChange(currentChange, isUndo, caveView) {
+    caveView.grid.rebuildCaveFromGrid(isUndo ? currentChange.before : currentChange.after)
+    caveView.updateToGrid()
   }
 }

@@ -217,7 +217,12 @@ export class CaveView {
 
   addColumn(x) {
     this.grid.addColumn(x)
-    this.width++
+    this.updateToGrid()
+  }
+
+  updateToGrid() {
+    this.width = this.grid.width
+    this.height = this.grid.height
     this.unscaledTileSize = getTileSize(this.width, this.height, this.canvas.width, this.canvas.height)
     this.border = getBorder(this.width, this.height, this.canvas.width, this.canvas.height, this.unscaledTileSize)
     this.scaleTileSize()
