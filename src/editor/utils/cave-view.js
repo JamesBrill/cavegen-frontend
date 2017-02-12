@@ -25,6 +25,7 @@ export class CaveView {
     this.MIN_SCALING_FACTOR = 1
     this.MAX_SCALING_FACTOR = this.setMaxScalingFactor()
     this.imageMap = imageMap
+    this.previousColumnLineX = this.tileSize
   }
 
   @autobind
@@ -112,16 +113,49 @@ export class CaveView {
     }
   }
 
-  drawCursor = function (column, row, brushSize, cursorType) {
+  drawCursor = function (column, row, pixelX, pixelY, brushSize, cursorType) {
     switch (cursorType) {
+      case 'COLUMN':
+        this.drawNewColumnLine(pixelX)
+        break
       case 'SQUARE':
       default:
         this.drawSquareOutline(column, row, '#FF0000', brushSize)
     }
   }
 
-  drawSquareOutline = function (column, row, colour, previousCursorSize, brushSize) {
-    const squareSize = previousCursorSize || brushSize
+  erasePreviousCursor(column, row, squareSize, cursorType) {
+    switch (cursorType) {
+      case 'COLUMN':
+        this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
+        break
+      case 'SQUARE':
+      default:
+        this.drawSquareOutline(column, row, '#FFFFFF', squareSize)
+    }
+  }
+
+  drawNewColumnLine(pixelX, colour) {
+    const transformedPixel = this.zoomer.transformPixelX(pixelX)
+    const distanceToPreviousVerticalGridLineX = ((transformedPixel - this.leftBorder()) % this.tileSize)
+    const previousVerticalGridLineX = transformedPixel - distanceToPreviousVerticalGridLineX
+    let linePixelX
+    if (distanceToPreviousVerticalGridLineX < 0.5 * this.tileSize) {
+      linePixelX = previousVerticalGridLineX
+    } else {
+      linePixelX = previousVerticalGridLineX + this.tileSize
+    }
+    this.previousColumnLineX = pixelX
+    this.linePainter.setColour(colour || '#50F442', this)
+    if (linePixelX - this.leftBorder() >= this.tileSize && linePixelX - this.leftBorder() <= this.tileSize * (this.width - 1)) {
+      this.linePainter.plotVerticalLine(linePixelX,
+                                        this.topBorder() + this.tileSize,
+                                        this.topBorder() + this.tileSize * (this.height - 1),
+                                        this)
+    }
+  }
+
+  drawSquareOutline = function (column, row, colour, squareSize) {
     const unboundedTop = (Math.min(Math.max(row, 1), this.height - 2) - Math.floor(squareSize / 2)) * this.tileSize + this.topBorder()
     const unboundedLeft = (Math.min(Math.max(column, 1), this.width - 2) - Math.floor(squareSize / 2)) * this.tileSize + this.leftBorder()
     const unboundedBottom = unboundedTop + squareSize * this.tileSize

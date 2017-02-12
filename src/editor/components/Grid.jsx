@@ -110,7 +110,19 @@ export default class Grid extends PureComponent {
     if (currentCave) {
       dispatch(loadCaveIntoGrid(currentCave))
     }
-    setUpTileKeyListeners(brush => dispatch(setCurrentBrush(brush)), this.handleInsertTile)
+    setUpTileKeyListeners(this.handleSelectBrush, this.handleInsertTile)
+  }
+
+  @autobind
+  handleSelectBrush(brush) {
+    const { dispatch, cursorType } = this.props
+    dispatch(setCurrentBrush(brush))
+    if (brush.symbol === '6' && cursorType !== 'COLUMN') {
+      // TODO: change to column cursor immediately
+      dispatch(setCursorType('COLUMN'))
+    } else if (cursorType !== 'SQUARE') {
+      dispatch(setCursorType('SQUARE'))
+    }
   }
 
   componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {
@@ -220,13 +232,19 @@ export default class Grid extends PureComponent {
   @autobind
   updateCursor(x, y) {
     const { dispatch, caveView, brushSize, previousCursor, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
     if (previousCursor.size !== brushSize) {
-      caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y,
-                    '#FFFFFF', previousCursor.size, brushSize)
+      caveView.erasePreviousCursor(previousCursor.position.x,
+                                   previousCursor.position.y,
+                                   previousCursor.size,
+                                   cursorType)
       dispatch(setPreviousCursorSize(brushSize))
     }
-    caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y, '#FFFFFF', brushSize)
-    caveView.drawCursor(x, y, brushSize, cursorType)
+    caveView.erasePreviousCursor(previousCursor.position.x,
+                                 previousCursor.position.y,
+                                 brushSize,
+                                 cursorType)
+    caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setPreviousCursorPosition({ x, y }))
     this.setState({ cursorPosition: { x, y } })
   }
@@ -267,9 +285,8 @@ export default class Grid extends PureComponent {
   }
 
   applyBrushAtPosition(x, y, brush) {
-    const { dispatch, grid, caveView, changeController } = this.props
+    const { grid, caveView, changeController } = this.props
     if (brush.symbol === '6') {
-      dispatch(setCursorType('COLUMN'))
       this.addColumn(x, y)
       return
     }
@@ -301,30 +318,31 @@ export default class Grid extends PureComponent {
   }
 
   continuePaintingAtMousePosition() {
-    const { caveView, previousCursor, grid, currentBrush } = this.props
+    const { caveView, previousCursor, grid, currentBrush, cursorType } = this.props
     const { pixelX, pixelY, deleting } = this.state
     const spaceBrush = { fileName: 'space', symbol: ' ' }
     const gridX = caveView.getGridX(pixelX)
     const gridY = caveView.getGridY(pixelY)
 
-    if (gridX === previousCursor.position.x && gridY === previousCursor.position.y) {
-      return
-    }
+    if (cursorType === 'SQUARE') {
+      if (gridX === previousCursor.position.x && gridY === previousCursor.position.y) {
+        return
+      }
 
-    if (!grid.withinLimits(gridX, gridY)) {
-      const x = (gridX < 0) ? 0 : ((gridX > grid.width - 1) ? grid.width - 1 : gridX)
-      const y = (gridY < 0) ? 0 : ((gridY > grid.height - 1) ? grid.height - 1 : gridY)
-      caveView.previousPaintedPoint = { x, y }
-    }
+      if (!grid.withinLimits(gridX, gridY)) {
+        const x = (gridX < 0) ? 0 : ((gridX > grid.width - 1) ? grid.width - 1 : gridX)
+        const y = (gridY < 0) ? 0 : ((gridY > grid.height - 1) ? grid.height - 1 : gridY)
+        caveView.previousPaintedPoint = { x, y }
+      }
 
-    if (caveView.isMouseDown) {
-      caveView.paintLineMode = true
-    }
+      if (caveView.isMouseDown) {
+        caveView.paintLineMode = true
+      }
 
-    if (caveView.isMouseDown && grid.withinLimits(gridX, gridY)) {
-      this.applyBrushAtPosition(gridX, gridY, deleting ? spaceBrush : currentBrush)
+      if (caveView.isMouseDown && grid.withinLimits(gridX, gridY)) {
+        this.applyBrushAtPosition(gridX, gridY, deleting ? spaceBrush : currentBrush)
+      }
     }
-
     if (grid.withinLimits(gridX, gridY)) {
       this.updateCursor(gridX, gridY)
     }
@@ -354,10 +372,11 @@ export default class Grid extends PureComponent {
 
   addColumn(x, y) {
     const { dispatch, caveWidth, caveView, brushSize, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
     // TODO: add change to change history
     // TODO: fix dimensions when zooming
     caveView.addColumn(x)
-    caveView.drawCursor(x, y, brushSize, cursorType)
+    caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setCaveWidth(caveWidth + 1))
   }
 
