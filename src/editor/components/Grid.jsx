@@ -355,12 +355,12 @@ export default class Grid extends PureComponent {
   }
 
   addColumn(x, y) {
-    const { dispatch, caveWidth, caveView, brushSize, cursorType } = this.props
+    const { dispatch, caveWidth, caveView, brushSize, cursorType, grid, changeController } = this.props
     const { pixelX, pixelY } = this.state
-    // TODO: add change to change history
-    // TODO: fix dimensions when zooming
     const columnInsertionX = caveView.getColumnInsertionX(pixelX)
+    const before = grid.getGridClone()
     caveView.addColumn(columnInsertionX)
+    changeController.addCaveChange(before, grid.grid)
     caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setCaveWidth(caveWidth + 1))
   }
