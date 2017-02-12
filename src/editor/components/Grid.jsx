@@ -234,15 +234,11 @@ export default class Grid extends PureComponent {
     const { dispatch, caveView, brushSize, previousCursor, cursorType } = this.props
     const { pixelX, pixelY } = this.state
     if (previousCursor.size !== brushSize) {
-      caveView.erasePreviousCursor(previousCursor.position.x,
-                                   previousCursor.position.y,
-                                   previousCursor.size,
-                                   cursorType)
       dispatch(setPreviousCursorSize(brushSize))
     }
     caveView.erasePreviousCursor(previousCursor.position.x,
                                  previousCursor.position.y,
-                                 brushSize,
+                                 previousCursor.size,
                                  cursorType)
     caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setPreviousCursorPosition({ x, y }))
