@@ -20,18 +20,13 @@ export class ChangeController {
     this.currentPaintedLineChange = new PaintedLineChange()
   }
 
-  buildCaveChange(grid, newCaveWidth, newCaveHeight) {
-    const preGenerationSnapshot = grid.getGridClone()
-    return new CaveChange(preGenerationSnapshot, newCaveWidth, newCaveHeight)
-  }
-
   addPaintedLineChange() {
     this.changeHistory.addChange(this.currentPaintedLineChange)
     this.resetCurrentPaintedLineChange()
   }
 
-  addGenerateCaveChange(grid, newCaveWidth, newCaveHeight) {
-    const caveChange = this.buildCaveChange(grid, newCaveWidth, newCaveHeight)
+  addCaveChange(before, after) {
+    const caveChange = new CaveChange(before, after)
     this.changeHistory.addChange(caveChange)
   }
 
@@ -70,7 +65,7 @@ export class ChangeController {
     if (currentChange instanceof PaintedLineChange) {
       this.applyPaintedLineChange(currentChange, isUndo, grid, caveView)
     } else if (currentChange instanceof CaveChange) {
-      this.applyGenerateCaveChange(currentChange, isUndo, grid)
+      this.applyCaveChange(currentChange, isUndo, grid)
     }
 
     if (isUndo) {
@@ -93,16 +88,16 @@ export class ChangeController {
     caveView.paintPositions(paintedPositions)
   }
 
-  applyGenerateCaveChange(currentChange, isUndo, grid) {
+  applyCaveChange(currentChange, isUndo, grid) {
     let width, height
     if (isUndo) {
-      width = currentChange.preGenerationWidth
-      height = currentChange.preGenerationHeight
-      grid.rebuildCaveFromGrid(currentChange.preGenerationSnapshot)
+      width = currentChange.beforeWidth
+      height = currentChange.beforeHeight
+      grid.rebuildCaveFromGrid(currentChange.before)
     } else {
-      width = currentChange.postGenerationWidth
-      height = currentChange.postGenerationHeight
-      grid.rebuildCaveFromCoordinates(width, height)
+      width = currentChange.afterWidth
+      height = currentChange.afterHeight
+      grid.rebuildCaveFromGrid(currentChange.after)
     }
     const newCaveView = this.rebuildCave(width, height, grid)
     newCaveView.zoomer.resize(newCaveView)

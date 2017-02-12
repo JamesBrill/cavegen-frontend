@@ -1,24 +1,24 @@
 /* eslint-disable no-invalid-this */
 
 export class CaveChange {
-  constructor(preGenerationSnapshot, postGenerationWidth, postGenerationHeight) {
-    this.preGenerationSnapshot = preGenerationSnapshot
-    this.preGenerationWidth = preGenerationSnapshot.length
-    this.preGenerationHeight = preGenerationSnapshot[0].length
-    this.postGenerationWidth = postGenerationWidth
-    this.postGenerationHeight = postGenerationHeight
+  constructor(before, after) {
+    this.before = before
+    this.after = after
+    this.beforeWidth = before.length
+    this.beforeHeight = before[0].length
+    this.afterWidth = after.length
+    this.afterHeight = after[0].length
   }
 
-  // Returns true if regeneration changes the existing cave
   hasEffect() {
-    if (this.preGenerationWidth !== this.postGenerationWidth ||
-      this.preGenerationHeight !== this.postGenerationHeight) {
+    if (this.beforeWidth !== this.afterWidth ||
+      this.beforeHeight !== this.afterHeight) {
       return true
     }
 
-    for (let i = 0; i < this.preGenerationWidth; i++) {
-      for (let j = 0; j < this.preGenerationHeight; j++) {
-        if (this.preGenerationSnapshot[i][j].symbol !== 'x') {
+    for (let i = 0; i < this.beforeWidth; i++) {
+      for (let j = 0; j < this.beforeHeight; j++) {
+        if (this.before[i][j].symbol !== this.after[i][j].symbol) {
           return true
         }
       }
@@ -31,16 +31,24 @@ export class CaveChange {
       return false
     }
 
-    if (this.preGenerationWidth !== other.preGenerationWidth ||
-      this.preGenerationHeight !== other.preGenerationHeight ||
-      this.postGenerationWidth !== other.postGenerationWidth ||
-      this.postGenerationHeight !== other.postGenerationHeight) {
+    if (this.beforeWidth !== other.beforeWidth ||
+      this.beforeHeight !== other.beforeHeight ||
+      this.afterWidth !== other.afterWidth ||
+      this.afterHeight !== other.afterHeight) {
       return false
     }
 
-    for (let i = 0; i < this.preGenerationWidth; i++) {
-      for (let j = 0; j < this.preGenerationHeight; j++) {
-        if (this.preGenerationSnapshot[i][j] !== other.preGenerationSnapshot[i][j]) {
+    for (let i = 0; i < this.beforeWidth; i++) {
+      for (let j = 0; j < this.beforeHeight; j++) {
+        if (this.before[i][j] !== other.before[i][j]) {
+          return false
+        }
+      }
+    }
+
+    for (let i = 0; i < this.afterWidth; i++) {
+      for (let j = 0; j < this.afterHeight; j++) {
+        if (this.after[i][j] !== other.after[i][j]) {
           return false
         }
       }

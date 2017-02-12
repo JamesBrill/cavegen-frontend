@@ -93,8 +93,7 @@ export function redoCaveChange() {
 
 export function startRebuild() {
   return function (dispatch, getState) {
-    const { changeController, grid, caveWidth, caveHeight } = getState().editor
-    changeController.addGenerateCaveChange(grid, caveWidth, caveHeight)
+    const { caveWidth, caveHeight } = getState().editor
     return dispatch({
       type: 'START_REBUILD',
       payload: {
