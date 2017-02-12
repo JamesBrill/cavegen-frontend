@@ -349,13 +349,11 @@ export default class Grid extends PureComponent {
   }
 
   addColumn(x) {
-    const { dispatch, caveWidth, grid, caveView } = this.props
+    const { dispatch, caveWidth, caveView } = this.props
     // TODO: add change to change history
     // TODO: fix dimensions when zooming
-    grid.addColumn(x)
+    caveView.addColumn(x)
     dispatch(setCaveWidth(caveWidth + 1))
-    caveView.width++
-    caveView.draw({})
   }
 
   @autobind

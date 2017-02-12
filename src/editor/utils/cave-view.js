@@ -3,6 +3,7 @@
 import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
+import { getBorder, getTileSize } from 'src/editor/utils/tiles'
 
 export class CaveView {
   constructor({ x, y, tileSize, unscaledTileSize, border, scalingFactor, canvas, grid, updateCursor, zoomer, imageMap }) {
@@ -164,5 +165,15 @@ export class CaveView {
 
   clear = function () {
     this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight)
+  }
+
+  addColumn(x) {
+    this.grid.addColumn(x)
+    this.width++
+    this.border = getBorder(this.width, this.height, this.canvas.width, this.canvas.height)
+    this.unscaledTileSize = getTileSize(this.width, this.height, this.canvas.width, this.canvas.height)
+    this.scaleTileSize()
+    this.clear()
+    this.draw({})
   }
 }
