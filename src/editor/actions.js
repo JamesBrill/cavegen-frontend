@@ -64,6 +64,11 @@ export const setPreviousCursorPosition = createAction(
   previousCursorPosition => ({ previousCursorPosition })
 )
 
+export const setCursorType = createAction(
+  'SET_CURSOR_TYPE',
+  cursorType => ({ cursorType })
+)
+
 export function undoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor

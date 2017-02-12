@@ -22,6 +22,7 @@ import {
   setChangeController,
   setPreviousCursorSize,
   setPreviousCursorPosition,
+  setCursorType,
   setLastUsedBrushSize,
   setCaveCode,
   stopRebuild
@@ -52,7 +53,8 @@ function mapStateToProps(state) {
     imageMap: state.editor.imageMap,
     currentCave,
     currentCaveName: state.caves.currentCaveName,
-    isOwnedByAnotherUser
+    isOwnedByAnotherUser,
+    cursorType: state.editor.cursorType
   }
 }
 
@@ -76,6 +78,7 @@ export default class Grid extends PureComponent {
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,
+    cursorType: PropTypes.oneOf([ 'SQUARE', 'COLUMN', 'ROW' ]),
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
@@ -216,14 +219,14 @@ export default class Grid extends PureComponent {
 
   @autobind
   updateCursor(x, y) {
-    const { dispatch, caveView, brushSize, previousCursor } = this.props
+    const { dispatch, caveView, brushSize, previousCursor, cursorType } = this.props
     if (previousCursor.size !== brushSize) {
       caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y,
                     '#FFFFFF', previousCursor.size, brushSize)
       dispatch(setPreviousCursorSize(brushSize))
     }
     caveView.drawSquareOutline(previousCursor.position.x, previousCursor.position.y, '#FFFFFF', brushSize)
-    caveView.drawCursor(x, y, brushSize)
+    caveView.drawCursor(x, y, brushSize, cursorType)
     dispatch(setPreviousCursorPosition({ x, y }))
     this.setState({ cursorPosition: { x, y } })
   }
@@ -264,11 +267,12 @@ export default class Grid extends PureComponent {
   }
 
   applyBrushAtPosition(x, y, brush) {
+    const { dispatch, grid, caveView, changeController } = this.props
     if (brush.symbol === '6') {
+      dispatch(setCursorType('COLUMN'))
       this.addColumn(x, y)
       return
     }
-    const { grid, caveView, changeController } = this.props
     const tileChanges = this.getTileChanges(x, y, brush)
     grid.applyTileChanges(tileChanges)
     caveView.applyTileChanges(tileChanges)
@@ -349,11 +353,11 @@ export default class Grid extends PureComponent {
   }
 
   addColumn(x, y) {
-    const { dispatch, caveWidth, caveView, brushSize } = this.props
+    const { dispatch, caveWidth, caveView, brushSize, cursorType } = this.props
     // TODO: add change to change history
     // TODO: fix dimensions when zooming
     caveView.addColumn(x)
-    caveView.drawCursor(x, y, brushSize)
+    caveView.drawCursor(x, y, brushSize, cursorType)
     dispatch(setCaveWidth(caveWidth + 1))
   }
 

@@ -112,8 +112,12 @@ export class CaveView {
     }
   }
 
-  drawCursor = function (column, row, brushSize) {
-    this.drawSquareOutline(column, row, '#FF0000', brushSize)
+  drawCursor = function (column, row, brushSize, cursorType) {
+    switch (cursorType) {
+      case 'SQUARE':
+      default:
+        this.drawSquareOutline(column, row, '#FF0000', brushSize)
+    }
   }
 
   drawSquareOutline = function (column, row, colour, previousCursorSize, brushSize) {

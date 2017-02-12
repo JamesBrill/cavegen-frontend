@@ -11,6 +11,7 @@ export default combineReducers({
   brushSize,
   lastUsedBrushSize,
   previousCursor,
+  cursorType,
   needsRebuild,
   imageMap,
   openTab
@@ -119,6 +120,16 @@ function previousCursor(state = { size: 1, position: { x: 0, y: 0 } }, { type, p
         size: state.size,
         position: payload.previousCursorPosition
       }
+
+    default:
+      return state
+  }
+}
+
+function cursorType(state = 'SQUARE', { type, payload }) {
+  switch (type) {
+    case 'SET_CURSOR_TYPE':
+      return payload.cursorType
 
     default:
       return state
