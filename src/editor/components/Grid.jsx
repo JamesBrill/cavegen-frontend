@@ -113,30 +113,6 @@ export default class Grid extends PureComponent {
     setUpTileKeyListeners(this.handleSelectBrush, this.handleInsertTile)
   }
 
-  @autobind
-  handleSelectBrush(brush) {
-    const { dispatch, caveView, previousCursor, brushSize, cursorType } = this.props
-    const { pixelX, pixelY } = this.state
-    const gridX = caveView.getGridX(pixelX)
-    const gridY = caveView.getGridY(pixelY)
-    dispatch(setCurrentBrush(brush))
-    let newCursorType
-    if (brush.symbol === '6' && cursorType !== 'COLUMN') {
-      dispatch(setCursorType('COLUMN'))
-      newCursorType = 'COLUMN'
-    } else if (brush.symbol !== '6' && cursorType !== 'SQUARE') {
-      dispatch(setCursorType('SQUARE'))
-      newCursorType = 'SQUARE'
-    }
-    if (newCursorType) {
-      caveView.erasePreviousCursor(previousCursor.position.x,
-                                   previousCursor.position.y,
-                                   previousCursor.size,
-                                   cursorType)
-      caveView.drawCursor(gridX, gridY, pixelX, pixelY, brushSize, newCursorType)
-    }
-  }
-
   componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {
     const { dispatch } = this.props
     if (caveView && this.props.caveView !== caveView) {
@@ -400,6 +376,30 @@ export default class Grid extends PureComponent {
   handleInsertTile(brush) {
     this.startPaintingAtMousePosition(brush)
     this.finishPainting()
+  }
+
+  @autobind
+  handleSelectBrush(brush) {
+    const { dispatch, caveView, previousCursor, brushSize, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
+    const gridX = caveView.getGridX(pixelX)
+    const gridY = caveView.getGridY(pixelY)
+    dispatch(setCurrentBrush(brush))
+    let newCursorType
+    if (brush.symbol === '6' && cursorType !== 'COLUMN') {
+      dispatch(setCursorType('COLUMN'))
+      newCursorType = 'COLUMN'
+    } else if (brush.symbol !== '6' && cursorType !== 'SQUARE') {
+      dispatch(setCursorType('SQUARE'))
+      newCursorType = 'SQUARE'
+    }
+    if (newCursorType) {
+      caveView.erasePreviousCursor(previousCursor.position.x,
+                                   previousCursor.position.y,
+                                   previousCursor.size,
+                                   cursorType)
+      caveView.drawCursor(gridX, gridY, pixelX, pixelY, brushSize, newCursorType)
+    }
   }
 
   @autobind
