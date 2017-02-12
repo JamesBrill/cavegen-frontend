@@ -52,9 +52,7 @@ export function setUpTileKeyListeners(selectBrush, insertTile) {
         tile = 'w'
         break
       case 'Digit6':
-        if (e.shiftKey) {
-          tile = '^'
-        }
+        tile = e.shiftKey ? '^' : '6'
         break
       case 'Comma':
         tile = e.shiftKey ? '<' : ','

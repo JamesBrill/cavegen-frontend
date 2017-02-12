@@ -264,6 +264,10 @@ export default class Grid extends PureComponent {
   }
 
   applyBrushAtPosition(x, y, brush) {
+    if (brush.symbol === '6') {
+      this.addColumn(x)
+      return
+    }
     const { grid, caveView, changeController } = this.props
     const tileChanges = this.getTileChanges(x, y, brush)
     grid.applyTileChanges(tileChanges)
@@ -342,6 +346,16 @@ export default class Grid extends PureComponent {
     })
     dispatch(setCaveView(newCaveView))
     newCaveView.draw({ grid: cave || new Cave({ width, height }) })
+  }
+
+  addColumn(x) {
+    const { dispatch, caveWidth, grid, caveView } = this.props
+    // TODO: add change to change history
+    // TODO: fix dimensions when zooming
+    grid.addColumn(x)
+    dispatch(setCaveWidth(caveWidth + 1))
+    caveView.width++
+    caveView.draw({})
   }
 
   @autobind

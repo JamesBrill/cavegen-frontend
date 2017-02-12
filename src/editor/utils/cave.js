@@ -131,4 +131,17 @@ export class Cave {
       this.setTileAtCoordinates(tileChanges[i].x, tileChanges[i].y, tile)
     }
   }
+
+  addColumn(x) {
+    const newColumn = []
+    for (let i = 0; i < this.height; i++) {
+      newColumn[i] = { fileName: 'terrain', symbol: 'x' }
+    }
+    this.grid = [
+      ...this.grid.slice(0, x),
+      newColumn,
+      ...this.grid.slice(x)
+    ]
+    this.width++
+  }
 }
