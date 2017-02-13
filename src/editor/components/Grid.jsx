@@ -22,7 +22,6 @@ import {
   setChangeController,
   setPreviousCursorSize,
   setPreviousCursorPosition,
-  setCursorType,
   setLastUsedBrushSize,
   setCaveCode,
   stopRebuild
