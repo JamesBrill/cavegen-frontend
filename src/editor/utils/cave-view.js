@@ -137,6 +137,10 @@ export class CaveView {
     }
   }
 
+  drawColumnAtCursor() {
+    this.drawNewColumnLine(this.previousColumnLineX)
+  }
+
   drawNewColumnLine(pixelX, colour) {
     const linePixelX = this.getColumnInsertionPixelX(pixelX)
     this.previousColumnLineX = pixelX
@@ -220,6 +224,11 @@ export class CaveView {
   addColumn(x) {
     this.grid.addColumn(x)
     this.updateToGrid()
+  }
+
+  addColumnAtCursor() {
+    const columnInsertionX = this.getColumnInsertionX(this.previousColumnLineX)
+    this.addColumn(columnInsertionX)
   }
 
   moveColumnLeft() {

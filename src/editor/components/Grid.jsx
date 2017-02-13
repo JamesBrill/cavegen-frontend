@@ -356,11 +356,17 @@ export default class Grid extends PureComponent {
   addColumn(x, y) {
     const { dispatch, caveWidth, caveView, brushSize, cursorType, grid, changeController } = this.props
     const { pixelX, pixelY } = this.state
+    const gridX = caveView.getGridX(pixelX)
     const columnInsertionX = caveView.getColumnInsertionX(pixelX)
     const before = grid.getGridClone()
-    caveView.addColumn(columnInsertionX)
+    if (gridX === x) {
+      caveView.addColumn(columnInsertionX)
+      caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
+    } else {
+      caveView.addColumnAtCursor()
+      caveView.drawColumnAtCursor()
+    }
     changeController.addCaveChange(before, grid.grid)
-    caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setCaveWidth(caveWidth + 1))
   }
 
@@ -423,6 +429,11 @@ export default class Grid extends PureComponent {
     if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
       if (cursorType === 'COLUMN') {
         caveView.moveColumnLeft()
+        const newCursorPosition = {
+          x: cursorPosition.x - 1,
+          y: cursorPosition.y
+        }
+        this.setState({ cursorPosition: newCursorPosition })
       } else if (cursorType === 'SQUARE') {
         this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
       }
@@ -453,6 +464,11 @@ export default class Grid extends PureComponent {
     if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
       if (cursorType === 'COLUMN') {
         caveView.moveColumnRight()
+        const newCursorPosition = {
+          x: cursorPosition.x + 1,
+          y: cursorPosition.y
+        }
+        this.setState({ cursorPosition: newCursorPosition })
       } else if (cursorType === 'SQUARE') {
         this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
       }
