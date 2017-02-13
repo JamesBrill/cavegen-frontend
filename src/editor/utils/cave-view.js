@@ -26,6 +26,7 @@ export class CaveView {
     this.MAX_SCALING_FACTOR = this.setMaxScalingFactor()
     this.imageMap = imageMap
     this.previousColumnLineX = this.tileSize
+    this.lastCursorType = 'SQUARE'
   }
 
   @autobind
@@ -122,6 +123,7 @@ export class CaveView {
       default:
         this.drawSquareOutline(column, row, '#FF0000', brushSize)
     }
+    this.lastCursorType = cursorType
   }
 
   erasePreviousCursor(column, row, squareSize, cursorType) {
@@ -228,5 +230,8 @@ export class CaveView {
     this.scaleTileSize()
     this.clear()
     this.draw({})
+    if (this.lastCursorType === 'COLUMN') {
+      this.drawNewColumnLine(this.previousColumnLineX)
+    }
   }
 }
