@@ -419,11 +419,16 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_LEFT_KEYS)
   handleArrowKeyPanLeft(e) {
     e.preventDefault()
+    const { grid, caveView, cursorType } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (this.props.grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
-      this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
+    if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
+      if (cursorType === 'COLUMN') {
+        caveView.moveColumnLeft()
+      } else if (cursorType === 'SQUARE') {
+        this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
+      }
       if (e.altKey) {
-        this.props.caveView.zoomer.panLeft()
+        caveView.zoomer.panLeft()
       }
     }
   }
@@ -444,12 +449,16 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_RIGHT_KEYS)
   handleArrowKeyPanRight(e) {
-    e.preventDefault()
+    const { grid, caveView, cursorType } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (this.props.grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
-      this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
+    if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
+      if (cursorType === 'COLUMN') {
+        caveView.moveColumnRight()
+      } else if (cursorType === 'SQUARE') {
+        this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
+      }
       if (e.altKey) {
-        this.props.caveView.zoomer.panRight()
+        caveView.zoomer.panRight()
       }
     }
   }

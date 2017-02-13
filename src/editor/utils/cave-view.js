@@ -222,6 +222,18 @@ export class CaveView {
     this.updateToGrid()
   }
 
+  moveColumnLeft() {
+    this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
+    this.previousColumnLineX -= this.tileSize
+    this.drawNewColumnLine(this.previousColumnLineX)
+  }
+
+  moveColumnRight() {
+    this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
+    this.previousColumnLineX += this.tileSize
+    this.drawNewColumnLine(this.previousColumnLineX)
+  }
+
   updateToGrid() {
     this.width = this.grid.width
     this.height = this.grid.height
