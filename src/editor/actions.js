@@ -39,11 +39,6 @@ export const setChangeController = createAction(
   changeController => ({ changeController })
 )
 
-export const setCurrentBrush = createAction(
-  'SET_CURRENT_BRUSH',
-  currentBrush => ({ currentBrush })
-)
-
 export const setBrushSize = createAction(
   'SET_BRUSH_SIZE',
   brushSize => ({ brushSize })
@@ -68,6 +63,37 @@ export const setCursorType = createAction(
   'SET_CURSOR_TYPE',
   cursorType => ({ cursorType })
 )
+
+export function setCurrentBrush(brush, pixelX, pixelY) {
+  return function (dispatch, getState) {
+    const { cursorType, caveView, previousCursor, brushSize } = getState().editor
+    const gridX = caveView.getGridX(pixelX || 0)
+    const gridY = caveView.getGridY(pixelY || 0)
+    let newCursorType
+    if (brush.symbol === '6' && cursorType !== 'COLUMN') {
+      dispatch(setCursorType('COLUMN'))
+      newCursorType = 'COLUMN'
+    } else if (brush.symbol !== '6' && cursorType !== 'SQUARE') {
+      dispatch(setCursorType('SQUARE'))
+      newCursorType = 'SQUARE'
+    }
+    if (newCursorType) {
+      caveView.erasePreviousCursor(previousCursor.position.x,
+                                   previousCursor.position.y,
+                                   previousCursor.size,
+                                   cursorType)
+      if (pixelX && pixelY) {
+        caveView.drawCursor(gridX, gridY, pixelX, pixelY, brushSize, newCursorType)
+      }
+    }
+    return dispatch({
+      type: 'SET_CURRENT_BRUSH',
+      payload: {
+        currentBrush: brush
+      }
+    })
+  }
+}
 
 export function undoCaveChange() {
   return function (dispatch, getState) {

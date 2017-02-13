@@ -380,26 +380,9 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleSelectBrush(brush) {
-    const { dispatch, caveView, previousCursor, brushSize, cursorType } = this.props
+    const { dispatch } = this.props
     const { pixelX, pixelY } = this.state
-    const gridX = caveView.getGridX(pixelX)
-    const gridY = caveView.getGridY(pixelY)
-    dispatch(setCurrentBrush(brush))
-    let newCursorType
-    if (brush.symbol === '6' && cursorType !== 'COLUMN') {
-      dispatch(setCursorType('COLUMN'))
-      newCursorType = 'COLUMN'
-    } else if (brush.symbol !== '6' && cursorType !== 'SQUARE') {
-      dispatch(setCursorType('SQUARE'))
-      newCursorType = 'SQUARE'
-    }
-    if (newCursorType) {
-      caveView.erasePreviousCursor(previousCursor.position.x,
-                                   previousCursor.position.y,
-                                   previousCursor.size,
-                                   cursorType)
-      caveView.drawCursor(gridX, gridY, pixelX, pixelY, brushSize, newCursorType)
-    }
+    dispatch(setCurrentBrush(brush, pixelX, pixelY))
   }
 
   @autobind
