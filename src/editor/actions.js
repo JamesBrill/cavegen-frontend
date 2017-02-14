@@ -73,7 +73,10 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
     if (brush.symbol === '6' && cursorType !== 'ADDCOLUMN') {
       dispatch(setCursorType('ADDCOLUMN'))
       newCursorType = 'ADDCOLUMN'
-    } else if (brush.symbol !== '6' && cursorType !== 'SQUARE') {
+    } else if (brush.symbol === '7' && cursorType !== 'REMOVECOLUMN') {
+      dispatch(setCursorType('REMOVECOLUMN'))
+      newCursorType = 'REMOVECOLUMN'
+    } else if (['6', '7'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
       dispatch(setCursorType('SQUARE'))
       newCursorType = 'SQUARE'
     }

@@ -144,4 +144,12 @@ export class Cave {
     ]
     this.width++
   }
+
+  removeColumn(x) {
+    this.grid = [
+      ...this.grid.slice(0, x),
+      ...this.grid.slice(x + 1, this.grid.length)
+    ]
+    this.width--
+  }
 }

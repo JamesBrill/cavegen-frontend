@@ -3,7 +3,8 @@ export const PALETTE_BRUSHES = {
     { fileName: 'space', symbol: ' ', tooltip: 'Eraser s' },
     { fileName: 'spikefiller', symbol: 'f', tooltip: 'Spike Filler f' },
     { fileName: 'spikeremover', symbol: 'r', tooltip: 'Spike Remover r' },
-    { fileName: 'addcolumn', symbol: '6', tooltip: 'Add Column 6' }
+    { fileName: 'addcolumn', symbol: '6', tooltip: 'Add Column 6' },
+    { fileName: 'removecolumn', symbol: '7', tooltip: 'Remove Column 7' }
   ],
   Common: [
     { fileName: 'terrain', symbol: 'x', tooltip: 'Terrain x' },

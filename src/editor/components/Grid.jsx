@@ -77,7 +77,7 @@ export default class Grid extends PureComponent {
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,
-    cursorType: PropTypes.oneOf([ 'SQUARE', 'ADDCOLUMN', 'ROW' ]),
+    cursorType: PropTypes.oneOf(['SQUARE', 'ADDCOLUMN', 'REMOVECOLUMN', 'ROW']),
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
@@ -272,6 +272,9 @@ export default class Grid extends PureComponent {
     if (brush.symbol === '6') {
       this.addColumn(x, y)
       return
+    } else if (brush.symbol === '7') {
+      this.removeColumn(x, y)
+      return
     }
     const tileChanges = this.getTileChanges(x, y, brush)
     grid.applyTileChanges(tileChanges)
@@ -370,6 +373,22 @@ export default class Grid extends PureComponent {
     dispatch(setCaveWidth(caveWidth + 1))
   }
 
+  removeColumn(x, y) {
+    const { dispatch, caveWidth, caveView, brushSize, cursorType, grid, changeController } = this.props
+    const { pixelX, pixelY } = this.state
+    const gridX = caveView.getGridX(pixelX)
+    const before = grid.getGridClone()
+    if (gridX === x) {
+      caveView.removeColumn(x)
+      caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
+    } else {
+      caveView.removeColumnAtCursor()
+      caveView.drawRemoveColumnAtCursor()
+    }
+    changeController.addCaveChange(before, grid.grid)
+    dispatch(setCaveWidth(caveWidth - 1))
+  }
+
   @autobind
   handleDeleteKeyDown() {
     this.setState({ deleting: true })
@@ -428,7 +447,15 @@ export default class Grid extends PureComponent {
     const cursorPosition = this.state.cursorPosition
     if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
       if (cursorType === 'ADDCOLUMN') {
-        caveView.moveColumnLeft()
+        caveView.moveAddColumnLeft()
+        const newCursorPosition = {
+          x: cursorPosition.x - 1,
+          y: cursorPosition.y
+        }
+        this.setState({ cursorPosition: newCursorPosition })
+      } else if (cursorType === 'REMOVECOLUMN') {
+        caveView.moveRemoveColumnLeft()
+        // TODO: dedupe these lines
         const newCursorPosition = {
           x: cursorPosition.x - 1,
           y: cursorPosition.y
@@ -463,7 +490,15 @@ export default class Grid extends PureComponent {
     const cursorPosition = this.state.cursorPosition
     if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
       if (cursorType === 'ADDCOLUMN') {
-        caveView.moveColumnRight()
+        caveView.moveAddColumnRight()
+        const newCursorPosition = {
+          x: cursorPosition.x + 1,
+          y: cursorPosition.y
+        }
+        this.setState({ cursorPosition: newCursorPosition })
+      } else if (cursorType === 'REMOVECOLUMN') {
+        caveView.moveRemoveColumnRight()
+        // TODO: dedupe these lines
         const newCursorPosition = {
           x: cursorPosition.x + 1,
           y: cursorPosition.y

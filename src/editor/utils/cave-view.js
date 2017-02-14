@@ -119,6 +119,9 @@ export class CaveView {
       case 'ADDCOLUMN':
         this.drawNewColumnLine(pixelX)
         break
+      case 'REMOVECOLUMN':
+        this.drawRemoveColumnLine(pixelX)
+        break
       case 'SQUARE':
       default:
         this.drawSquareOutline(column, row, '#FF0000', brushSize)
@@ -131,6 +134,9 @@ export class CaveView {
       case 'ADDCOLUMN':
         this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
         break
+      case 'REMOVECOLUMN':
+        this.drawRemoveColumnLine(this.previousColumnLineX, '#FFFFFF')
+        break
       case 'SQUARE':
       default:
         this.drawSquareOutline(column, row, '#FFFFFF', squareSize)
@@ -139,6 +145,10 @@ export class CaveView {
 
   drawColumnAtCursor() {
     this.drawNewColumnLine(this.previousColumnLineX)
+  }
+
+  drawRemoveColumnAtCursor() {
+    this.drawRemoveColumnLine(this.previousColumnLineX)
   }
 
   drawNewColumnLine(pixelX, colour) {
@@ -151,6 +161,21 @@ export class CaveView {
                                         this.topBorder() + this.tileSize * (this.height - 1),
                                         this)
     }
+  }
+
+  drawRemoveColumnLine(pixelX, colour) {
+    this.previousColumnLineX = pixelX
+    const column = this.getGridX(pixelX)
+    const top = this.tileSize + this.topBorder()
+    const left = column * this.tileSize + this.leftBorder()
+    const bottom = (this.height - 1) * this.tileSize + this.topBorder()
+    const right = (column + 1) * this.tileSize + this.leftBorder()
+
+    this.linePainter.setColour(colour || '#FF0000', this)
+    this.linePainter.plotVerticalLine(left, top, bottom, this)
+    this.linePainter.plotHorizontalLine(left, right, bottom, this)
+    this.linePainter.plotVerticalLine(right, bottom, top, this)
+    this.linePainter.plotHorizontalLine(right, left, top, this)
   }
 
   getColumnInsertionPixelX(pixelX) {
@@ -226,21 +251,42 @@ export class CaveView {
     this.updateToGrid()
   }
 
+  removeColumn(x) {
+    this.grid.removeColumn(x)
+    this.updateToGrid()
+  }
+
   addColumnAtCursor() {
     const columnInsertionX = this.getColumnInsertionX(this.previousColumnLineX)
     this.addColumn(columnInsertionX)
   }
 
-  moveColumnLeft() {
+  removeColumnAtCursor() {
+    this.removeColumn(this.previousColumnLineX)
+  }
+
+  moveAddColumnLeft() {
     this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
     this.previousColumnLineX -= this.tileSize
     this.drawNewColumnLine(this.previousColumnLineX)
   }
 
-  moveColumnRight() {
+  moveAddColumnRight() {
     this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
     this.previousColumnLineX += this.tileSize
     this.drawNewColumnLine(this.previousColumnLineX)
+  }
+
+  moveRemoveColumnLeft() {
+    this.drawRemoveColumnLine(this.previousColumnLineX, '#FFFFFF')
+    this.previousColumnLineX -= this.tileSize
+    this.drawRemoveColumnLine(this.previousColumnLineX)
+  }
+
+  moveRemoveColumnRight() {
+    this.drawRemoveColumnLine(this.previousColumnLineX, '#FFFFFF')
+    this.previousColumnLineX += this.tileSize
+    this.drawRemoveColumnLine(this.previousColumnLineX)
   }
 
   updateToGrid() {
@@ -253,6 +299,8 @@ export class CaveView {
     this.draw({})
     if (this.lastCursorType === 'ADDCOLUMN') {
       this.drawNewColumnLine(this.previousColumnLineX)
+    } else if (this.lastCursorType === 'REMOVECOLUMN') {
+      this.drawRemoveColumnLine(this.previousColumnLineX)
     }
   }
 }
