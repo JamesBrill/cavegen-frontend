@@ -116,7 +116,7 @@ export class CaveView {
 
   drawCursor = function (column, row, pixelX, pixelY, brushSize, cursorType) {
     switch (cursorType) {
-      case 'COLUMN':
+      case 'ADDCOLUMN':
         this.drawNewColumnLine(pixelX)
         break
       case 'SQUARE':
@@ -128,7 +128,7 @@ export class CaveView {
 
   erasePreviousCursor(column, row, squareSize, cursorType) {
     switch (cursorType) {
-      case 'COLUMN':
+      case 'ADDCOLUMN':
         this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
         break
       case 'SQUARE':
@@ -251,7 +251,7 @@ export class CaveView {
     this.scaleTileSize()
     this.clear()
     this.draw({})
-    if (this.lastCursorType === 'COLUMN') {
+    if (this.lastCursorType === 'ADDCOLUMN') {
       this.drawNewColumnLine(this.previousColumnLineX)
     }
   }

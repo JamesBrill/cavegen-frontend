@@ -77,7 +77,7 @@ export default class Grid extends PureComponent {
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,
-    cursorType: PropTypes.oneOf([ 'SQUARE', 'COLUMN', 'ROW' ]),
+    cursorType: PropTypes.oneOf([ 'SQUARE', 'ADDCOLUMN', 'ROW' ]),
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
@@ -427,7 +427,7 @@ export default class Grid extends PureComponent {
     const { grid, caveView, cursorType } = this.props
     const cursorPosition = this.state.cursorPosition
     if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
-      if (cursorType === 'COLUMN') {
+      if (cursorType === 'ADDCOLUMN') {
         caveView.moveColumnLeft()
         const newCursorPosition = {
           x: cursorPosition.x - 1,
@@ -462,7 +462,7 @@ export default class Grid extends PureComponent {
     const { grid, caveView, cursorType } = this.props
     const cursorPosition = this.state.cursorPosition
     if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
-      if (cursorType === 'COLUMN') {
+      if (cursorType === 'ADDCOLUMN') {
         caveView.moveColumnRight()
         const newCursorPosition = {
           x: cursorPosition.x + 1,

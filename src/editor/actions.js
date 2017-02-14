@@ -70,9 +70,9 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
     const gridX = caveView.getGridX(pixelX || 0)
     const gridY = caveView.getGridY(pixelY || 0)
     let newCursorType
-    if (brush.symbol === '6' && cursorType !== 'COLUMN') {
-      dispatch(setCursorType('COLUMN'))
-      newCursorType = 'COLUMN'
+    if (brush.symbol === '6' && cursorType !== 'ADDCOLUMN') {
+      dispatch(setCursorType('ADDCOLUMN'))
+      newCursorType = 'ADDCOLUMN'
     } else if (brush.symbol !== '6' && cursorType !== 'SQUARE') {
       dispatch(setCursorType('SQUARE'))
       newCursorType = 'SQUARE'
