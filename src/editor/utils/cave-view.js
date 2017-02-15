@@ -166,10 +166,12 @@ export class CaveView {
   drawRemoveColumnLine(pixelX, colour) {
     this.previousColumnLineX = pixelX
     const column = this.getGridX(pixelX)
-    const top = this.tileSize + this.topBorder()
-    const left = column * this.tileSize + this.leftBorder()
-    const bottom = (this.height - 1) * this.tileSize + this.topBorder()
-    const right = (column + 1) * this.tileSize + this.leftBorder()
+    const unboundedLeft = (Math.min(Math.max(column, 1), this.width - 2)) * this.tileSize + this.leftBorder()
+    const unboundedRight = unboundedLeft + this.tileSize
+    const top = this.topBorder() + this.tileSize
+    const left = Math.max(unboundedLeft, this.leftBorder() + this.tileSize)
+    const bottom = this.topBorder() + this.tileSize * (this.height - 1)
+    const right = Math.min(unboundedRight, this.leftBorder() + this.tileSize * (this.width - 1))
 
     this.linePainter.setColour(colour || '#FF0000', this)
     this.linePainter.plotVerticalLine(left, top, bottom, this)
