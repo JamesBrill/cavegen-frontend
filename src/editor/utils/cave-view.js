@@ -254,8 +254,10 @@ export class CaveView {
   }
 
   removeColumn(x) {
-    this.grid.removeColumn(x)
-    this.updateToGrid()
+    if (this.width > 3) {
+      this.grid.removeColumn(x)
+      this.updateToGrid()
+    }
   }
 
   addColumnAtCursor() {
