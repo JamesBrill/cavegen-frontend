@@ -262,7 +262,8 @@ export class CaveView {
   }
 
   removeColumnAtCursor() {
-    this.removeColumn(this.previousColumnLineX)
+    const columnRemovalX = this.getGridX(this.previousColumnLineX)
+    this.removeColumn(columnRemovalX)
   }
 
   moveAddColumnLeft() {
