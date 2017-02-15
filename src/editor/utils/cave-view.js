@@ -26,6 +26,7 @@ export class CaveView {
     this.MAX_SCALING_FACTOR = this.setMaxScalingFactor()
     this.imageMap = imageMap
     this.previousColumnLineX = this.tileSize
+    this.previousRowLineY = this.tileSize
     this.lastCursorType = 'SQUARE'
   }
 
@@ -285,6 +286,18 @@ export class CaveView {
     this.drawNewColumnLine(this.previousColumnLineX)
   }
 
+  moveAddRowUp() {
+    this.drawNewRowLine(this.previousRowLineY, '#FFFFFF')
+    this.previousRowLineY -= this.tileSize
+    this.drawNewRowLine(this.previousRowLineY)
+  }
+
+  moveAddRowDown() {
+    this.drawNewRowLine(this.previousRowLineY, '#FFFFFF')
+    this.previousRowLineY += this.tileSize
+    this.drawNewRowLine(this.previousRowLineY)
+  }
+
   moveRemoveColumnLeft() {
     this.drawRemoveColumnLine(this.previousColumnLineX, '#FFFFFF')
     this.previousColumnLineX -= this.tileSize
@@ -295,6 +308,18 @@ export class CaveView {
     this.drawRemoveColumnLine(this.previousColumnLineX, '#FFFFFF')
     this.previousColumnLineX += this.tileSize
     this.drawRemoveColumnLine(this.previousColumnLineX)
+  }
+
+  moveRemoveRowUp() {
+    this.drawRemoveRowLine(this.previousRowLineY, '#FFFFFF')
+    this.previousRowLineY -= this.tileSize
+    this.drawRemoveRowLine(this.previousRowLineY)
+  }
+
+  moveRemoveRowDown() {
+    this.drawRemoveRowLine(this.previousRowLineY, '#FFFFFF')
+    this.previousRowLineY += this.tileSize
+    this.drawRemoveRowLine(this.previousRowLineY)
   }
 
   updateToGrid() {
