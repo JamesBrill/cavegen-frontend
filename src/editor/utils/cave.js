@@ -149,7 +149,7 @@ export class Cave {
     if (x > 0 && x < this.grid.length - 1) {
       this.grid = [
         ...this.grid.slice(0, x),
-        ...this.grid.slice(x + 1, this.grid.length)
+        ...this.grid.slice(x + 1, this.width)
       ]
       this.width--
     }
@@ -175,7 +175,7 @@ export class Cave {
       for (let i = 0; i < this.width; i++) {
         this.grid[i] = [
           ...this.grid[i].slice(0, y),
-          ...this.grid[i].slice(y + 1, this.grid[0].length)
+          ...this.grid[i].slice(y + 1, this.height)
         ]
       }
       this.height--
