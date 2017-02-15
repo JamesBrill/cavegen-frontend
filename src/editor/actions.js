@@ -76,7 +76,13 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
     } else if (brush.symbol === '7' && cursorType !== 'REMOVECOLUMN') {
       dispatch(setCursorType('REMOVECOLUMN'))
       newCursorType = 'REMOVECOLUMN'
-    } else if (['6', '7'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
+    } else if (brush.symbol === '8' && cursorType !== 'ADDROW') {
+      dispatch(setCursorType('ADDROW'))
+      newCursorType = 'ADDROW'
+    } else if (brush.symbol === '9' && cursorType !== 'REMOVEROW') {
+      dispatch(setCursorType('REMOVEROW'))
+      newCursorType = 'REMOVEROW'
+    } else if (['6', '7', '8', '9'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
       dispatch(setCursorType('SQUARE'))
       newCursorType = 'SQUARE'
     }
