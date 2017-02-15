@@ -154,4 +154,31 @@ export class Cave {
       this.width--
     }
   }
+
+  addRow(y) {
+    const newRow = []
+    for (let i = 0; i < this.width; i++) {
+      newRow[i] = { fileName: 'terrain', symbol: 'y' }
+    }
+    for (let i = 0; i < this.width; i++) {
+      this.grid[i] = [
+        ...this.grid[i].slice(0, y),
+        newRow[i],
+        ...this.grid[i].slice(y)
+      ]
+    }
+    this.height++
+  }
+
+  removeRow(y) {
+    if (y > 0 && y < this.grid[0].length - 1) {
+      for (let i = 0; i < this.width; i++) {
+        this.grid[i] = [
+          ...this.grid[i].slice(0, y),
+          ...this.grid[i].slice(y + 1, this.grid[0].length)
+        ]
+      }
+      this.height--
+    }
+  }
 }
