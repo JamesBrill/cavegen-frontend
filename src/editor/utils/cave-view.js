@@ -333,6 +333,28 @@ export class CaveView {
     this.removeColumn(columnRemovalX)
   }
 
+  addRow(y) {
+    this.grid.addRow(y)
+    this.updateToGrid()
+  }
+
+  removeRow(y) {
+    if (this.height > 3) {
+      this.grid.removeRow(y)
+      this.updateToGrid()
+    }
+  }
+
+  addRowAtCursor() {
+    const rowInsertionY = this.getRowInsertionY(this.previousRowLineY)
+    this.addRow(rowInsertionY)
+  }
+
+  removeRowAtCursor() {
+    const rowRemovalY = this.getGridY(this.previousRowLineY)
+    this.removeRow(rowRemovalY)
+  }
+
   moveAddColumnLeft() {
     this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
     this.previousColumnLineX -= this.tileSize
