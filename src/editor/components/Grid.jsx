@@ -285,12 +285,11 @@ export default class Grid extends PureComponent {
   @autobind
   startPaintingAtMousePosition(optionalBrush) {
     const { isOwnedByAnotherUser, dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
-    const { pixelX, pixelY } = this.state
+    const { pixelX, pixelY, cursorPosition } = this.state
     if (isOwnedByAnotherUser) {
       return
     }
     caveView.isMouseDown = true
-    const cursorPosition = this.state.cursorPosition
     const gridX = cursorPosition.x || caveView.getGridX(pixelX)
     const gridY = cursorPosition.y || caveView.getGridY(pixelY)
     if (grid.withinLimits(gridX, gridY)) {
@@ -385,6 +384,9 @@ export default class Grid extends PureComponent {
       caveView.removeColumnAtCursor()
       caveView.drawRemoveColumnAtCursor()
     }
+    const newCursorX = caveView.getGridX(pixelX)
+    const newCursorY = caveView.getGridY(pixelY)
+    this.updateCursor(newCursorX, newCursorY)
     changeController.addCaveChange(before, grid.grid)
     dispatch(setCaveWidth(caveWidth - 1))
   }
