@@ -4,7 +4,9 @@ export const PALETTE_BRUSHES = {
     { fileName: 'spikefiller', symbol: 'f', tooltip: 'Spike Filler f' },
     { fileName: 'spikeremover', symbol: 'r', tooltip: 'Spike Remover r' },
     { fileName: 'addcolumn', symbol: '6', tooltip: 'Add Column 6' },
-    { fileName: 'removecolumn', symbol: '7', tooltip: 'Remove Column 7' }
+    { fileName: 'removecolumn', symbol: '7', tooltip: 'Remove Column 7' },
+    { fileName: 'addrow', symbol: '8', tooltip: 'Add Row 8' },
+    { fileName: 'removerow', symbol: '9', tooltip: 'Remove Row 9' }
   ],
   Common: [
     { fileName: 'terrain', symbol: 'x', tooltip: 'Terrain x' },
