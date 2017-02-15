@@ -476,9 +476,27 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_UP_KEYS)
   handleArrowKeyPanUp(e) {
     e.preventDefault()
+    const { grid, caveView, cursorType } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (this.props.grid.withinLimits(cursorPosition.x, cursorPosition.y - 1)) {
-      this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
+    if (grid.withinLimits(cursorPosition.x, cursorPosition.y - 1)) {
+      if (cursorType === 'ADDROW') {
+        caveView.moveAddRowUp()
+        const newCursorPosition = {
+          x: cursorPosition.x,
+          y: cursorPosition.y - 1
+        }
+        this.setState({ cursorPosition: newCursorPosition })
+      } else if (cursorType === 'REMOVEROW') {
+        caveView.moveRemoveRowUp()
+        // TODO: dedupe these lines
+        const newCursorPosition = {
+          x: cursorPosition.x,
+          y: cursorPosition.y - 1
+        }
+        this.setState({ cursorPosition: newCursorPosition })
+      } else if (cursorType === 'SQUARE') {
+        this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
+      }
       if (e.altKey) {
         this.props.caveView.zoomer.panUp()
       }
@@ -519,9 +537,27 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_DOWN_KEYS)
   handleArrowKeyPanDown(e) {
     e.preventDefault()
+    const { grid, caveView, cursorType } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (this.props.grid.withinLimits(cursorPosition.x, cursorPosition.y + 1)) {
-      this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
+    if (grid.withinLimits(cursorPosition.x, cursorPosition.y + 1)) {
+      if (cursorType === 'ADDROW') {
+        caveView.moveAddRowDown()
+        const newCursorPosition = {
+          x: cursorPosition.x,
+          y: cursorPosition.y + 1
+        }
+        this.setState({ cursorPosition: newCursorPosition })
+      } else if (cursorType === 'REMOVEROW') {
+        caveView.moveRemoveRowDown()
+        // TODO: dedupe these lines
+        const newCursorPosition = {
+          x: cursorPosition.x,
+          y: cursorPosition.y + 1
+        }
+        this.setState({ cursorPosition: newCursorPosition })
+      } else if (cursorType === 'SQUARE') {
+        this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
+      }
       if (e.altKey) {
         this.props.caveView.zoomer.panDown()
       }
