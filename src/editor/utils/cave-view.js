@@ -245,7 +245,10 @@ export class CaveView {
   }
 
   clear = function () {
-    this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight)
+    this.context.clearRect(0,
+                           0,
+                           this.zoomer.transformPixelX(this.canvas.clientWidth),
+                           this.zoomer.transformPixelY(this.canvas.clientHeight))
   }
 
   addColumn(x) {
