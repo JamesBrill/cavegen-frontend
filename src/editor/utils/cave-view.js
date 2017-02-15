@@ -193,9 +193,17 @@ export class CaveView {
     this.linePainter.plotHorizontalLine(right, left, top, this)
   }
 
+  drawRowAtCursor() {
+    this.drawNewRowLine(this.previousRowLineY)
+  }
+
+  drawRemoveRowAtCursor() {
+    this.drawRemoveRowLine(this.previousRowLineY)
+  }
+
   drawNewRowLine(pixelY, colour) {
-    const linePixelY = this.getColumnInsertionPixelY(pixelY)
-    this.previousColumnLineY = pixelY
+    const linePixelY = this.getRowInsertionPixelY(pixelY)
+    this.previousRowLineY = pixelY
     this.linePainter.setColour(colour || '#50F442', this)
     if (linePixelY - this.topBorder() >= this.tileSize && linePixelY - this.topBorder() <= this.tileSize * (this.height - 1)) {
       this.linePainter.plotHorizontalLine(this.leftBorder() + this.tileSize,
@@ -206,7 +214,7 @@ export class CaveView {
   }
 
   drawRemoveRowLine(pixelY, colour) {
-    this.previousColumnLineY = pixelY
+    this.previousRowLineY = pixelY
     const row = this.getGridY(pixelY)
     const unboundedTop = (Math.min(Math.max(row, 1), this.height - 2) * this.tileSize + this.topBorder())
     const unboundedBottom = unboundedTop + this.tileSize
@@ -240,7 +248,7 @@ export class CaveView {
     return Math.floor(columnInsertionPixelX / this.tileSize)
   }
 
-  getColumnInsertionPixelY(pixelY) {
+  getRowInsertionPixelY(pixelY) {
     const transformedPixel = this.zoomer.transformPixelY(pixelY)
     const distanceToPreviousHorizontalGridLineY = ((transformedPixel - this.topBorder()) % this.tileSize)
     const previousHorizontalGridLineY = transformedPixel - distanceToPreviousHorizontalGridLineY
@@ -253,9 +261,9 @@ export class CaveView {
     return linePixelY
   }
 
-  getColumnInsertionY(pixelY) {
-    const columnInsertionPixelY = this.getColumnInsertionPixelY(pixelY) - this.topBorder()
-    return Math.floor(columnInsertionPixelY / this.tileSize)
+  getRowInsertionY(pixelY) {
+    const rowInsertionPixelY = this.getRowInsertionPixelY(pixelY) - this.topBorder()
+    return Math.floor(rowInsertionPixelY / this.tileSize)
   }
 
   drawSquareOutline = function (column, row, colour, squareSize) {
@@ -415,6 +423,10 @@ export class CaveView {
       this.drawNewColumnLine(this.previousColumnLineX)
     } else if (this.lastCursorType === 'REMOVECOLUMN') {
       this.drawRemoveColumnLine(this.previousColumnLineX)
+    } else if (this.lastCursorType === 'ADDROW') {
+      this.drawNewRowLine(this.previousRowLineY)
+    } else if (this.lastCursorType === 'REMOVEROW') {
+      this.drawRemoveRowLine(this.previousRowLineY)
     }
   }
 }
