@@ -487,9 +487,10 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_LEFT_KEYS)
   handleArrowKeyPanLeft(e) {
     e.preventDefault()
-    const { grid, caveView, cursorType } = this.props
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x - 1, cursorPosition.y)) {
       if (cursorType === 'ADDCOLUMN') {
         caveView.moveAddColumnLeft()
         const newCursorPosition = {
@@ -518,9 +519,10 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_UP_KEYS)
   handleArrowKeyPanUp(e) {
     e.preventDefault()
-    const { grid, caveView, cursorType } = this.props
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (grid.withinLimits(cursorPosition.x, cursorPosition.y - 1)) {
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y - 1)) {
       if (cursorType === 'ADDROW') {
         caveView.moveAddRowUp()
         const newCursorPosition = {
@@ -548,9 +550,10 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_RIGHT_KEYS)
   handleArrowKeyPanRight(e) {
-    const { grid, caveView, cursorType } = this.props
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x + 1, cursorPosition.y)) {
       if (cursorType === 'ADDCOLUMN') {
         caveView.moveAddColumnRight()
         const newCursorPosition = {
@@ -579,9 +582,10 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_DOWN_KEYS)
   handleArrowKeyPanDown(e) {
     e.preventDefault()
-    const { grid, caveView, cursorType } = this.props
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (grid.withinLimits(cursorPosition.x, cursorPosition.y + 1)) {
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y + 1)) {
       if (cursorType === 'ADDROW') {
         caveView.moveAddRowDown()
         const newCursorPosition = {

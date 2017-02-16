@@ -429,4 +429,24 @@ export class CaveView {
       this.drawRemoveRowLine(this.previousRowLineY)
     }
   }
+
+  isLineWithinLimits(pixelX, pixelY, gridX, gridY) {
+    if (this.grid.withinLimits(gridX, gridY)) {
+      return true
+    }
+    const xOffset = (this.zoomer.transformPixelX(pixelX) - this.leftBorder()) % this.tileSize
+    const yOffset = (this.zoomer.transformPixelY(pixelY) - this.topBorder()) % this.tileSize
+    let adjustedGridX, adjustedGridY
+    if (xOffset > 0.5 * this.tileSize) {
+      adjustedGridX = gridX + 1
+    } else {
+      adjustedGridX = gridX - 1
+    }
+    if (yOffset > 0.5 * this.tileSize) {
+      adjustedGridY = gridY + 1
+    } else {
+      adjustedGridY = gridY - 1
+    }
+    return this.grid.withinLimits(adjustedGridX, adjustedGridY)
+  }
 }
