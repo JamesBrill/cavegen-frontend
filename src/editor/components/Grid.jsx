@@ -420,7 +420,7 @@ export default class Grid extends PureComponent {
     const gridY = caveView.getGridY(pixelY)
     const before = grid.getGridClone()
     if (gridY === y) {
-      caveView.removeRow(x)
+      caveView.removeRow(y)
       caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     } else {
       caveView.removeRowAtCursor()
