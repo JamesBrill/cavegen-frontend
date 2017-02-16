@@ -158,7 +158,7 @@ export class Cave {
   addRow(y) {
     const newRow = []
     for (let i = 0; i < this.width; i++) {
-      newRow[i] = { fileName: 'terrain', symbol: 'y' }
+      newRow[i] = { fileName: 'terrain', symbol: 'x' }
     }
     for (let i = 0; i < this.width; i++) {
       this.grid[i] = [
