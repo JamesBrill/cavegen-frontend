@@ -374,6 +374,9 @@ export default class Grid extends PureComponent {
       caveView.addColumnAtCursor()
       caveView.drawColumnAtCursor()
     }
+    const newCursorX = caveView.getGridX(pixelX)
+    const newCursorY = caveView.getGridY(pixelY)
+    this.updateCursor(newCursorX, newCursorY)
     changeController.addCaveChange(before, grid.grid)
     dispatch(setCaveWidth(caveWidth + 1))
   }
@@ -410,6 +413,9 @@ export default class Grid extends PureComponent {
       caveView.addRowAtCursor()
       caveView.drawRowAtCursor()
     }
+    const newCursorX = caveView.getGridX(pixelX)
+    const newCursorY = caveView.getGridY(pixelY)
+    this.updateCursor(newCursorX, newCursorY)
     changeController.addCaveChange(before, grid.grid)
     dispatch(setCaveHeight(caveHeight + 1))
   }
