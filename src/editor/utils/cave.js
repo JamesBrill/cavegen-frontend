@@ -134,9 +134,11 @@ export class Cave {
 
   addColumn(x) {
     const newColumn = []
-    for (let i = 0; i < this.height; i++) {
-      newColumn[i] = { fileName: 'terrain', symbol: 'x' }
+    newColumn[0] = { fileName: 'terrain', symbol: 'x' }
+    for (let i = 1; i < this.height - 1; i++) {
+      newColumn[i] = { fileName: 'terrain', symbol: ' ' }
     }
+    newColumn[this.height - 1] = { fileName: 'terrain', symbol: 'x' }
     this.grid = [
       ...this.grid.slice(0, x),
       newColumn,
@@ -157,9 +159,11 @@ export class Cave {
 
   addRow(y) {
     const newRow = []
-    for (let i = 0; i < this.width; i++) {
-      newRow[i] = { fileName: 'terrain', symbol: 'x' }
+    newRow[0] = { fileName: 'terrain', symbol: 'x' }
+    for (let i = 1; i < this.width - 1; i++) {
+      newRow[i] = { fileName: 'terrain', symbol: ' ' }
     }
+    newRow[this.width - 1] = { fileName: 'terrain', symbol: 'x' }
     for (let i = 0; i < this.width; i++) {
       this.grid[i] = [
         ...this.grid[i].slice(0, y),
