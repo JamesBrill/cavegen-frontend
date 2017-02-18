@@ -44,7 +44,11 @@ export class Cave {
     const newGrid = Array(x).fill().map(() => Array(y))
     for (let i = 0; i < x; i++) {
       for (let j = 0; j < y; j++) {
-        newGrid[i][j] = { fileName: 'terrain', symbol: 'x' }
+        if (i === 0 || i === x - 1 || j === 0 || j === y - 1) {
+          newGrid[i][j] = { fileName: 'terrain', symbol: 'x' }
+        } else {
+          newGrid[i][j] = { fileName: 'terrain', symbol: ' ' }
+        }
       }
     }
     return newGrid
