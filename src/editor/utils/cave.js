@@ -189,4 +189,12 @@ export class Cave {
       this.height--
     }
   }
+
+  fillRegion(brush, topLeft, bottomRight) {
+    for (let x = topLeft.x; x <= bottomRight.x; x++) {
+      for (let y = topLeft.y; y <= bottomRight.y; y++) {
+        this.grid[x][y] = brush
+      }
+    }
+  }
 }

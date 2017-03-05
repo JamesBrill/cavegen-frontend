@@ -479,8 +479,15 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleInsertTile(brush) {
-    this.startPaintingAtMousePosition(brush, true)
-    this.finishPainting()
+    const { caveView, grid, cursorType } = this.props
+    if (cursorType === 'SELECTREGION') {
+      const { topLeft, bottomRight } = caveView.regionSelector
+      caveView.fillRegion(brush, topLeft, bottomRight)
+      grid.fillRegion(brush, topLeft, bottomRight)
+    } else {
+      this.startPaintingAtMousePosition(brush, true)
+      this.finishPainting()
+    }
   }
 
   @autobind

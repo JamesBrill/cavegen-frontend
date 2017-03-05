@@ -267,6 +267,14 @@ export class CaveView {
     this.linePainter.plotHorizontalLine(right, left, top, this)
   }
 
+  fillRegion(brush, topLeft, bottomRight) {
+    for (let x = topLeft.x; x <= bottomRight.x; x++) {
+      for (let y = topLeft.y; y <= bottomRight.y; y++) {
+        this.drawAtGridCoordinates(x, y, brush)
+      }
+    }
+  }
+
   getColumnInsertionPixelX(pixelX) {
     const transformedPixel = this.zoomer.transformPixelX(pixelX)
     const distanceToPreviousVerticalGridLineX = ((transformedPixel - this.leftBorder()) % this.tileSize)
