@@ -663,7 +663,7 @@ export default class Grid extends PureComponent {
     if (cursorType === 'SELECTREGION' && grid.withinLimits(cursorPosition.x, cursorPosition.y)) {
       caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y)
       caveView.isMouseDown = true
-      this.updateCursor()
+      this.updateCursor(cursorPosition.x, cursorPosition.y)
     } else if (!caveView.zoomer.panning) {
       this.setState({ pixelX: e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft })
       this.setState({ pixelY: e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop })
