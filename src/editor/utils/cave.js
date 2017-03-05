@@ -191,10 +191,18 @@ export class Cave {
   }
 
   fillRegion(brush, topLeft, bottomRight) {
+    const tileChanges = []
     for (let x = topLeft.x; x <= bottomRight.x; x++) {
       for (let y = topLeft.y; y <= bottomRight.y; y++) {
+        const before = this.getTileAtCoordinates(x, y)
+        const after = this.getAppropriateBrush(x, y, brush)
+        if (before.symbol !== after.symbol) {
+          const tileChange = new TileChange(x, y, before, after)
+          tileChanges.push(tileChange)
+        }
         this.grid[x][y] = brush
       }
     }
+    return tileChanges
   }
 }
