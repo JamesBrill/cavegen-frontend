@@ -14,6 +14,9 @@ export function setUpTileKeyListeners(selectBrush, insertTile) {
   window.addEventListener('keydown', e => {
     let tile
     switch (e.code) {
+      case 'KeyA':
+        tile = 'a'
+        break
       case 'Quote':
         tile = e.shiftKey ? '\"' : '\''
         break
