@@ -82,7 +82,10 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
     } else if (brush.symbol === '9' && cursorType !== 'REMOVEROW') {
       dispatch(setCursorType('REMOVEROW'))
       newCursorType = 'REMOVEROW'
-    } else if (['6', '7', '8', '9'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
+    } else if (brush.symbol === 'a' && cursorType !== 'SELECTREGION') {
+      dispatch(setCursorType('SELECTREGION'))
+      newCursorType = 'SELECTREGION'
+    } else if (['6', '7', '8', '9', 'a'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
       dispatch(setCursorType('SQUARE'))
       newCursorType = 'SQUARE'
     }

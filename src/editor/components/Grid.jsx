@@ -77,7 +77,14 @@ export default class Grid extends PureComponent {
     brushSize: PropTypes.number,
     lastUsedBrushSize: PropTypes.number,
     previousCursor: PropTypes.object,
-    cursorType: PropTypes.oneOf(['SQUARE', 'ADDCOLUMN', 'REMOVECOLUMN', 'ADDROW', 'REMOVEROW']),
+    cursorType: PropTypes.oneOf([
+      'SQUARE',
+      'ADDCOLUMN',
+      'REMOVECOLUMN',
+      'ADDROW',
+      'REMOVEROW',
+      'SELECTREGION'
+    ]),
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
