@@ -6,7 +6,8 @@ export const PALETTE_BRUSHES = {
     { fileName: 'addcolumn', symbol: '6', tooltip: 'Add Column 6' },
     { fileName: 'removecolumn', symbol: '7', tooltip: 'Remove Column 7' },
     { fileName: 'addrow', symbol: '8', tooltip: 'Add Row 8' },
-    { fileName: 'removerow', symbol: '9', tooltip: 'Remove Row 9' }
+    { fileName: 'removerow', symbol: '9', tooltip: 'Remove Row 9' },
+    { fileName: 'selectregion', symbol: 'a', tooltip: 'Select Region a' }
   ],
   Common: [
     { fileName: 'terrain', symbol: 'x', tooltip: 'Terrain x' },
