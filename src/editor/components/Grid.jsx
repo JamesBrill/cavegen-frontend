@@ -472,9 +472,18 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleDeleteKeyDown() {
-    this.setState({ deleting: true })
+    const { caveView, grid, changeController, cursorType } = this.props
     const spaceBrush = { fileName: 'space', symbol: ' ' }
-    this.startPaintingAtMousePosition(spaceBrush)
+    if (cursorType === 'SELECTREGION') {
+      const { topLeft, bottomRight } = caveView.regionSelector
+      caveView.fillRegion(spaceBrush, topLeft, bottomRight)
+      const tileChanges = grid.fillRegion(spaceBrush, topLeft, bottomRight)
+      changeController.addTileChanges(tileChanges)
+      changeController.addPaintedLineChange()
+    } else {
+      this.setState({ deleting: true })
+      this.startPaintingAtMousePosition(spaceBrush)
+    }
   }
 
   @autobind
