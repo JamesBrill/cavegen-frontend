@@ -3,6 +3,7 @@
 import { autobind } from 'core-decorators'
 import { LinePainter } from 'src/editor/utils/line-painter'
 import { Zoomer } from 'src/editor/utils/zoomer'
+import RegionSelector from 'src/editor/utils/region-selector'
 import { getBorder, getTileSize } from 'src/editor/utils/tiles'
 
 export class CaveView {
@@ -28,6 +29,7 @@ export class CaveView {
     this.previousColumnLineX = this.tileSize
     this.previousRowLineY = this.tileSize
     this.lastCursorType = 'SQUARE'
+    this.regionSelector = new RegionSelector()
   }
 
   @autobind
@@ -129,6 +131,14 @@ export class CaveView {
       case 'REMOVEROW':
         this.drawRemoveRowLine(pixelY)
         break
+      case 'SELECTREGION':
+        if (this.regionSelector.anchorPoint === null) {
+          this.drawSquareOutline(column, row, '#FF0000', brushSize)
+        } else {
+          const { topLeft, bottomRight } = this.regionSelector
+          this.drawRegion(topLeft, bottomRight)
+        }
+        break
       case 'SQUARE':
       default:
         this.drawSquareOutline(column, row, '#FF0000', brushSize)
@@ -137,6 +147,7 @@ export class CaveView {
   }
 
   erasePreviousCursor(column, row, squareSize, cursorType) {
+    const { anchorPoint, previousTopLeft, previousBottomRight } = this.regionSelector
     switch (cursorType) {
       case 'ADDCOLUMN':
         this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
@@ -149,6 +160,13 @@ export class CaveView {
         break
       case 'REMOVEROW':
         this.drawRemoveRowLine(this.previousRowLineY, '#FFFFFF')
+        break
+      case 'SELECTREGION':
+        if (anchorPoint === null) {
+          this.drawSquareOutline(column, row, '#FFFFFF', squareSize)
+        } else if (previousTopLeft !== null && previousBottomRight !== null) {
+          this.drawRegion(previousTopLeft, previousBottomRight, '#FFFFFF')
+        }
         break
       case 'SQUARE':
       default:
@@ -222,6 +240,25 @@ export class CaveView {
     const left = this.leftBorder() + this.tileSize
     const bottom = Math.min(unboundedBottom, this.topBorder() + this.tileSize * (this.height - 1))
     const right = this.leftBorder() + this.tileSize * (this.width - 1)
+
+    this.linePainter.setColour(colour || '#FF0000', this)
+    this.linePainter.plotVerticalLine(left, top, bottom, this)
+    this.linePainter.plotHorizontalLine(left, right, bottom, this)
+    this.linePainter.plotVerticalLine(right, bottom, top, this)
+    this.linePainter.plotHorizontalLine(right, left, top, this)
+  }
+
+  drawRegion(topLeft, bottomRight, colour) {
+    const width = bottomRight.x - topLeft.x + 1
+    const height = bottomRight.y - topLeft.y + 1
+    const unboundedTop = (Math.min(Math.max(topLeft.y, 1), this.height - 2)) * this.tileSize + this.topBorder()
+    const unboundedLeft = (Math.min(Math.max(topLeft.x, 1), this.width - 2)) * this.tileSize + this.leftBorder()
+    const unboundedBottom = unboundedTop + height * this.tileSize
+    const unboundedRight = unboundedLeft + width * this.tileSize
+    const top = Math.max(unboundedTop, this.topBorder() + this.tileSize)
+    const left = Math.max(unboundedLeft, this.leftBorder() + this.tileSize)
+    const bottom = Math.min(unboundedBottom, this.topBorder() + this.tileSize * (this.height - 1))
+    const right = Math.min(unboundedRight, this.leftBorder() + this.tileSize * (this.width - 1))
 
     this.linePainter.setColour(colour || '#FF0000', this)
     this.linePainter.plotVerticalLine(left, top, bottom, this)
@@ -448,5 +485,17 @@ export class CaveView {
       adjustedGridY = gridY - 1
     }
     return this.grid.withinLimits(adjustedGridX, adjustedGridY)
+  }
+
+  setAnchorPoint(x, y) {
+    this.regionSelector.setAnchorPoint(x, y)
+  }
+
+  setBoundPoint(x, y) {
+    this.regionSelector.setBoundPoint(x, y)
+  }
+
+  resetRegionSelector() {
+    this.regionSelector.reset()
   }
 }

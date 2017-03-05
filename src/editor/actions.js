@@ -94,6 +94,9 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
                                    previousCursor.position.y,
                                    previousCursor.size,
                                    cursorType)
+      if (newCursorType !== 'SELECTREGION') {
+        caveView.resetRegionSelector()
+      }
       if (pixelX && pixelY) {
         caveView.drawCursor(gridX, gridY, pixelX, pixelY, brushSize, newCursorType)
       }

@@ -649,8 +649,13 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleMouseDown(e) {
-    const { caveView } = this.props
-    if (!caveView.zoomer.panning) {
+    const { caveView, grid, cursorType } = this.props
+    const { cursorPosition } = this.state
+    if (cursorType === 'SELECTREGION' && grid.withinLimits(cursorPosition.x, cursorPosition.y)) {
+      caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y)
+      caveView.isMouseDown = true
+      this.updateCursor()
+    } else if (!caveView.zoomer.panning) {
       this.setState({ pixelX: e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft })
       this.setState({ pixelY: e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop })
       this.startPaintingAtMousePosition()
@@ -664,9 +669,21 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleMouseMove(e) {
-    this.setState({ pixelX: e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft })
-    this.setState({ pixelY: e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop })
-    this.continuePaintingAtMousePosition()
+    const { caveView, grid, cursorType } = this.props
+    const pixelX = e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
+    const pixelY = e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
+    this.setState({ pixelX, pixelY })
+
+    if (cursorType === 'SELECTREGION' && caveView.isMouseDown) {
+      const gridX = caveView.getGridX(pixelX)
+      const gridY = caveView.getGridY(pixelY)
+      if (grid.withinLimits(gridX, gridY)) {
+        caveView.setBoundPoint(gridX, gridY)
+        this.updateCursor(gridX, gridY)
+      }
+    } else {
+      this.continuePaintingAtMousePosition()
+    }
   }
 
   render() {
