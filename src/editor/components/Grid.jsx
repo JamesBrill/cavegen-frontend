@@ -63,6 +63,10 @@ const MOVE_LEFT_KEYS = ['left', 'alt+left']
 const MOVE_UP_KEYS = ['up', 'alt+up']
 const MOVE_RIGHT_KEYS = ['right', 'alt+right']
 const MOVE_DOWN_KEYS = ['down', 'alt+down']
+const SHIFT_MOVE_LEFT_KEY = ['shift+left']
+const SHIFT_MOVE_UP_KEY = ['shift+up']
+const SHIFT_MOVE_RIGHT_KEY = ['shift+right']
+const SHIFT_MOVE_DOWN_KEY = ['shift+down']
 
 @connect(mapStateToProps)
 export default class Grid extends PureComponent {
@@ -571,6 +575,21 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  @keydown(SHIFT_MOVE_LEFT_KEY)
+  handleArrowKeyShiftLeft(e) {
+    e.preventDefault()
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
+    const cursorPosition = this.state.cursorPosition
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x - 1, cursorPosition.y)) {
+      if (cursorType === 'SELECTREGION') {
+        caveView.setBoundPoint(cursorPosition.x - 1, cursorPosition.y)
+        this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
+      }
+    }
+  }
+
+  @autobind
   @keydown(MOVE_UP_KEYS)
   handleArrowKeyPanUp(e) {
     e.preventDefault()
@@ -603,8 +622,24 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  @keydown(SHIFT_MOVE_UP_KEY)
+  handleArrowKeyShiftUp(e) {
+    e.preventDefault()
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
+    const cursorPosition = this.state.cursorPosition
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y - 1)) {
+      if (cursorType === 'SELECTREGION') {
+        caveView.setBoundPoint(cursorPosition.x, cursorPosition.y - 1)
+        this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
+      }
+    }
+  }
+
+  @autobind
   @keydown(MOVE_RIGHT_KEYS)
   handleArrowKeyPanRight(e) {
+    e.preventDefault()
     const { caveView, cursorType } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
@@ -629,6 +664,21 @@ export default class Grid extends PureComponent {
       }
       if (e.altKey) {
         caveView.zoomer.panRight()
+      }
+    }
+  }
+
+  @autobind
+  @keydown(SHIFT_MOVE_RIGHT_KEY)
+  handleArrowKeyShiftRight(e) {
+    e.preventDefault()
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
+    const cursorPosition = this.state.cursorPosition
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x + 1, cursorPosition.y)) {
+      if (cursorType === 'SELECTREGION') {
+        caveView.setBoundPoint(cursorPosition.x + 1, cursorPosition.y)
+        this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
       }
     }
   }
@@ -661,6 +711,21 @@ export default class Grid extends PureComponent {
       }
       if (e.altKey) {
         this.props.caveView.zoomer.panDown()
+      }
+    }
+  }
+
+  @autobind
+  @keydown(SHIFT_MOVE_DOWN_KEY)
+  handleArrowKeyShiftDown(e) {
+    e.preventDefault()
+    const { caveView, cursorType } = this.props
+    const { pixelX, pixelY } = this.state
+    const cursorPosition = this.state.cursorPosition
+    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y + 1)) {
+      if (cursorType === 'SELECTREGION') {
+        caveView.setBoundPoint(cursorPosition.x, cursorPosition.y + 1)
+        this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
       }
     }
   }
