@@ -561,7 +561,7 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE') {
+      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
         this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
       }
       if (e.altKey) {
@@ -593,7 +593,7 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y - 1
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE') {
+      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
         this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
       }
       if (e.altKey) {
@@ -624,7 +624,7 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE') {
+      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
         this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
       }
       if (e.altKey) {
@@ -656,7 +656,7 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y + 1
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE') {
+      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
         this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
       }
       if (e.altKey) {
