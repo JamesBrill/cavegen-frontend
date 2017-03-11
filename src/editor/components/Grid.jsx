@@ -546,7 +546,7 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_LEFT_KEYS)
   handleArrowKeyPanLeft(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
+    const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
     if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x - 1, cursorPosition.y)) {
@@ -565,7 +565,8 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
+      } else if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y) &&
+                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
         this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
       }
       if (e.altKey) {
@@ -592,7 +593,7 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_UP_KEYS)
   handleArrowKeyPanUp(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
+    const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
     if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y - 1)) {
@@ -611,7 +612,8 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y - 1
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
+      } else if (grid.withinLimits(cursorPosition.x, cursorPosition.y - 1) &&
+                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
         this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
       }
       if (e.altKey) {
@@ -638,7 +640,7 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_RIGHT_KEYS)
   handleArrowKeyPanRight(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
+    const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
     if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x + 1, cursorPosition.y)) {
@@ -657,7 +659,8 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
+      } else if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y) &&
+                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
         this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
       }
       if (e.altKey) {
@@ -684,7 +687,7 @@ export default class Grid extends PureComponent {
   @keydown(MOVE_DOWN_KEYS)
   handleArrowKeyPanDown(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
+    const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
     if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y + 1)) {
@@ -703,7 +706,8 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y + 1
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (cursorType === 'SQUARE' || cursorType === 'SELECTREGION') {
+      } else if (grid.withinLimits(cursorPosition.x, cursorPosition.y + 1) &&
+                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
         this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
       }
       if (e.altKey) {
