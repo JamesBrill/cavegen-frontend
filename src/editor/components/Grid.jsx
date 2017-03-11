@@ -578,10 +578,9 @@ export default class Grid extends PureComponent {
   @keydown(SHIFT_MOVE_LEFT_KEY)
   handleArrowKeyShiftLeft(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
-    const { pixelX, pixelY } = this.state
+    const { caveView, cursorType, grid } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x - 1, cursorPosition.y)) {
+    if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y)) {
       if (cursorType === 'SELECTREGION') {
         caveView.setBoundPoint(cursorPosition.x - 1, cursorPosition.y)
         this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
@@ -625,10 +624,9 @@ export default class Grid extends PureComponent {
   @keydown(SHIFT_MOVE_UP_KEY)
   handleArrowKeyShiftUp(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
-    const { pixelX, pixelY } = this.state
+    const { caveView, cursorType, grid } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y - 1)) {
+    if (grid.withinLimits(cursorPosition.x, cursorPosition.y - 1)) {
       if (cursorType === 'SELECTREGION') {
         caveView.setBoundPoint(cursorPosition.x, cursorPosition.y - 1)
         this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
@@ -672,10 +670,9 @@ export default class Grid extends PureComponent {
   @keydown(SHIFT_MOVE_RIGHT_KEY)
   handleArrowKeyShiftRight(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
-    const { pixelX, pixelY } = this.state
+    const { caveView, cursorType, grid } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x + 1, cursorPosition.y)) {
+    if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y)) {
       if (cursorType === 'SELECTREGION') {
         caveView.setBoundPoint(cursorPosition.x + 1, cursorPosition.y)
         this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
@@ -719,10 +716,9 @@ export default class Grid extends PureComponent {
   @keydown(SHIFT_MOVE_DOWN_KEY)
   handleArrowKeyShiftDown(e) {
     e.preventDefault()
-    const { caveView, cursorType } = this.props
-    const { pixelX, pixelY } = this.state
+    const { caveView, cursorType, grid } = this.props
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y + 1)) {
+    if (grid.withinLimits(cursorPosition.x, cursorPosition.y + 1)) {
       if (cursorType === 'SELECTREGION') {
         caveView.setBoundPoint(cursorPosition.x, cursorPosition.y + 1)
         this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
