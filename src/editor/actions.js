@@ -84,6 +84,7 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
       newCursorType = 'REMOVEROW'
     } else if (brush.symbol === 'a' && cursorType !== 'SELECTREGION') {
       dispatch(setCursorType('SELECTREGION'))
+      caveView.setAnchorPoint(previousCursor.position.x, previousCursor.position.y)
       newCursorType = 'SELECTREGION'
     } else if (['6', '7', '8', '9', 'a'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
       dispatch(setCursorType('SQUARE'))
