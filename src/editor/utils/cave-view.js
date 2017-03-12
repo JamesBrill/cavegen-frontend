@@ -6,6 +6,8 @@ import { Zoomer } from 'src/editor/utils/zoomer'
 import RegionSelector from 'src/editor/utils/region-selector'
 import { getBorder, getTileSize } from 'src/editor/utils/tiles'
 
+import { getCaveCode } from 'src/editor/utils/cave-code'
+
 export class CaveView {
   constructor({ x, y, tileSize, unscaledTileSize, border, scalingFactor, canvas, grid, updateCursor, zoomer, imageMap }) {
     this.grid = grid
@@ -49,6 +51,10 @@ export class CaveView {
       this.context = this.canvas.getContext('2d')
     }
     this.drawMeasuringGrid()
+    this.drawGridContents(cave)
+  }
+
+  drawGridContents(cave) {
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
         this.drawAtGridCoordinates(i, j, cave.getTileAtCoordinates(i, j))
@@ -526,5 +532,31 @@ export class CaveView {
       }
     }
     return this.grid.pasteRegion(copiedRegion, x, y)
+  }
+
+  moveRegionLeft() {
+    this.regionSelector.moveRegionLeft(this.grid.grid)
+    this.moveRegion()
+  }
+
+  moveRegionRight() {
+    this.regionSelector.moveRegionRight(this.grid.grid)
+    this.moveRegion()
+  }
+
+  moveRegionUp() {
+    this.regionSelector.moveRegionUp(this.grid.grid)
+    this.moveRegion()
+  }
+
+  moveRegionDown() {
+    this.regionSelector.moveRegionDown(this.grid.grid)
+    this.moveRegion()
+  }
+
+  moveRegion() {
+    const { preMoveGridSnapshot, movingRegion, movingRegionX, movingRegionY } = this.regionSelector
+    this.grid.moveRegion(preMoveGridSnapshot, movingRegion, movingRegionX, movingRegionY)
+    this.drawGridContents(this.grid)
   }
 }

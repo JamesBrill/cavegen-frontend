@@ -69,6 +69,10 @@ const SHIFT_MOVE_LEFT_KEY = ['shift+left']
 const SHIFT_MOVE_UP_KEY = ['shift+up']
 const SHIFT_MOVE_RIGHT_KEY = ['shift+right']
 const SHIFT_MOVE_DOWN_KEY = ['shift+down']
+const MOVE_REGION_LEFT_KEY = ['alt+shift+left']
+const MOVE_REGION_UP_KEY = ['alt+shift+up']
+const MOVE_REGION_RIGHT_KEY = ['alt+shift+right']
+const MOVE_REGION_DOWN_KEY = ['alt+shift+down']
 const COPY_KEYS = ['ctrl+c', 'cmd+c']
 const PASTE_KEYS = ['ctrl+v', 'cmd+v']
 
@@ -589,6 +593,12 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  @keydown(MOVE_REGION_LEFT_KEY)
+  handleMoveRegionLeft() {
+    this.props.caveView.moveRegionLeft()
+  }
+
+  @autobind
   @keydown(MOVE_UP_KEYS)
   handleArrowKeyPanUp(e) {
     e.preventDefault()
@@ -636,6 +646,12 @@ export default class Grid extends PureComponent {
         this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
       }
     }
+  }
+
+  @autobind
+  @keydown(MOVE_REGION_UP_KEY)
+  handleMoveRegionUp() {
+    this.props.caveView.moveRegionUp()
   }
 
   @autobind
@@ -689,6 +705,12 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  @keydown(MOVE_REGION_RIGHT_KEY)
+  handleMoveRegionRight() {
+    this.props.caveView.moveRegionRight()
+  }
+
+  @autobind
   @keydown(MOVE_DOWN_KEYS)
   handleArrowKeyPanDown(e) {
     e.preventDefault()
@@ -736,6 +758,12 @@ export default class Grid extends PureComponent {
         this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
       }
     }
+  }
+
+  @autobind
+  @keydown(MOVE_REGION_DOWN_KEY)
+  handleMoveRegionDown() {
+    this.props.caveView.moveRegionDown()
   }
 
   @autobind

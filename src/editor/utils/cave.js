@@ -225,4 +225,15 @@ export class Cave {
     }
     return tileChanges
   }
+
+  moveRegion(preMoveGridSnapshot, region, x, y) {
+    this.grid = preMoveGridSnapshot.map(a => a.slice())
+    for (let i = 0; i < region.length; i++) {
+      for (let j = 0; j < region[0].length; j++) {
+        if (this.withinLimits(i + x, j + y)) {
+          this.grid[i + x][j + y] = region[i][j]
+        }
+      }
+    }
+  }
 }
