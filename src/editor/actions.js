@@ -193,7 +193,8 @@ export function fillRegion(brush) {
   return function (dispatch, getState) {
     const { cursorType, caveView, changeController, grid } = getState().editor
     const { currentCaveName } = getState().caves
-    if (cursorType === 'SELECTREGION') {
+    if (cursorType === 'SELECTREGION' &&
+        ['6', '7', '8', '9', 'a', 'f', 'r'].indexOf(brush.symbol) === -1) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
