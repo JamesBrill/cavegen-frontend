@@ -822,12 +822,10 @@ export default class Grid extends PureComponent {
     this.setState({ pixelX, pixelY })
 
     if (cursorType === 'SELECTREGION' && caveView.isMouseDown) {
-      const gridX = caveView.getGridX(pixelX)
-      const gridY = caveView.getGridY(pixelY)
-      if (grid.withinLimits(gridX, gridY)) {
-        caveView.setBoundPoint(gridX, gridY)
-        this.updateCursor(gridX, gridY)
-      }
+      const gridX = Math.min(Math.max(1, caveView.getGridX(pixelX)), grid.width - 2)
+      const gridY = Math.min(Math.max(1, caveView.getGridY(pixelY)), grid.height - 2)
+      caveView.setBoundPoint(gridX, gridY)
+      this.updateCursor(gridX, gridY)
     } else {
       this.continuePaintingAtMousePosition()
     }
