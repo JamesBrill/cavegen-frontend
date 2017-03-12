@@ -211,13 +211,15 @@ export class Cave {
     if (region !== null) {
       for (let i = 0; i < region.length; i++) {
         for (let j = 0; j < region[0].length; j++) {
-          const before = this.getTileAtCoordinates(i + x, j + y)
-          const after = this.getAppropriateBrush(i + x, j + y, region[i][j])
-          if (before.symbol !== after.symbol) {
-            const tileChange = new TileChange(i + x, j + y, before, after)
-            tileChanges.push(tileChange)
+          if (this.withinLimits(i + x, j + y)) {
+            const before = this.getTileAtCoordinates(i + x, j + y)
+            const after = this.getAppropriateBrush(i + x, j + y, region[i][j])
+            if (before.symbol !== after.symbol) {
+              const tileChange = new TileChange(i + x, j + y, before, after)
+              tileChanges.push(tileChange)
+            }
+            this.grid[i + x][j + y] = region[i][j]
           }
-          this.grid[i + x][j + y] = region[i][j]
         }
       }
     }
