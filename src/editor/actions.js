@@ -202,3 +202,17 @@ export function fillRegion(brush) {
     }
   }
 }
+
+export function pasteRegion(x, y) {
+  return function (dispatch, getState) {
+    const { cursorType, caveView, changeController, grid } = getState().editor
+    const { currentCaveName } = getState().caves
+    if (cursorType === 'SELECTREGION') {
+      const tileChanges = caveView.pasteRegion(x, y)
+      changeController.addTileChanges(tileChanges)
+      changeController.addPaintedLineChange()
+      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      dispatch(updateCave({ text: caveCode }))
+    }
+  }
+}

@@ -511,4 +511,18 @@ export class CaveView {
   resetRegionSelector() {
     this.regionSelector.reset()
   }
+
+  copyRegion() {
+    this.regionSelector.copyRegion(this.grid.grid)
+  }
+
+  pasteRegion(x, y) {
+    const { copiedRegion } = this.regionSelector
+    for (let i = 0; i < copiedRegion.length; i++) {
+      for (let j = 0; j < copiedRegion[0].length; j++) {
+        this.drawAtGridCoordinates(i + x, j + y, copiedRegion[i][j])
+      }
+    }
+    return this.grid.pasteRegion(copiedRegion, x, y)
+  }
 }

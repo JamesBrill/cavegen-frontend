@@ -25,7 +25,8 @@ import {
   setLastUsedBrushSize,
   setCaveCode,
   stopRebuild,
-  fillRegion
+  fillRegion,
+  pasteRegion
 } from 'src/editor/actions'
 import {
   updateCave,
@@ -68,6 +69,8 @@ const SHIFT_MOVE_LEFT_KEY = ['shift+left']
 const SHIFT_MOVE_UP_KEY = ['shift+up']
 const SHIFT_MOVE_RIGHT_KEY = ['shift+right']
 const SHIFT_MOVE_DOWN_KEY = ['shift+down']
+const COPY_KEYS = ['ctrl+c', 'cmd+c']
+const PASTE_KEYS = ['ctrl+v', 'cmd+v']
 
 @connect(mapStateToProps)
 export default class Grid extends PureComponent {
@@ -772,6 +775,23 @@ export default class Grid extends PureComponent {
     } else {
       this.continuePaintingAtMousePosition()
     }
+  }
+
+  @autobind
+  @keydown(COPY_KEYS)
+  handleCopyRegion(e) {
+    e.preventDefault()
+    const { caveView } = this.props
+    caveView.copyRegion()
+  }
+
+  @autobind
+  @keydown(PASTE_KEYS)
+  handlePasteRegion(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    const { cursorPosition } = this.state
+    dispatch(pasteRegion(cursorPosition.x, cursorPosition.y))
   }
 
   render() {

@@ -28,11 +28,25 @@ export default class RegionSelector {
     }
   }
 
+  copyRegion(grid) {
+    const regionWidth = this.bottomRight.x - this.topLeft.x + 1
+    const regionHeight = this.bottomRight.y - this.topLeft.y + 1
+    if (regionWidth * regionHeight > 0) {
+      this.copiedRegion = Array(regionWidth).fill().map(() => Array(regionHeight))
+      for (let i = 0; i < regionWidth; i++) {
+        for (let j = 0; j < regionHeight; j++) {
+          this.copiedRegion[i][j] = grid[i + this.topLeft.x][j + this.topLeft.y]
+        }
+      }
+    }
+  }
+
   reset() {
     this.anchorPoint = null
     this.topLeft = null
     this.bottomRight = null
     this.previousTopLeft = null
     this.previousBottomRight = null
+    this.copiedRegion = null
   }
 }
