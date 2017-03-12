@@ -534,23 +534,27 @@ export class CaveView {
   }
 
   moveRegionLeft() {
-    this.regionSelector.moveRegionLeft(this.grid)
+    const regionMoved = this.regionSelector.moveRegionLeft(this.grid)
     this.moveRegion()
+    return regionMoved
   }
 
   moveRegionRight() {
-    this.regionSelector.moveRegionRight(this.grid)
+    const regionMoved = this.regionSelector.moveRegionRight(this.grid)
     this.moveRegion()
+    return regionMoved
   }
 
   moveRegionUp() {
-    this.regionSelector.moveRegionUp(this.grid)
+    const regionMoved = this.regionSelector.moveRegionUp(this.grid)
     this.moveRegion()
+    return regionMoved
   }
 
   moveRegionDown() {
-    this.regionSelector.moveRegionDown(this.grid)
+    const regionMoved = this.regionSelector.moveRegionDown(this.grid)
     this.moveRegion()
+    return regionMoved
   }
 
   moveRegion() {

@@ -595,7 +595,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_LEFT_KEY)
   handleMoveRegionLeft() {
-    this.props.caveView.moveRegionLeft()
+    const { grid, caveView, changeController } = this.props
+    const before = grid.getGridClone()
+    const regionMoved = caveView.moveRegionLeft()
+    if (regionMoved) {
+      changeController.addCaveChange(before, grid.grid)
+    }
   }
 
   @autobind
@@ -651,7 +656,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_UP_KEY)
   handleMoveRegionUp() {
-    this.props.caveView.moveRegionUp()
+    const { grid, caveView, changeController } = this.props
+    const before = grid.getGridClone()
+    const regionMoved = caveView.moveRegionUp()
+    if (regionMoved) {
+      changeController.addCaveChange(before, grid.grid)
+    }
   }
 
   @autobind
@@ -707,7 +717,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_RIGHT_KEY)
   handleMoveRegionRight() {
-    this.props.caveView.moveRegionRight()
+    const { grid, caveView, changeController } = this.props
+    const before = grid.getGridClone()
+    const regionMoved = caveView.moveRegionRight()
+    if (regionMoved) {
+      changeController.addCaveChange(before, grid.grid)
+    }
   }
 
   @autobind
@@ -763,7 +778,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_DOWN_KEY)
   handleMoveRegionDown() {
-    this.props.caveView.moveRegionDown()
+    const { grid, caveView, changeController } = this.props
+    const before = grid.getGridClone()
+    const regionMoved = caveView.moveRegionDown()
+    if (regionMoved) {
+      changeController.addCaveChange(before, grid.grid)
+    }
   }
 
   @autobind
