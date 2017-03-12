@@ -571,6 +571,9 @@ export default class Grid extends PureComponent {
         this.setState({ cursorPosition: newCursorPosition })
       } else if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y) &&
                  (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+        if (cursorType === 'SELECTREGION') {
+          caveView.setAnchorPoint(cursorPosition.x - 1, cursorPosition.y)
+        }
         this.updateCursor(cursorPosition.x - 1, cursorPosition.y)
       }
       if (e.altKey) {
@@ -618,6 +621,9 @@ export default class Grid extends PureComponent {
         this.setState({ cursorPosition: newCursorPosition })
       } else if (grid.withinLimits(cursorPosition.x, cursorPosition.y - 1) &&
                  (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+        if (cursorType === 'SELECTREGION') {
+          caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y - 1)
+        }
         this.updateCursor(cursorPosition.x, cursorPosition.y - 1)
       }
       if (e.altKey) {
@@ -665,6 +671,9 @@ export default class Grid extends PureComponent {
         this.setState({ cursorPosition: newCursorPosition })
       } else if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y) &&
                  (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+        if (cursorType === 'SELECTREGION') {
+          caveView.setAnchorPoint(cursorPosition.x + 1, cursorPosition.y)
+        }
         this.updateCursor(cursorPosition.x + 1, cursorPosition.y)
       }
       if (e.altKey) {
@@ -712,6 +721,9 @@ export default class Grid extends PureComponent {
         this.setState({ cursorPosition: newCursorPosition })
       } else if (grid.withinLimits(cursorPosition.x, cursorPosition.y + 1) &&
                  (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+        if (cursorType === 'SELECTREGION') {
+          caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y + 1)
+        }
         this.updateCursor(cursorPosition.x, cursorPosition.y + 1)
       }
       if (e.altKey) {
