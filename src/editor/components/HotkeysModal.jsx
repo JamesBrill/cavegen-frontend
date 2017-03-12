@@ -40,7 +40,7 @@ export default class HotkeysModal extends PureComponent {
 
   render() {
     const { isOpen } = this.state
-    const tileData = PALETTE_BRUSHES_LIST.map(brush => {
+    const tileData = PALETTE_BRUSHES_LIST.filter(x => x.symbol !== 'a').map(brush => {
       let selectTileHotkey, placeTileHotkey
       switch (brush.symbol) {
         case 'D':
