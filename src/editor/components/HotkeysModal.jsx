@@ -196,7 +196,7 @@ export default class HotkeysModal extends PureComponent {
                 </tr>
                 <tr key='Region Fill-1'>
                   <td className={styles.actionTile}>Fill region</td>
-                  <td className={styles.actionTile}>Insert + tile key</td>
+                  <td className={styles.actionTile}>Alt + tile key</td>
                 </tr>
                 <tr key='Region Fill-2' className={styles.actionDividerRow}>
                   <td className={styles.actionTile}></td>
