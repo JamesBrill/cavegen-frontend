@@ -69,3 +69,7 @@
 .actionDividerRow {
   border-bottom: 1pt solid black;
 }
+
+.regionIcon {
+  background-color: black;
+}

@@ -18,7 +18,7 @@ export default class Palette extends PureComponent {
     super(props)
 
     this.state = {
-      altKeyDown: false,
+      insertKeyDown: false,
       metaKeyDown: false
     }
   }
@@ -26,8 +26,8 @@ export default class Palette extends PureComponent {
   @autobind
   handlePaletteTileClick(brush) {
     const { onTileClick, onFillRegion } = this.props
-    const { altKeyDown, metaKeyDown } = this.state
-    if (altKeyDown || metaKeyDown) {
+    const { insertKeyDown, metaKeyDown } = this.state
+    if (insertKeyDown || metaKeyDown) {
       onFillRegion(brush)
     } else {
       onTileClick(brush)
@@ -69,8 +69,8 @@ export default class Palette extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <KeyHandler keyEventName={KEYDOWN} keyValue='Alt' onKeyHandle={() => this.setState({ altKeyDown: true })} />
-        <KeyHandler keyEventName={KEYUP} keyValue='Alt' onKeyHandle={() => this.setState({ altKeyDown: false })} />
+        <KeyHandler keyEventName={KEYDOWN} keyValue='Insert' onKeyHandle={() => this.setState({ insertKeyDown: true })} />
+        <KeyHandler keyEventName={KEYUP} keyValue='Insert' onKeyHandle={() => this.setState({ insertKeyDown: false })} />
         <KeyHandler keyEventName={KEYDOWN} keyValue='Meta' onKeyHandle={() => this.setState({ metaKeyDown: true })} />
         <KeyHandler keyEventName={KEYUP} keyValue='Meta' onKeyHandle={() => this.setState({ metaKeyDown: false })} />
         <div>

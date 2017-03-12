@@ -38,9 +38,18 @@ export default class HotkeysModal extends PureComponent {
     )
   }
 
+  @autobind
+  renderRegionIcon(data) {
+    return (
+      <div className={styles.regionIcon}>
+        <img className={styles.tile} src={data.imagePath} />
+      </div>
+    )
+  }
+
   render() {
     const { isOpen } = this.state
-    const tileData = PALETTE_BRUSHES_LIST.filter(x => x.symbol !== 'a').map(brush => {
+    const tileData = PALETTE_BRUSHES_LIST.map(brush => {
       let selectTileHotkey, placeTileHotkey
       switch (brush.symbol) {
         case 'D':
@@ -141,6 +150,60 @@ export default class HotkeysModal extends PureComponent {
                 </tr>
               </tbody>
             </table>
+            <h2 className={styles.title}>Region Selector</h2>
+            {this.renderRegionIcon(tileData.find(x => x.tooltip === 'Select Region a'))}
+            <table className={styles.actionTable}>
+              <tbody>
+                <tr className={styles.actionDividerRow}>
+                  <th>Action</th>
+                  <th>Hotkeys</th>
+                </tr>
+                <tr key='Region' className={styles.actionDividerRow}>
+                  <td className={styles.actionTile}>Use</td>
+                  <td className={styles.actionTile}>a</td>
+                </tr>
+                <tr key='Region Resize-1'>
+                  <td className={styles.actionTile}>Resize region</td>
+                  <td className={styles.actionTile}>Shift + Up</td>
+                </tr>
+                <tr key='Region Resize-2'>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Shift + Down</td>
+                </tr>
+                <tr key='Region Resize-3'>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Shift + Left</td>
+                </tr>
+                <tr key='Region Resize-4' className={styles.actionDividerRow}>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Shift + Right</td>
+                </tr>
+                <tr key='Region Move-1'>
+                  <td className={styles.actionTile}>Move region</td>
+                  <td className={styles.actionTile}>Alt + Shift + Up</td>
+                </tr>
+                <tr key='Region Move-2'>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Alt + Shift + Down</td>
+                </tr>
+                <tr key='Region Move-3'>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Alt + Shift + Left</td>
+                </tr>
+                <tr key='Region Move-4' className={styles.actionDividerRow}>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Alt + Shift + Right</td>
+                </tr>
+                <tr key='Region Fill-1'>
+                  <td className={styles.actionTile}>Fill region</td>
+                  <td className={styles.actionTile}>Insert + tile key</td>
+                </tr>
+                <tr key='Region Fill-2' className={styles.actionDividerRow}>
+                  <td className={styles.actionTile}></td>
+                  <td className={styles.actionTile}>Alt + click palette tile</td>
+                </tr>
+              </tbody>
+            </table>
             <h2 className={styles.title}>Tiles</h2>
             <table>
               <tbody>
@@ -149,7 +212,7 @@ export default class HotkeysModal extends PureComponent {
                   <th>Select tile type</th>
                   <th>Place tile</th>
                 </tr>
-                {tileData.map(data => (
+                {tileData.filter(x => x.tooltip !== 'Select Region a').map(data => (
                   <tr key={data.selectTileHotkey}>
                     <td className={styles.cell}>{this.renderImageCell(data)}</td>
                     <td className={styles.cell}>{data.selectTileHotkey}</td>
