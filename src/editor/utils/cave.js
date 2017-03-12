@@ -47,7 +47,7 @@ export class Cave {
         if (i === 0 || i === x - 1 || j === 0 || j === y - 1) {
           newGrid[i][j] = { fileName: 'terrain', symbol: 'x' }
         } else {
-          newGrid[i][j] = { fileName: 'terrain', symbol: ' ' }
+          newGrid[i][j] = { fileName: 'space', symbol: ' ' }
         }
       }
     }
@@ -140,7 +140,7 @@ export class Cave {
     const newColumn = []
     newColumn[0] = { fileName: 'terrain', symbol: 'x' }
     for (let i = 1; i < this.height - 1; i++) {
-      newColumn[i] = { fileName: 'terrain', symbol: ' ' }
+      newColumn[i] = { fileName: 'space', symbol: ' ' }
     }
     newColumn[this.height - 1] = { fileName: 'terrain', symbol: 'x' }
     this.grid = [
@@ -165,7 +165,7 @@ export class Cave {
     const newRow = []
     newRow[0] = { fileName: 'terrain', symbol: 'x' }
     for (let i = 1; i < this.width - 1; i++) {
-      newRow[i] = { fileName: 'terrain', symbol: ' ' }
+      newRow[i] = { fileName: 'space', symbol: ' ' }
     }
     newRow[this.width - 1] = { fileName: 'terrain', symbol: 'x' }
     for (let i = 0; i < this.width; i++) {
