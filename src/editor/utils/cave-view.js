@@ -269,12 +269,14 @@ export class CaveView {
     this.linePainter.plotHorizontalLine(right, left, top, this)
   }
 
-  fillRegion(brush, topLeft, bottomRight) {
+  fillRegion(brush) {
+    const { topLeft, bottomRight } = this.regionSelector
     for (let x = topLeft.x; x <= bottomRight.x; x++) {
       for (let y = topLeft.y; y <= bottomRight.y; y++) {
         this.drawAtGridCoordinates(x, y, brush)
       }
     }
+    return this.grid.fillRegion(brush, topLeft, bottomRight)
   }
 
   getColumnInsertionPixelX(pixelX) {

@@ -19,7 +19,8 @@ import {
   setBrushSize,
   undoCaveChange,
   redoCaveChange,
-  playCave
+  playCave,
+  fillRegion
 } from 'src/editor/actions'
 
 function mapStateToProps(state) {
@@ -34,7 +35,8 @@ const mapDispatchToProps = {
   dispatchSetBrushSize: setBrushSize,
   dispatchUndo: undoCaveChange,
   dispatchRedo: redoCaveChange,
-  dispatchPlayCave: playCave
+  dispatchPlayCave: playCave,
+  dispatchFillRegion: fillRegion
 }
 
 const UNDO_KEYS = ['ctrl+z', 'cmd+z']
@@ -49,7 +51,8 @@ export default class EditorControls extends PureComponent {
     dispatchSetBrushSize: PropTypes.func,
     dispatchUndo: PropTypes.func,
     dispatchRedo: PropTypes.func,
-    dispatchPlayCave: PropTypes.func
+    dispatchPlayCave: PropTypes.func,
+    dispatchFillRegion: PropTypes.func
   };
 
   @autobind
@@ -68,7 +71,7 @@ export default class EditorControls extends PureComponent {
 
   render() {
     const { className, caveCode, currentBrush, dispatchSetBrushSize,
-            dispatchPlayCave, dispatchSetCurrentBrush } = this.props
+            dispatchPlayCave, dispatchSetCurrentBrush, dispatchFillRegion } = this.props
     const computedClassName = classNames(styles.EditorControls, className)
 
     return (
@@ -87,7 +90,10 @@ export default class EditorControls extends PureComponent {
           </Button>
           <ReactTooltip effect='solid' delayShow={250} />
         </div>
-        <Palette onTileClick={dispatchSetCurrentBrush} selectedTile={currentBrush} />
+        <Palette
+          onTileClick={dispatchSetCurrentBrush}
+          onFillRegion={dispatchFillRegion}
+          selectedTile={currentBrush} />
       </div>
     )
   }

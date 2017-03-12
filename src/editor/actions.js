@@ -188,3 +188,17 @@ export function loadImages() {
     }
   }
 }
+
+export function fillRegion(brush) {
+  return function (dispatch, getState) {
+    const { cursorType, caveView, changeController, grid } = getState().editor
+    const { currentCaveName } = getState().caves
+    if (cursorType === 'SELECTREGION') {
+      const tileChanges = caveView.fillRegion(brush)
+      changeController.addTileChanges(tileChanges)
+      changeController.addPaintedLineChange()
+      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      dispatch(updateCave({ text: caveCode }))
+    }
+  }
+}

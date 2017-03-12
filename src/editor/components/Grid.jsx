@@ -24,7 +24,8 @@ import {
   setPreviousCursorPosition,
   setLastUsedBrushSize,
   setCaveCode,
-  stopRebuild
+  stopRebuild,
+  fillRegion
 } from 'src/editor/actions'
 import {
   updateCave,
@@ -476,16 +477,10 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleDeleteKeyDown() {
-    const { dispatch, caveView, grid, currentCaveName, changeController, cursorType } = this.props
+    const { dispatch, cursorType } = this.props
     const spaceBrush = { fileName: 'space', symbol: ' ' }
     if (cursorType === 'SELECTREGION') {
-      const { topLeft, bottomRight } = caveView.regionSelector
-      caveView.fillRegion(spaceBrush, topLeft, bottomRight)
-      const tileChanges = grid.fillRegion(spaceBrush, topLeft, bottomRight)
-      changeController.addTileChanges(tileChanges)
-      changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(fillRegion(spaceBrush))
     } else {
       this.setState({ deleting: true })
       this.startPaintingAtMousePosition(spaceBrush)
@@ -494,15 +489,9 @@ export default class Grid extends PureComponent {
 
   @autobind
   handleInsertTile(brush) {
-    const { dispatch, currentCaveName, caveView, grid, changeController, cursorType } = this.props
+    const { dispatch, cursorType } = this.props
     if (cursorType === 'SELECTREGION') {
-      const { topLeft, bottomRight } = caveView.regionSelector
-      caveView.fillRegion(brush, topLeft, bottomRight)
-      const tileChanges = grid.fillRegion(brush, topLeft, bottomRight)
-      changeController.addTileChanges(tileChanges)
-      changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(fillRegion(brush))
     } else {
       this.startPaintingAtMousePosition(brush, true)
       this.finishPainting()
