@@ -36,30 +36,38 @@ export default class RegionSelector {
 
   moveRegionLeft(grid) {
     if (this.movingRegion === null) {
-      this.startMovingRegion(grid)
+      this.startMovingRegion(grid.grid)
     }
-    this.movingRegionX--
+    if (grid.withinLimits(this.movingRegionX - 1, this.movingRegionY)) {
+      this.movingRegionX--
+    }
   }
 
   moveRegionRight(grid) {
     if (this.movingRegion === null) {
-      this.startMovingRegion(grid)
+      this.startMovingRegion(grid.grid)
     }
-    this.movingRegionX++
+    if (grid.withinLimits(this.movingRegionX + this.movingRegion.length, this.movingRegionY)) {
+      this.movingRegionX++
+    }
   }
 
   moveRegionUp(grid) {
     if (this.movingRegion === null) {
-      this.startMovingRegion(grid)
+      this.startMovingRegion(grid.grid)
     }
-    this.movingRegionY--
+    if (grid.withinLimits(this.movingRegionX, this.movingRegionY - 1)) {
+      this.movingRegionY--
+    }
   }
 
   moveRegionDown(grid) {
     if (this.movingRegion === null) {
-      this.startMovingRegion(grid)
+      this.startMovingRegion(grid.grid)
     }
-    this.movingRegionY++
+    if (grid.withinLimits(this.movingRegionX, this.movingRegionY + this.movingRegion[0].length)) {
+      this.movingRegionY++
+    }
   }
 
   startMovingRegion(grid) {
