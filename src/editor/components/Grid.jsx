@@ -595,11 +595,13 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_LEFT_KEY)
   handleMoveRegionLeft() {
-    const { grid, caveView, changeController } = this.props
+    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionLeft()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
+      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      dispatch(updateCave({ text: caveCode }))
     }
   }
 
@@ -656,11 +658,13 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_UP_KEY)
   handleMoveRegionUp() {
-    const { grid, caveView, changeController } = this.props
+    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionUp()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
+      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      dispatch(updateCave({ text: caveCode }))
     }
   }
 
@@ -717,11 +721,13 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_RIGHT_KEY)
   handleMoveRegionRight() {
-    const { grid, caveView, changeController } = this.props
+    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionRight()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
+      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      dispatch(updateCave({ text: caveCode }))
     }
   }
 
@@ -778,11 +784,13 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_DOWN_KEY)
   handleMoveRegionDown() {
-    const { grid, caveView, changeController } = this.props
+    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionDown()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
+      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      dispatch(updateCave({ text: caveCode }))
     }
   }
 
