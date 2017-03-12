@@ -214,7 +214,7 @@ export class Cave {
           const before = this.getTileAtCoordinates(i + x, j + y)
           const after = this.getAppropriateBrush(i + x, j + y, region[i][j])
           if (before.symbol !== after.symbol) {
-            const tileChange = new TileChange(x, y, before, after)
+            const tileChange = new TileChange(i + x, j + y, before, after)
             tileChanges.push(tileChange)
           }
           this.grid[i + x][j + y] = region[i][j]
