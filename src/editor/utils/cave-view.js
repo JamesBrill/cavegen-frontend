@@ -276,6 +276,7 @@ export class CaveView {
 
   fillRegion(brush) {
     const { topLeft, bottomRight } = this.regionSelector
+    this.regionSelector.resetMovingRegion()
     for (let x = topLeft.x; x <= bottomRight.x; x++) {
       for (let y = topLeft.y; y <= bottomRight.y; y++) {
         this.drawAtGridCoordinates(x, y, brush)
