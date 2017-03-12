@@ -133,7 +133,7 @@ export class CaveView {
         break
       case 'SELECTREGION':
         if (this.regionSelector.anchorPoint === null) {
-          this.drawSquareOutline(column, row, '#FF0000', brushSize)
+          this.drawSquareOutline(column, row, '#FF0000', 1)
         } else {
           const { topLeft, bottomRight } = this.regionSelector
           this.drawRegion(topLeft, bottomRight)
@@ -147,7 +147,7 @@ export class CaveView {
   }
 
   erasePreviousCursor(column, row, squareSize, cursorType) {
-    const { anchorPoint, previousTopLeft, previousBottomRight } = this.regionSelector
+    const { anchorPoint, previousTopLeft, previousBottomRight, topLeft, bottomRight } = this.regionSelector
     switch (cursorType) {
       case 'ADDCOLUMN':
         this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
@@ -163,9 +163,11 @@ export class CaveView {
         break
       case 'SELECTREGION':
         if (anchorPoint === null) {
-          this.drawSquareOutline(column, row, '#FFFFFF', squareSize)
+          this.drawSquareOutline(column, row, '#FFFFFF', 1)
         } else if (previousTopLeft !== null && previousBottomRight !== null) {
           this.drawRegion(previousTopLeft, previousBottomRight, '#FFFFFF')
+        } else if (topLeft !== null && bottomRight !== null) {
+          this.drawRegion(topLeft, bottomRight, '#FFFFFF')
         }
         break
       case 'SQUARE':
