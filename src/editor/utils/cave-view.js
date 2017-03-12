@@ -166,7 +166,8 @@ export class CaveView {
           this.drawSquareOutline(column, row, '#FFFFFF', 1)
         } else if (previousTopLeft !== null && previousBottomRight !== null) {
           this.drawRegion(previousTopLeft, previousBottomRight, '#FFFFFF')
-        } else if (topLeft !== null && bottomRight !== null) {
+        }
+        if (topLeft !== null && bottomRight !== null) {
           this.drawRegion(topLeft, bottomRight, '#FFFFFF')
         }
         break
