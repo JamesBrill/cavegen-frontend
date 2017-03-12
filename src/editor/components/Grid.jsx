@@ -287,6 +287,9 @@ export default class Grid extends PureComponent {
   }
 
   applyBrushAtPosition(x, y, brush, ignoreCursor) {
+    if (brush.symbol === 'a') {
+      return
+    }
     const { grid, caveView, changeController } = this.props
     if (brush.symbol === '6') {
       this.addColumn(x, y, ignoreCursor)
