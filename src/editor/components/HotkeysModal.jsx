@@ -202,6 +202,14 @@ export default class HotkeysModal extends PureComponent {
                   <td className={styles.actionTile}></td>
                   <td className={styles.actionTile}>Alt + click palette tile</td>
                 </tr>
+                <tr key='Region Copy' className={styles.actionDividerRow}>
+                  <td className={styles.actionTile}>Copy region</td>
+                  <td className={styles.actionTile}>Ctrl + c</td>
+                </tr>
+                <tr key='Region Paste' className={styles.actionDividerRow}>
+                  <td className={styles.actionTile}>Paste region</td>
+                  <td className={styles.actionTile}>Ctrl + v</td>
+                </tr>
               </tbody>
             </table>
             <h2 className={styles.title}>Tiles</h2>
