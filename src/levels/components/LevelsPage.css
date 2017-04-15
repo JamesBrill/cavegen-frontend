@@ -1,0 +1,5 @@
+.LevelsPage {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
