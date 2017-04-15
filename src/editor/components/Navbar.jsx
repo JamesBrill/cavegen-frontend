@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 
-import styles from 'src/editor/components/EditorBanner.css'
+import styles from 'src/editor/components/Navbar.css'
 
-export default class EditorBanner extends PureComponent {
+export default class Navbar extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     dispatch: PropTypes.func
@@ -11,7 +11,7 @@ export default class EditorBanner extends PureComponent {
 
   render() {
     const { className } = this.props
-    const computedClassName = classNames(styles.EditorBanner, className)
+    const computedClassName = classNames(styles.Navbar, className)
 
     return (
       <div className={computedClassName}>

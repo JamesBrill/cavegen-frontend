@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import Grid from 'src/editor/components/Grid'
-import EditorBanner from 'src/editor/components/EditorBanner'
+import Navbar from 'src/editor/components/Navbar'
 import SidePanel from 'src/editor/components/SidePanel'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import { Cave } from 'src/editor/utils/cave'
@@ -100,7 +100,7 @@ export default class EditorPage extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <EditorBanner onCaveRebuild={this.handleRebuild} />
+        <Navbar onCaveRebuild={this.handleRebuild} />
         <div className={styles.editor}>
           <SidePanel isOwnedByAnotherUser={isOwnedByAnotherUser} openTab={openTab} />
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
