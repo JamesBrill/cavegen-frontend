@@ -35,7 +35,7 @@ export default class ScheduledEvent extends PureComponent {
     if (moment.isMoment(when)) {
       const millisecondsFromNow = when.diff(now)
 
-      this.timeoutHandle = setTimeout(action, millisecondsFromNow)
+      this.timeoutHandle = setTimeout(action, Math.max(millisecondsFromNow, 0))
     }
   }
 
