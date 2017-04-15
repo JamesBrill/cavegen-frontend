@@ -3,9 +3,9 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import Grid from 'src/editor/components/Grid'
-import Navbar from 'src/editor/components/Navbar'
 import SidePanel from 'src/editor/components/SidePanel'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
+import withNavbar from 'src/app/utils/withNavbar'
 import { Cave } from 'src/editor/utils/cave'
 
 import styles from 'src/editor/components/EditorPage.css'
@@ -46,9 +46,11 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 @requiresAuthentication
+@withNavbar
 export default class EditorPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
+    children: PropTypes.node,
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
@@ -95,12 +97,12 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, isOwnedByAnotherUser, openTab } = this.props
+    const { className, isOwnedByAnotherUser, openTab, children } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
       <div className={computedClassName}>
-        <Navbar onCaveRebuild={this.handleRebuild} />
+        {children}
         <div className={styles.editor}>
           <SidePanel isOwnedByAnotherUser={isOwnedByAnotherUser} openTab={openTab} />
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />

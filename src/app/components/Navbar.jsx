@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 
-import styles from 'src/editor/components/Navbar.css'
+import styles from 'src/app/components/Navbar.css'
 
 export default class Navbar extends PureComponent {
   static propTypes = {
