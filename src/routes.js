@@ -6,8 +6,8 @@ import LoginPage from 'src/authentication/components/LoginPage'
 
 export default (
   <Route path='/' component={App}>
-    <IndexRedirect to='/editor' />
-    <Route path='editor' component={EditorPage} />
+    <IndexRedirect to='/build' />
+    <Route path='build' component={EditorPage} />
     <Route path='login' component={LoginPage} />
   </Route>
 )
