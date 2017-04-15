@@ -25,3 +25,20 @@
 .right {
   justify-content: flex-end;
 }
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 4em;
+  height: 4em;
+  color: var(--alto);
+  border: 1px solid var(--cornflower-blue-50);
+
+  &:hover {
+    color: white;
+    background-color: rgba(86, 124, 222, 0.1);
+    border: 2px solid var(--cornflower-blue-50);
+  }
+}
