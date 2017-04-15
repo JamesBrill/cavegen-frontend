@@ -20,9 +20,21 @@ export default class Navbar extends PureComponent {
 
         </div>
         <div className={styles.right}>
-          <Link to='/levels'>
-            <div className={styles.tab}>
+          <Link to='/my-levels'>
+            <div className={classNames(styles.tab, styles.levelsTab)}>
               <p>Levels</p>
+              <div className={styles.levelsSubTabs}>
+                <Link to='/my-levels'>
+                  <div className={styles.tab}>
+                    <p className={styles.smallFont}>My Levels</p>
+                  </div>
+                </Link>
+                <Link to='/public-levels'>
+                  <div className={styles.tab}>
+                    <p className={styles.smallFont}>Public Levels</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           </Link>
           <Link to='/build'>

@@ -44,6 +44,18 @@
   }
 }
 
+.levelsTab .levelsSubTabs {
+  display: none;
+}
+
+.levelsTab:hover .levelsSubTabs {
+  display: flex;
+  position: absolute;
+  top: 4em;
+  right: 8em;
+  height: 4em;
+}
+
 .editorTab .editorSubTabs {
   display: none;
 }

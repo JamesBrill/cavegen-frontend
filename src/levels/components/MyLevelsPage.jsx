@@ -3,11 +3,11 @@ import classNames from 'classnames'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
-import styles from 'src/levels/components/LevelsPage.css'
+import styles from 'src/levels/components/MyLevelsPage.css'
 
 @requiresAuthentication
 @withNavbar
-export default class LevelsPage extends PureComponent {
+export default class MyLevelsPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node
@@ -15,12 +15,12 @@ export default class LevelsPage extends PureComponent {
 
   render() {
     const { className, children } = this.props
-    const computedClassName = classNames(styles.LevelsPage, className)
+    const computedClassName = classNames(styles.MyLevelsPage, className)
 
     return (
       <div className={computedClassName}>
         {children}
-        <p>LevelsPage</p>
+        <p>MyLevelsPage</p>
       </div>
     )
   }
