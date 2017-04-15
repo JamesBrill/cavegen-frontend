@@ -34,11 +34,28 @@
   width: 4em;
   height: 4em;
   color: var(--alto);
+  background-color: var(--dark-grey);
   border: 1px solid var(--cornflower-blue-50);
 
   &:hover {
     color: white;
-    background-color: rgba(86, 124, 222, 0.1);
+    background-color: var(--cornflower-blue);
     border: 2px solid var(--cornflower-blue-50);
   }
+}
+
+.editorTab .editorSubTabs {
+  display: none;
+}
+
+.editorTab:hover .editorSubTabs {
+  display: flex;
+  position: absolute;
+  top: 4em;
+  right: 0;
+  height: 4em;
+}
+
+.smallFont {
+  font-size: 8px;
 }
