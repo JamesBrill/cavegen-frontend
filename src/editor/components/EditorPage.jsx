@@ -15,12 +15,12 @@ import {
   setCurrentBrush,
   setCaveWidth,
   setCaveHeight,
-  startRebuild
+  startRebuild,
+  loadCaveIntoGrid
 } from 'src/editor/actions'
 import {
   loadMyLevels,
-  loadPublicLevels,
-  loadCaveIntoGrid
+  loadPublicLevels
 } from 'src/levels/actions'
 
 function mapStateToProps(state) {

@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions'
 import { apiRequest } from 'src/utils/api'
+import { Cave } from 'src/editor/utils/cave'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { getCaveCode, getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
@@ -197,6 +198,26 @@ export function startRebuild() {
 }
 
 export const stopRebuild = createAction('STOP_REBUILD')
+
+export function loadCaveIntoGrid(cave) {
+  return function (dispatch, getState) {
+    const { changeController } = getState().editor
+    const grid = new Cave({ caveString: cave.text })
+    dispatch(setGrid(grid))
+    changeController.clear()
+    dispatch(setCaveWidth(grid.width))
+    dispatch(setCaveHeight(grid.height))
+    dispatch({
+      type: 'LOAD_CAVE_INTO_GRID',
+      payload: {
+        uuid: cave.uuid,
+        name: cave.name,
+        likes: cave.likes,
+        isPublic: cave.isPublic
+      }
+    })
+  }
+}
 
 export function loadImages() {
   return async function (dispatch) {

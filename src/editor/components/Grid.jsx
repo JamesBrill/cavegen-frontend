@@ -27,11 +27,9 @@ import {
   setCaveCode,
   stopRebuild,
   fillRegion,
-  pasteRegion
-} from 'src/editor/actions'
-import {
+  pasteRegion,
   loadCaveIntoGrid
-} from 'src/levels/actions'
+} from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
 

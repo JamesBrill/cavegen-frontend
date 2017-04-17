@@ -1,10 +1,6 @@
 import { apiRequest } from 'src/utils/api'
 import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
-import { Cave } from 'src/editor/utils/cave'
 import {
-  setGrid,
-  setCaveWidth,
-  setCaveHeight,
   newCave
 } from 'src/editor/actions'
 
@@ -46,26 +42,6 @@ export function loadPublicLevels() {
         error: e
       })
     }
-  }
-}
-
-export function loadCaveIntoGrid(cave) {
-  return function (dispatch, getState) {
-    const { changeController } = getState().editor
-    const grid = new Cave({ caveString: cave.text })
-    dispatch(setGrid(grid))
-    changeController.clear()
-    dispatch(setCaveWidth(grid.width))
-    dispatch(setCaveHeight(grid.height))
-    dispatch({
-      type: 'LOAD_CAVE_INTO_GRID',
-      payload: {
-        uuid: cave.uuid,
-        name: cave.name,
-        likes: cave.likes,
-        isPublic: cave.isPublic
-      }
-    })
   }
 }
 
