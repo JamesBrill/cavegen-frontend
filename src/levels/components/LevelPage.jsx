@@ -27,6 +27,7 @@ function mapStateToProps(state, ownProps) {
     uuid: level.uuid,
     author: level.authorName,
     dateCreated: level.dateCreated,
+    isPublic: level.isPublic,
     likes: level.likes,
     isOwnedByUser,
     isLikedByUser
@@ -44,6 +45,7 @@ export default class LevelPage extends PureComponent {
     uuid: PropTypes.string,
     author: PropTypes.string,
     dateCreated: PropTypes.string,
+    isPublic: PropTypes.bool,
     likes: PropTypes.number,
     isOwnedByUser: PropTypes.bool,
     isLikedByUser: PropTypes.bool,
@@ -51,15 +53,41 @@ export default class LevelPage extends PureComponent {
     updateCave: PropTypes.func
   };
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      publicChecked: false
+    }
+  }
+
+  componentWillMount() {
+    this.setState({ publicChecked: this.props.isPublic })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isPublic !== this.props.isPublic) {
+      this.setState({ publicChecked: nextProps.isPublic })
+    }
+  }
+
   @autobind
   handleNameChange(e) {
     const name = e.target.value
     this.props.updateCave({ name })
   }
 
+  @autobind
+  handlePublicChange(e) {
+    const isPublic = e.target.checked
+    this.props.updateCave({ isPublic })
+    this.setState({ publicChecked: isPublic })
+  }
+
   render() {
     const { className, children, name, uuid, author, dateCreated, likes,
             isOwnedByUser, isLikedByUser, likeCave } = this.props
+    const { publicChecked } = this.state
     const computedClassName = classNames(styles.LevelPage, className)
     const nameField = isOwnedByUser ? (
       <div className={styles.information}>
@@ -95,6 +123,16 @@ export default class LevelPage extends PureComponent {
           <h2 className={styles.title}>Date created:</h2>
           <h2 className={styles.informationValue}>{moment(dateCreated).format('MM/DD/YYYY, h:mm a')}</h2>
         </div>
+        {isOwnedByUser && (
+          <div className={styles.information}>
+            <h2 className={styles.title}>Public:</h2>
+            <input
+              className={styles.propertyInput}
+              type='checkbox'
+              onChange={this.handlePublicChange}
+              checked={publicChecked} />
+          </div>
+        )}
         <div className={styles.information}>
           <h2 className={styles.title}>Hearts:</h2>
           <div className={styles.likesContainer}>
