@@ -199,11 +199,11 @@ export function startRebuild() {
 
 export const stopRebuild = createAction('STOP_REBUILD')
 
-export function playCave() {
+export function playCave(uuid) {
   return function (dispatch, getState) {
     try {
-      const uuid = getState().editor.caveUuid
-      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${uuid}/`)
+      const caveUuid = uuid || getState().editor.caveUuid
+      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${caveUuid}/`)
       const playerUrl = `http://droidfreak36.com/HATPC/reborn.php?cave=${caveUrl}`
       window.open(playerUrl, '_blank')
       return dispatch({ type: 'PLAY_CAVE' })
