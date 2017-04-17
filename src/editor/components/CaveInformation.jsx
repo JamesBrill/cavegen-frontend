@@ -13,11 +13,9 @@ import ReactTooltip from 'react-tooltip'
 import styles from 'src/editor/components/CaveInformation.css'
 
 import {
-  playCave
-} from 'src/editor/actions'
-import {
+  playCave,
   updateCave
-} from 'src/levels/actions'
+} from 'src/editor/actions'
 
 function mapStateToProps(state) {
   const caveUuid = state.editor.caveUuid

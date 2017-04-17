@@ -5,7 +5,7 @@ import Input from 'src/components/Input'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
-import { newCave } from 'src/levels/actions'
+import { newCave } from 'src/editor/actions'
 
 import styles from './NewCaveModal.css'
 

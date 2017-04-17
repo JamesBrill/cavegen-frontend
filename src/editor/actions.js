@@ -1,8 +1,60 @@
 import { createAction } from 'redux-actions'
+import { apiRequest } from 'src/utils/api'
 import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
-import { getCaveCode } from 'src/editor/utils/cave-code'
-import { updateCave } from 'src/levels/actions'
+import { getCaveCode, getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
+
+export function newCave(name, width, height) {
+  return async function (dispatch, getState) {
+    try {
+      const text = getCaveCodeOfDimensions(width || 40, height || 40)
+      const { json } = await apiRequest(getState, '/caves/', {
+        method: 'post',
+        headers: { 'content-type': 'application/json' },
+        body: { name, text }
+      })
+
+      return dispatch({
+        type: 'NEW_CAVE',
+        payload: { newCave: json }
+      })
+    } catch (e) {
+      return dispatch({
+        type: 'NEW_CAVE_ERROR',
+        error: e
+      })
+    }
+  }
+}
+
+export function updateCave(cave) {
+  return async function (dispatch, getState) {
+    try {
+      const uuid = getState().editor.caveUuid
+      const caves = getState().levels.myLevels
+      const currentCave = caves && caves.filter(c => c.uuid === uuid)[0]
+      const { json } = await apiRequest(getState, `/caves/${uuid}/`, {
+        method: 'put',
+        headers: { 'content-type': 'application/json' },
+        body: Object.assign({}, currentCave, cave)
+      })
+
+      return dispatch({
+        type: 'UPDATE_CAVE',
+        payload: {
+          uuid,
+          updatedCave: json,
+          change: cave
+        }
+      })
+    } catch (e) {
+      return dispatch({
+        type: 'UPDATE_CAVE_ERROR',
+        error: e
+      })
+    }
+  }
+}
 
 export const setOpenTab = createAction(
   'SET_OPEN_TAB',

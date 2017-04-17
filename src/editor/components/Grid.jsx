@@ -14,6 +14,7 @@ import keydown from 'react-keydown'
 
 // TODO: add to validation
 import {
+  updateCave,
   setGrid,
   setCaveView,
   setCaveWidth,
@@ -29,7 +30,6 @@ import {
   pasteRegion
 } from 'src/editor/actions'
 import {
-  updateCave,
   loadCaveIntoGrid
 } from 'src/levels/actions'
 
