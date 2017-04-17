@@ -7,7 +7,22 @@ import analyticsMiddleware from 'src/middleware/analytics'
 import * as reducers from 'src/reducers'
 
 const store = compose(
-  persistState(['levels', 'authentication', 'profile']),
+  persistState(['levels', 'authentication', 'profile', 'editor'], {
+    slicer: paths => {
+      return state => {
+        const subset = {}
+        paths.forEach(path => {
+          if (path === 'editor') {
+            subset[path] = {}
+            subset[path].caveUuid = state.editor.caveUuid
+          } else {
+            subset[path] = state[path]
+          }
+        })
+        return subset
+      }
+    }
+  }),
   applyMiddleware(
     analyticsMiddleware,
     thunkMiddleware,
