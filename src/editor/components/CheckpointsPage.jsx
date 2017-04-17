@@ -20,7 +20,7 @@ export default class CheckpointsPage extends PureComponent {
     return (
       <div className={computedClassName}>
         {children}
-        <p>CheckpointsPage</p>
+        <p>Coming soon...</p>
       </div>
     )
   }
