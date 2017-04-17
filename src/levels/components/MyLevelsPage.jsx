@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import classNames from 'classnames'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
@@ -31,7 +32,9 @@ export default class MyLevelsPage extends PureComponent {
         {children}
         <div className={styles.levels}>
           {myLevels.map(level => (
-            <p key={level.id}>{level.name}</p>
+            <Link key={level.id} to={`/level/${level.id}`}>
+              <p>{level.name}</p>
+            </Link>
           ))}
         </div>
       </div>
