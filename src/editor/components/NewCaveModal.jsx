@@ -5,15 +5,14 @@ import Input from 'src/components/Input'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
-import { newCave } from 'src/caves/actions'
+import { newCave } from 'src/levels/actions'
 
 import styles from './NewCaveModal.css'
 
 function mapStateToProps(state) {
   return {
     displayName: state.profile.displayName,
-    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser,
-    currentCaveLikes: state.caves.currentCaveLikes
+    caveLikes: state.editor.caveLikes
   }
 }
 
@@ -22,7 +21,6 @@ export default class NewCaveModal extends PureComponent {
   static propTypes = {
     logout: PropTypes.func,
     displayName: PropTypes.string,
-    isOwnedByAnotherUser: PropTypes.bool,
     onCaveRebuild: PropTypes.func,
     newCave: PropTypes.func
   };

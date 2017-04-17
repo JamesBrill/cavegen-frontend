@@ -7,7 +7,7 @@ import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
 import { logout } from 'src/authentication/actions'
 import { updateUserProfile } from 'src/profile/actions'
-import { loadPublicCaves } from 'src/caves/actions'
+import { loadPublicCaves } from 'src/levels/actions'
 
 import styles from './ProfileModal.css'
 
@@ -31,7 +31,7 @@ export default class ProfileModal extends PureComponent {
 
     this.state = {
       isOpen: false,
-      publicCavesNeedUpdating: false
+      publicLevelsNeedUpdating: false
     }
   }
 
@@ -42,10 +42,10 @@ export default class ProfileModal extends PureComponent {
 
   @autobind
   handleClose() {
-    if (this.state.publicCavesNeedUpdating) {
+    if (this.state.publicLevelsNeedUpdating) {
       this.props.loadPublicCaves()
     }
-    this.setState({ isOpen: false, publicCavesNeedUpdating: false })
+    this.setState({ isOpen: false, publicLevelsNeedUpdating: false })
   }
 
   @autobind
@@ -58,7 +58,7 @@ export default class ProfileModal extends PureComponent {
   handleDisplayNameChange(e) {
     const displayName = e.target.value
     this.props.updateUserProfile({ displayName })
-    this.setState({ publicCavesNeedUpdating: true })
+    this.setState({ publicLevelsNeedUpdating: true })
   }
 
   render() {

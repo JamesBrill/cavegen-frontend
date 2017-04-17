@@ -21,14 +21,13 @@ import {
   loadCaves,
   loadPublicCaves,
   loadCaveIntoGrid
-} from 'src/caves/actions'
+} from 'src/levels/actions'
 
 function mapStateToProps(state) {
   return {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
-    caves: state.caves.caves,
-    isOwnedByAnotherUser: state.caves.isOwnedByAnotherUser,
+    caves: state.levels.myLevels,
     openTab: state.editor.openTab
   }
 }
@@ -54,7 +53,6 @@ export default class EditorPage extends PureComponent {
     caveWidth: PropTypes.number,
     caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
-    isOwnedByAnotherUser: PropTypes.bool,
     dispatchSetGrid: PropTypes.func,
     dispatchSetCurrentBrush: PropTypes.func,
     dispatchSetCaveWidth: PropTypes.func,
@@ -97,14 +95,14 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, isOwnedByAnotherUser, openTab, children } = this.props
+    const { className, openTab, children } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
       <div className={computedClassName}>
         {children}
         <div className={styles.editor}>
-          <SidePanel isOwnedByAnotherUser={isOwnedByAnotherUser} openTab={openTab} />
+          <SidePanel openTab={openTab} />
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
         </div>
       </div>

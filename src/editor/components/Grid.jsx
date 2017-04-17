@@ -31,15 +31,14 @@ import {
 import {
   updateCave,
   loadCaveIntoGrid
-} from 'src/caves/actions'
+} from 'src/levels/actions'
 
 import styles from 'src/editor/components/Grid.css'
 
 function mapStateToProps(state) {
-  const currentCaveUuid = state.caves.currentCaveUuid
-  const isOwnedByAnotherUser = state.caves.isOwnedByAnotherUser
-  const caves = isOwnedByAnotherUser ? state.caves.publicCaves : state.caves.caves
-  const currentCave = caves && caves.filter(cave => cave.uuid === currentCaveUuid)[0]
+  const caveUuid = state.editor.caveUuid
+  const caves = state.levels.myLevels
+  const currentCave = caves && caves.filter(cave => cave.uuid === caveUuid)[0]
   return {
     grid: state.editor.grid,
     caveWidth: state.editor.caveWidth,
@@ -53,8 +52,7 @@ function mapStateToProps(state) {
     needsRebuild: state.editor.needsRebuild,
     imageMap: state.editor.imageMap,
     currentCave,
-    currentCaveName: state.caves.currentCaveName,
-    isOwnedByAnotherUser,
+    caveName: state.editor.caveName,
     cursorType: state.editor.cursorType
   }
 }
@@ -101,8 +99,7 @@ export default class Grid extends PureComponent {
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
     currentCave: PropTypes.object,
-    currentCaveName: PropTypes.string,
-    isOwnedByAnotherUser: PropTypes.bool
+    caveName: PropTypes.string
   };
 
   constructor(props) {
@@ -184,7 +181,7 @@ export default class Grid extends PureComponent {
 
   @autobind
   rebuildCave(width, height, grid) {
-    const { dispatch, caveView, currentCaveName } = this.props
+    const { dispatch, caveView, caveName } = this.props
     const caveWidth = width || this.props.caveWidth
     const caveHeight = height || this.props.caveHeight
     if (caveView) {
@@ -195,7 +192,7 @@ export default class Grid extends PureComponent {
     dispatch(setCaveHeight(caveHeight))
     const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
-    const caveCode = getCaveCode(newGrid, currentCaveName, '1', 'clear')
+    const caveCode = getCaveCode(newGrid, caveName, '1', 'clear')
     dispatch(setCaveCode(caveCode))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
@@ -253,8 +250,8 @@ export default class Grid extends PureComponent {
 
   @autobind
   finishPainting() {
-    const { dispatch, caveView, grid, changeController, currentCaveName } = this.props
-    const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+    const { dispatch, caveView, grid, changeController, caveName } = this.props
+    const caveCode = getCaveCode(grid, caveName, '1', 'clear')
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
@@ -312,11 +309,8 @@ export default class Grid extends PureComponent {
 
   @autobind
   startPaintingAtMousePosition(optionalBrush, ignoreCursor) {
-    const { isOwnedByAnotherUser, dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
+    const { dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
     const { pixelX, pixelY, cursorPosition } = this.state
-    if (isOwnedByAnotherUser) {
-      return
-    }
     caveView.isMouseDown = true
     const gridX = cursorPosition.x || caveView.getGridX(pixelX)
     const gridY = cursorPosition.y || caveView.getGridY(pixelY)
@@ -598,12 +592,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_LEFT_KEY)
   handleMoveRegionLeft() {
-    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
+    const { dispatch, grid, caveView, changeController, caveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionLeft()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -661,12 +655,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_UP_KEY)
   handleMoveRegionUp() {
-    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
+    const { dispatch, grid, caveView, changeController, caveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionUp()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -724,12 +718,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_RIGHT_KEY)
   handleMoveRegionRight() {
-    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
+    const { dispatch, grid, caveView, changeController, caveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionRight()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -787,12 +781,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_DOWN_KEY)
   handleMoveRegionDown() {
-    const { dispatch, grid, caveView, changeController, currentCaveName } = this.props
+    const { dispatch, grid, caveView, changeController, caveName } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionDown()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }

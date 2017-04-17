@@ -6,18 +6,15 @@ import styles from 'src/editor/components/SidePanel.css'
 
 export default class SidePanel extends PureComponent {
   static propTypes = {
-    isOwnedByAnotherUser: PropTypes.bool,
     openTab: PropTypes.oneOf(['palette', 'properties'])
   };
 
   render() {
-    const { isOwnedByAnotherUser, openTab } = this.props
+    const { openTab } = this.props
 
     switch (openTab) {
       case 'palette':
-        return isOwnedByAnotherUser ?
-          <CaveInformation className={styles.editorControls} /> :
-          <EditorControls className={styles.editorControls} />
+        return <EditorControls className={styles.editorControls} />
       case 'properties':
       default:
         return <CaveInformation className={styles.editorControls} />

@@ -14,7 +14,11 @@ export default combineReducers({
   cursorType,
   needsRebuild,
   imageMap,
-  openTab
+  openTab,
+  caveUuid,
+  caveName,
+  isCavePublic,
+  caveLikes
 })
 
 function grid(state = null, { type, payload }) {
@@ -164,6 +168,76 @@ function openTab(state = 'palette', { type, payload }) {
   switch (type) {
     case 'SET_OPEN_TAB':
       return payload.openTab
+
+    default:
+      return state
+  }
+}
+
+function caveUuid(state = null, { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+      return payload.newCave.uuid
+
+    case 'UPDATE_CAVE':
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.uuid
+
+    case 'LOGOUT':
+      return null
+
+    default:
+      return state
+  }
+}
+
+function caveName(state = 'Untitled', { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+      return payload.newCave.name
+
+    case 'LOGOUT':
+      return 'Untitled'
+
+    case 'UPDATE_CAVE':
+      return payload.updatedCave.name
+
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.name
+
+    default:
+      return state
+  }
+}
+
+function isCavePublic(state = false, { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+    case 'LOGOUT':
+      return false
+
+    case 'UPDATE_CAVE':
+      return payload.updatedCave.isPublic
+
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.isPublic
+
+    default:
+      return state
+  }
+}
+
+function caveLikes(state = 0, { type, payload }) {
+  switch (type) {
+    case 'NEW_CAVE':
+    case 'LOGOUT':
+      return 0
+
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.likes
+
+    case 'LIKE_CAVE':
+      return state + 1
 
     default:
       return state

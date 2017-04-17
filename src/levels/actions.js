@@ -33,8 +33,8 @@ export function newCave(name, width, height) {
 export function updateCave(cave) {
   return async function (dispatch, getState) {
     try {
-      const uuid = getState().caves.currentCaveUuid
-      const caves = getState().caves.caves
+      const uuid = getState().editor.caveUuid
+      const caves = getState().levels.myLevels
       const currentCave = caves && caves.filter(c => c.uuid === uuid)[0]
       const { json } = await apiRequest(getState, `/caves/${uuid}/`, {
         method: 'put',
@@ -107,8 +107,6 @@ export function loadPublicCaves() {
 export function loadCaveIntoGrid(cave) {
   return function (dispatch, getState) {
     const { changeController } = getState().editor
-    const { userId } = getState().profile
-    const isOwnedByAnotherUser = userId !== cave.author
     const grid = new Cave({ caveString: cave.text })
     dispatch(setGrid(grid))
     changeController.clear()
@@ -120,8 +118,7 @@ export function loadCaveIntoGrid(cave) {
         uuid: cave.uuid,
         name: cave.name,
         likes: cave.likes,
-        isPublic: cave.isPublic,
-        isOwnedByAnotherUser
+        isPublic: cave.isPublic
       }
     })
   }
@@ -130,7 +127,7 @@ export function loadCaveIntoGrid(cave) {
 export function likeCave() {
   return async function (dispatch, getState) {
     try {
-      const uuid = getState().caves.currentCaveUuid
+      const uuid = getState().editor.caveUuid
       const { json } = await apiRequest(getState, `/caves/${uuid}/like/`)
 
       return dispatch({

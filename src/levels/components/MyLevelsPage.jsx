@@ -9,7 +9,7 @@ import styles from 'src/levels/components/MyLevelsPage.css'
 
 function mapStateToProps(state) {
   return {
-    myLevels: state.caves.caves
+    myLevels: state.levels.myLevels
   }
 }
 

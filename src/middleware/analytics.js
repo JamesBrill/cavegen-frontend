@@ -87,16 +87,16 @@ function handleNewCave() {
 
 function handleUpdateCave(change, newState) {
   if (change.text) {
-    ga('send', 'event', 'Caves', 'update cave text', newState.caves.currentCaveName)
+    ga('send', 'event', 'Caves', 'update cave text', newState.editor.caveName)
   }
   if (change.name) {
     ga('send', 'event', 'Caves', 'update cave name', change.name)
   }
   if (change.isPublic) {
-    ga('send', 'event', 'Caves', 'make cave public', newState.caves.currentCaveName)
+    ga('send', 'event', 'Caves', 'make cave public', newState.editor.caveName)
   }
   if (change.isPublic === false) {
-    ga('send', 'event', 'Caves', 'make cave private', newState.caves.currentCaveName)
+    ga('send', 'event', 'Caves', 'make cave private', newState.editor.caveName)
   }
 }
 
@@ -121,11 +121,11 @@ function handleSetBrushSize(size) {
 }
 
 function handleRebuild(area, newState) {
-  ga('send', 'event', 'Caves', 'rebuild', newState.caves.currentCaveName, area)
+  ga('send', 'event', 'Caves', 'rebuild', newState.editor.caveName, area)
 }
 
 function handlePlayCave(newState) {
-  ga('send', 'event', 'Caves', 'play', newState.caves.currentCaveName)
+  ga('send', 'event', 'Caves', 'play', newState.editor.caveName)
 }
 
 function handleUpdateProfile(change) {

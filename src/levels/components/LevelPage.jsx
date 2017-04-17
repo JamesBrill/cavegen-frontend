@@ -8,7 +8,7 @@ import styles from 'src/levels/components/LevelPage.css'
 
 function mapStateToProps(state, ownProps) {
   const levelId = parseInt(ownProps.params.id, 10)
-  const levels = state.caves.caves.concat(state.caves.publicCaves)
+  const levels = state.levels.myLevels.concat(state.levels.publicLevels)
   const level = levels.find(x => x.id === levelId)
   const userId = state.profile.userId
   const isOwnedByUser = userId === level.author

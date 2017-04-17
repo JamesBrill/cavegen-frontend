@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions'
 import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { getCaveCode } from 'src/editor/utils/cave-code'
-import { updateCave } from 'src/caves/actions'
+import { updateCave } from 'src/levels/actions'
 
 export const setOpenTab = createAction(
   'SET_OPEN_TAB',
@@ -114,9 +114,9 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
 export function undoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor
-    const { currentCaveName } = getState().caves
+    const { caveName } = getState().editor
     changeController.applyUndo(grid, caveView)
-    const caveCode = getCaveCode(grid, currentCaveName)
+    const caveCode = getCaveCode(grid, caveName)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'UNDO_CAVE_CHANGE' })
   }
@@ -125,9 +125,9 @@ export function undoCaveChange() {
 export function redoCaveChange() {
   return function (dispatch, getState) {
     const { changeController, caveView, grid } = getState().editor
-    const { currentCaveName } = getState().caves
+    const { caveName } = getState().editor
     changeController.applyRedo(grid, caveView)
-    const caveCode = getCaveCode(grid, currentCaveName)
+    const caveCode = getCaveCode(grid, caveName)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'REDO_CAVE_CHANGE' })
   }
@@ -150,7 +150,7 @@ export const stopRebuild = createAction('STOP_REBUILD')
 export function playCave() {
   return function (dispatch, getState) {
     try {
-      const uuid = getState().caves.currentCaveUuid
+      const uuid = getState().editor.caveUuid
       const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${uuid}/`)
       const playerUrl = `http://droidfreak36.com/HATPC/reborn.php?cave=${caveUrl}`
       window.open(playerUrl, '_blank')
@@ -192,13 +192,13 @@ export function loadImages() {
 export function fillRegion(brush) {
   return function (dispatch, getState) {
     const { cursorType, caveView, changeController, grid } = getState().editor
-    const { currentCaveName } = getState().caves
+    const { caveName } = getState().editor
     if (cursorType === 'SELECTREGION' &&
         ['6', '7', '8', '9', 'a', 'f', 'r'].indexOf(brush.symbol) === -1) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -207,12 +207,12 @@ export function fillRegion(brush) {
 export function pasteRegion(x, y) {
   return function (dispatch, getState) {
     const { cursorType, caveView, changeController, grid } = getState().editor
-    const { currentCaveName } = getState().caves
+    const { caveName } = getState().editor
     if (cursorType === 'SELECTREGION') {
       const tileChanges = caveView.pasteRegion(x, y)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, currentCaveName, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
