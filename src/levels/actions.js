@@ -68,10 +68,9 @@ export function loadCaveIntoGrid(cave) {
   }
 }
 
-export function likeCave() {
+export function likeCave(uuid) {
   return async function (dispatch, getState) {
     try {
-      const uuid = getState().editor.caveUuid
       const { json } = await apiRequest(getState, `/caves/${uuid}/like/`)
 
       return dispatch({
