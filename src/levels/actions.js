@@ -7,7 +7,7 @@ import {
   newCave
 } from 'src/editor/actions'
 
-export function loadCaves() {
+export function loadMyLevels() {
   return async function (dispatch, getState) {
     try {
       const { json } = await apiRequest(getState, '/my-caves/')
@@ -29,7 +29,7 @@ export function loadCaves() {
   }
 }
 
-export function loadPublicCaves() {
+export function loadPublicLevels() {
   return async function (dispatch, getState) {
     try {
       const { json } = await apiRequest(getState, '/public-caves/')

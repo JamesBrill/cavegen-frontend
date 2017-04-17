@@ -18,8 +18,8 @@ import {
   startRebuild
 } from 'src/editor/actions'
 import {
-  loadCaves,
-  loadPublicCaves,
+  loadMyLevels,
+  loadPublicLevels,
   loadCaveIntoGrid
 } from 'src/levels/actions'
 
@@ -38,8 +38,8 @@ const mapDispatchToProps = {
   dispatchSetCaveWidth: setCaveWidth,
   dispatchSetCaveHeight: setCaveHeight,
   dispatchStartRebuild: startRebuild,
-  dispatchLoadCaves: loadCaves,
-  dispatchLoadPublicCaves: loadPublicCaves,
+  dispatchLoadMyLevels: loadMyLevels,
+  dispatchLoadPublicLevels: loadPublicLevels,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid
 }
 
@@ -58,15 +58,15 @@ export default class EditorPage extends PureComponent {
     dispatchSetCaveWidth: PropTypes.func,
     dispatchSetCaveHeight: PropTypes.func,
     dispatchStartRebuild: PropTypes.func,
-    dispatchLoadCaves: PropTypes.func,
-    dispatchLoadPublicCaves: PropTypes.func,
+    dispatchLoadMyLevels: PropTypes.func,
+    dispatchLoadPublicLevels: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func,
     openTab: PropTypes.oneOf(['palette', 'properties'])
   };
 
   componentWillMount() {
-    this.props.dispatchLoadCaves()
-    this.props.dispatchLoadPublicCaves()
+    this.props.dispatchLoadMyLevels()
+    this.props.dispatchLoadPublicLevels()
   }
 
   componentWillReceiveProps(nextProps) {
