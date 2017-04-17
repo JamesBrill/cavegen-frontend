@@ -2,6 +2,7 @@
 
 body { /* stylelint-disable-line selector-no-type */
   background-color: black;
+  overflow-y: hidden;
 }
 
 .App {
