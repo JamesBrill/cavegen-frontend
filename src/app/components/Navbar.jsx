@@ -50,7 +50,7 @@ export default class Navbar extends PureComponent {
                   </div>
                 </Link>
                 <div className={styles.tab}>
-                  <p className={styles.smallFont}>Test</p>
+                  <p className={styles.smallFont}>Play</p>
                 </div>
                 <Link to='/checkpoints'>
                   <div className={styles.tab}>
