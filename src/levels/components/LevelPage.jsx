@@ -11,7 +11,7 @@ export default class LevelPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    params: PropTypes.object
+    params: PropTypes.shape({ id: PropTypes.string })
   };
 
   render() {
