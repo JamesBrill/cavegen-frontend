@@ -5,6 +5,8 @@ import classNames from 'classnames'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
+import { loadPublicLevels } from 'src/levels/actions'
+
 import styles from 'src/levels/components/PublicLevelsPage.css'
 
 function mapStateToProps(state) {
@@ -13,15 +15,20 @@ function mapStateToProps(state) {
   }
 }
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, { loadPublicLevels })
 @requiresAuthentication
 @withNavbar
 export default class PublicLevelsPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    publicLevels: PropTypes.arrayOf(PropTypes.object)
+    publicLevels: PropTypes.arrayOf(PropTypes.object),
+    loadPublicLevels: PropTypes.func
   };
+
+  componentWillMount() {
+    this.props.loadPublicLevels()
+  }
 
   render() {
     const { className, children, publicLevels } = this.props
