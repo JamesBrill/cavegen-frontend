@@ -1,3 +1,5 @@
+/* stylelint-disable declaration-no-important */
+
 .LevelPage {
   display: flex;
   flex-direction: column;
@@ -54,4 +56,37 @@
 
 .propertyInput {
   margin-left: 1em;
+}
+
+.iconButton {
+  width: calc(4.5vw - 0.5em);
+  height: calc(4.5vw - 0.5em);
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  padding: 0 !important;
+  font-size: 16px !important;
+  background-color: #567cde !important;
+  color: white;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.iconButton:hover {
+  & > * {
+    opacity: 0.5;
+  }
+}
+
+.icon {
+  width: 80%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }

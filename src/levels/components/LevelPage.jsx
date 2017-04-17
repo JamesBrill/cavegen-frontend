@@ -6,13 +6,17 @@ import { autobind } from 'core-decorators'
 import classNames from 'classnames'
 import moment from 'moment'
 import Input from 'src/components/Input'
+import Button from 'src/components/Button'
+import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 import Like from 'src/editor/components/icons/Like'
+import Play from 'src/editor/components/icons/Play'
+import ReactTooltip from 'react-tooltip'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from 'src/levels/components/LevelPage.css'
 
-import { likeCave } from 'src/levels/actions'
+import { likeCave, playCave } from 'src/levels/actions'
 import { updateCave } from 'src/editor/actions'
 
 function mapStateToProps(state, ownProps) {
@@ -29,12 +33,13 @@ function mapStateToProps(state, ownProps) {
     dateCreated: level.dateCreated,
     isPublic: level.isPublic,
     likes: level.likes,
+    code: level.text,
     isOwnedByUser,
     isLikedByUser
   }
 }
 
-@connect(mapStateToProps, { likeCave, updateCave })
+@connect(mapStateToProps, { likeCave, updateCave, playCave })
 @requiresAuthentication
 @withNavbar
 export default class LevelPage extends PureComponent {
@@ -47,10 +52,12 @@ export default class LevelPage extends PureComponent {
     dateCreated: PropTypes.string,
     isPublic: PropTypes.bool,
     likes: PropTypes.number,
+    code: PropTypes.string,
     isOwnedByUser: PropTypes.bool,
     isLikedByUser: PropTypes.bool,
     likeCave: PropTypes.func,
-    updateCave: PropTypes.func
+    updateCave: PropTypes.func,
+    playCave: PropTypes.func
   };
 
   constructor(props) {
@@ -87,8 +94,8 @@ export default class LevelPage extends PureComponent {
   }
 
   render() {
-    const { className, children, name, uuid, author, dateCreated, likes,
-            isOwnedByUser, isLikedByUser, likeCave } = this.props
+    const { className, children, name, uuid, author, dateCreated, likes, code,
+            isOwnedByUser, isLikedByUser, likeCave, playCave } = this.props
     const { publicChecked } = this.state
     const computedClassName = classNames(styles.LevelPage, className)
     const nameField = isOwnedByUser ? (
@@ -141,6 +148,13 @@ export default class LevelPage extends PureComponent {
             {likeIcon}
             <h2 className={styles.informationValue}>{likes}</h2>
           </div>
+        </div>
+        <div className={styles.buttonContainer}>
+          <CopyToClipboard caveCode={code} data-tip='Copy' />
+          <Button className={styles.iconButton} onClick={() => playCave(uuid)} data-tip='Play'>
+            <Play className={styles.icon} />
+          </Button>
+          <ReactTooltip effect='solid' delayShow={250} />
         </div>
       </div>
     )
