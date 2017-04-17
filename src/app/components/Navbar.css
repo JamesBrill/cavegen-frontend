@@ -26,7 +26,8 @@
   justify-content: flex-end;
 }
 
-.tab {
+.tab,
+.selectedTab {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -42,6 +43,12 @@
     background-color: var(--cornflower-blue);
     border: 2px solid var(--cornflower-blue-50);
   }
+}
+
+.selectedTab {
+  color: white;
+  background-color: var(--cornflower-blue);
+  border: 2px solid var(--cornflower-blue-50);
 }
 
 .levelsTab .levelsSubTabs {
