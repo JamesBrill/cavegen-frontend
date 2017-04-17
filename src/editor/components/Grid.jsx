@@ -38,7 +38,10 @@ import styles from 'src/editor/components/Grid.css'
 function mapStateToProps(state) {
   const caveUuid = state.editor.caveUuid
   const caves = state.levels.myLevels
-  const currentCave = caves && caves.filter(cave => cave.uuid === caveUuid)[0]
+  let currentCave = caves && caves.filter(cave => cave.uuid === caveUuid)[0]
+  if (caves && !currentCave) {
+    currentCave = caves[0]
+  }
   return {
     grid: state.editor.grid,
     caveWidth: state.editor.caveWidth,
