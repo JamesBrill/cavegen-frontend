@@ -73,14 +73,16 @@ export default class LevelPage extends PureComponent {
 
   @autobind
   handleNameChange(e) {
+    const { updateCave, uuid } = this.props
     const name = e.target.value
-    this.props.updateCave({ name })
+    updateCave({ name }, uuid)
   }
 
   @autobind
   handlePublicChange(e) {
+    const { updateCave, uuid } = this.props
     const isPublic = e.target.checked
-    this.props.updateCave({ isPublic })
+    updateCave({ isPublic }, uuid)
     this.setState({ publicChecked: isPublic })
   }
 

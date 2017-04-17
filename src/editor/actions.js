@@ -27,16 +27,16 @@ export function newCave(name, width, height) {
   }
 }
 
-export function updateCave(cave) {
+export function updateCave(change, uuid) {
   return async function (dispatch, getState) {
     try {
-      const uuid = getState().editor.caveUuid
+      const caveUuid = uuid || getState().editor.caveUuid
       const caves = getState().levels.myLevels
-      const currentCave = caves && caves.filter(c => c.uuid === uuid)[0]
-      const { json } = await apiRequest(getState, `/caves/${uuid}/`, {
+      const currentCave = caves && caves.filter(c => c.uuid === caveUuid)[0]
+      const { json } = await apiRequest(getState, `/caves/${caveUuid}/`, {
         method: 'put',
         headers: { 'content-type': 'application/json' },
-        body: Object.assign({}, currentCave, cave)
+        body: Object.assign({}, currentCave, change)
       })
 
       return dispatch({
@@ -44,7 +44,7 @@ export function updateCave(cave) {
         payload: {
           uuid,
           updatedCave: json,
-          change: cave
+          change
         }
       })
     } catch (e) {
