@@ -15,11 +15,13 @@ import ReactTooltip from 'react-tooltip'
 import styles from 'src/editor/components/EditorControls.css'
 
 import {
+  playCave
+} from 'src/levels/actions'
+import {
   setCurrentBrush,
   setBrushSize,
   undoCaveChange,
   redoCaveChange,
-  playCave,
   fillRegion
 } from 'src/editor/actions'
 

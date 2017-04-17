@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions'
 import { apiRequest } from 'src/utils/api'
-import { API_ROOT as PRODUCTION_API_ROOT } from 'src/config/production'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { getCaveCode, getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
 
@@ -198,23 +197,6 @@ export function startRebuild() {
 }
 
 export const stopRebuild = createAction('STOP_REBUILD')
-
-export function playCave(uuid) {
-  return function (dispatch, getState) {
-    try {
-      const caveUuid = uuid || getState().editor.caveUuid
-      const caveUrl = encodeURIComponent(`${PRODUCTION_API_ROOT}/reborn/caves/${caveUuid}/`)
-      const playerUrl = `http://droidfreak36.com/HATPC/reborn.php?cave=${caveUrl}`
-      window.open(playerUrl, '_blank')
-      return dispatch({ type: 'PLAY_CAVE' })
-    } catch (e) {
-      return dispatch({
-        type: 'PLAY_CAVE_ERROR',
-        error: e
-      })
-    }
-  }
-}
 
 export function loadImages() {
   return async function (dispatch) {

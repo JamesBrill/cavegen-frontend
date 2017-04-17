@@ -13,7 +13,9 @@ import ReactTooltip from 'react-tooltip'
 import styles from 'src/editor/components/CaveInformation.css'
 
 import {
-  playCave,
+  playCave
+} from 'src/levels/actions'
+import {
   updateCave
 } from 'src/editor/actions'
 
