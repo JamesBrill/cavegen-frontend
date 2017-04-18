@@ -124,7 +124,7 @@ export default class Grid extends PureComponent {
     dispatch(setChangeController(changeController))
     window.addEventListener('resize', this.handleWindowResize)
     if (currentCave) {
-      dispatch(loadCaveIntoGrid(currentCave))
+      dispatch(loadCaveIntoGrid(currentCave.uuid))
     }
     setUpTileKeyListeners(this.handleSelectBrush, this.handleInsertTile)
   }

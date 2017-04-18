@@ -71,7 +71,7 @@ export default class EditorPage extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.caves.length === 0 && nextProps.caves.length > 0) {
-      this.props.dispatchLoadCaveIntoGrid(nextProps.caves[0])
+      this.props.dispatchLoadCaveIntoGrid(nextProps.caves[0].uuid)
     }
   }
 

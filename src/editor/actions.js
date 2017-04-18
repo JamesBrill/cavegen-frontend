@@ -199,9 +199,11 @@ export function startRebuild() {
 
 export const stopRebuild = createAction('STOP_REBUILD')
 
-export function loadCaveIntoGrid(cave) {
+export function loadCaveIntoGrid(uuid) {
   return function (dispatch, getState) {
     const { changeController } = getState().editor
+    const { myLevels } = getState().levels
+    const cave = myLevels.find(x => x.uuid === uuid)
     const grid = new Cave({ caveString: cave.text })
     dispatch(setGrid(grid))
     changeController.clear()
