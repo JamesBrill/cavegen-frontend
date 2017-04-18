@@ -5,8 +5,8 @@
 }
 
 .iconButton {
-  width: calc(4.5vw - 0.5em);
-  height: calc(4.5vw - 0.5em);
+  width: 3em;
+  height: 3em;
   margin-left: 0.25em;
   margin-right: 0.25em;
   padding: 0 !important;
