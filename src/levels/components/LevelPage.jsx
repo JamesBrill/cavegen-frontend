@@ -164,9 +164,11 @@ export default class LevelPage extends PureComponent {
           <Button className={styles.iconButton} onClick={() => playCave(uuid)} data-tip='Play'>
             <Play className={styles.icon} />
           </Button>
-          <Button className={styles.iconButton} onClick={this.handleBuild} data-tip='Edit'>
-            <Build className={styles.icon} />
-          </Button>
+          {isOwnedByUser && (
+            <Button className={styles.iconButton} onClick={this.handleBuild} data-tip='Edit'>
+              <Build className={styles.icon} />
+            </Button>
+          )}
           <ReactTooltip effect='solid' delayShow={250} />
         </div>
       </div>
