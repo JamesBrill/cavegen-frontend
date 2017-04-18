@@ -2,6 +2,7 @@
 
 import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import { autobind } from 'core-decorators'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -10,6 +11,7 @@ import Button from 'src/components/Button'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
 import Like from 'src/editor/components/icons/Like'
 import Play from 'src/editor/components/icons/Play'
+import Build from 'src/levels/components/icons/Build'
 import ReactTooltip from 'react-tooltip'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
@@ -17,7 +19,7 @@ import withNavbar from 'src/app/utils/withNavbar'
 import styles from 'src/levels/components/LevelPage.css'
 
 import { likeCave, playCave } from 'src/levels/actions'
-import { updateCave } from 'src/editor/actions'
+import { updateCave, loadCaveIntoGrid } from 'src/editor/actions'
 
 function mapStateToProps(state, ownProps) {
   const levelId = parseInt(ownProps.params.id, 10)
@@ -39,7 +41,7 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-@connect(mapStateToProps, { likeCave, updateCave, playCave })
+@connect(mapStateToProps, { likeCave, updateCave, playCave, loadCaveIntoGrid })
 @requiresAuthentication
 @withNavbar
 export default class LevelPage extends PureComponent {
@@ -57,7 +59,8 @@ export default class LevelPage extends PureComponent {
     isLikedByUser: PropTypes.bool,
     likeCave: PropTypes.func,
     updateCave: PropTypes.func,
-    playCave: PropTypes.func
+    playCave: PropTypes.func,
+    loadCaveIntoGrid: PropTypes.func
   };
 
   constructor(props) {
@@ -91,6 +94,13 @@ export default class LevelPage extends PureComponent {
     const isPublic = e.target.checked
     updateCave({ isPublic }, uuid)
     this.setState({ publicChecked: isPublic })
+  }
+
+  @autobind
+  handleBuild() {
+    const { uuid, loadCaveIntoGrid } = this.props
+    browserHistory.push('/build')
+    loadCaveIntoGrid(uuid)
   }
 
   render() {
@@ -153,6 +163,9 @@ export default class LevelPage extends PureComponent {
           <CopyToClipboard caveCode={code} data-tip='Copy' />
           <Button className={styles.iconButton} onClick={() => playCave(uuid)} data-tip='Play'>
             <Play className={styles.icon} />
+          </Button>
+          <Button className={styles.iconButton} onClick={this.handleBuild} data-tip='Edit'>
+            <Build className={styles.icon} />
           </Button>
           <ReactTooltip effect='solid' delayShow={250} />
         </div>
