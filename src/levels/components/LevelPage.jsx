@@ -133,43 +133,45 @@ export default class LevelPage extends PureComponent {
     return (
       <div className={computedClassName}>
         {children}
-        {nameField}
-        <div className={styles.information}>
-          <h2 className={styles.title}>Author:</h2>
-          <h2 className={styles.informationValue}>{author}</h2>
-        </div>
-        <div className={styles.information}>
-          <h2 className={styles.title}>Date created:</h2>
-          <h2 className={styles.informationValue}>{moment(dateCreated).format('MM/DD/YYYY, h:mm a')}</h2>
-        </div>
-        {isOwnedByUser && (
+        <div className={styles.informationContainer}>
+          {nameField}
           <div className={styles.information}>
-            <h2 className={styles.title}>Public:</h2>
-            <input
-              className={styles.propertyInput}
-              type='checkbox'
-              onChange={this.handlePublicChange}
-              checked={publicChecked} />
+            <h2 className={styles.title}>Author:</h2>
+            <h2 className={styles.informationValue}>{author}</h2>
           </div>
-        )}
-        <div className={styles.information}>
-          <h2 className={styles.title}>Hearts:</h2>
-          <div className={styles.likesContainer}>
-            {likeIcon}
-            <h2 className={styles.informationValue}>{likes}</h2>
+          <div className={styles.information}>
+            <h2 className={styles.title}>Date created:</h2>
+            <h2 className={styles.informationValue}>{moment(dateCreated).format('MM/DD/YYYY, h:mm a')}</h2>
           </div>
-        </div>
-        <div className={styles.buttonContainer}>
-          <CopyToClipboard caveCode={code} data-tip='Copy' />
-          <Button className={styles.iconButton} onClick={() => playCave(uuid)} data-tip='Play'>
-            <Play className={styles.icon} />
-          </Button>
           {isOwnedByUser && (
-            <Button className={styles.iconButton} onClick={this.handleBuild} data-tip='Edit'>
-              <Build className={styles.icon} />
-            </Button>
+            <div className={styles.information}>
+              <h2 className={styles.title}>Public:</h2>
+              <input
+                className={styles.propertyInput}
+                type='checkbox'
+                onChange={this.handlePublicChange}
+                checked={publicChecked} />
+            </div>
           )}
-          <ReactTooltip effect='solid' delayShow={250} />
+          <div className={styles.information}>
+            <h2 className={styles.title}>Hearts:</h2>
+            <div className={styles.likesContainer}>
+              {likeIcon}
+              <h2 className={styles.informationValue}>{likes}</h2>
+            </div>
+          </div>
+          <div className={styles.buttonContainer}>
+            <CopyToClipboard caveCode={code} data-tip='Copy' />
+            <Button className={styles.iconButton} onClick={() => playCave(uuid)} data-tip='Play'>
+              <Play className={styles.icon} />
+            </Button>
+            {isOwnedByUser && (
+              <Button className={styles.iconButton} onClick={this.handleBuild} data-tip='Edit'>
+                <Build className={styles.icon} />
+              </Button>
+            )}
+            <ReactTooltip effect='solid' delayShow={250} />
+          </div>
         </div>
       </div>
     )
