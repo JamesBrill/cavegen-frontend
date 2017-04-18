@@ -206,7 +206,9 @@ export function loadCaveIntoGrid(uuid) {
     const cave = myLevels.find(x => x.uuid === uuid)
     const grid = new Cave({ caveString: cave.text })
     dispatch(setGrid(grid))
-    changeController.clear()
+    if (changeController) {
+      changeController.clear()
+    }
     dispatch(setCaveWidth(grid.width))
     dispatch(setCaveHeight(grid.height))
     dispatch({
