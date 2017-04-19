@@ -56,11 +56,6 @@ export function updateCave(change, uuid) {
   }
 }
 
-export const setOpenTab = createAction(
-  'SET_OPEN_TAB',
-  openTab => ({ openTab })
-)
-
 export const setGrid = createAction(
   'SET_GRID',
   grid => ({ grid })

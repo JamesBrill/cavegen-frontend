@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import Grid from 'src/editor/components/Grid'
-import SidePanel from 'src/editor/components/SidePanel'
+import EditorControls from 'src/editor/components/EditorControls'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 import { Cave } from 'src/editor/utils/cave'
@@ -27,8 +27,7 @@ function mapStateToProps(state) {
   return {
     caveWidth: state.editor.caveWidth,
     caveHeight: state.editor.caveHeight,
-    caves: state.levels.myLevels,
-    openTab: state.editor.openTab
+    caves: state.levels.myLevels
   }
 }
 
@@ -60,8 +59,7 @@ export default class EditorPage extends PureComponent {
     dispatchStartRebuild: PropTypes.func,
     dispatchLoadMyLevels: PropTypes.func,
     dispatchLoadPublicLevels: PropTypes.func,
-    dispatchLoadCaveIntoGrid: PropTypes.func,
-    openTab: PropTypes.oneOf(['palette', 'properties'])
+    dispatchLoadCaveIntoGrid: PropTypes.func
   };
 
   componentWillMount() {
@@ -95,14 +93,14 @@ export default class EditorPage extends PureComponent {
   }
 
   render() {
-    const { className, openTab, children } = this.props
+    const { className, children } = this.props
     const computedClassName = classNames(styles.EditorPage, className)
 
     return (
       <div className={computedClassName}>
         {children}
         <div className={styles.editor}>
-          <SidePanel openTab={openTab} />
+          <EditorControls className={styles.editorControls} />
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
         </div>
       </div>

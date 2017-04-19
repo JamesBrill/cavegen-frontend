@@ -14,7 +14,6 @@ export default combineReducers({
   cursorType,
   needsRebuild,
   imageMap,
-  openTab,
   caveUuid,
   caveName,
   isCavePublic,
@@ -158,16 +157,6 @@ function imageMap(state = [], { type, payload }) {
   switch (type) {
     case 'LOAD_IMAGES':
       return payload.imageMap
-
-    default:
-      return state
-  }
-}
-
-function openTab(state = 'palette', { type, payload }) {
-  switch (type) {
-    case 'SET_OPEN_TAB':
-      return payload.openTab
 
     default:
       return state
