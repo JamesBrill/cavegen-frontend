@@ -18,16 +18,6 @@
   align-items: center;
 }
 
-.openButton {
-  width: 8em;
-  height: 2.57em;
-  color: white;
-  margin: 1em;
-  padding-left: 0.5em !important; /* stylelint-disable-line declaration-no-important */
-  padding-right: 0.5em !important; /* stylelint-disable-line declaration-no-important */
-  background-color: var(--cornflower-blue) !important; /* stylelint-disable-line declaration-no-important */
-}
-
 .title {
   margin-bottom: 0.5em;
   font-size: 0.9em;
