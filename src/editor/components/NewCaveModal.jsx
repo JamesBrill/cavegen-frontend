@@ -5,7 +5,7 @@ import Input from 'src/components/Input'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
-import { newCave } from 'src/editor/actions'
+import { newCave, rebuildLevel } from 'src/editor/actions'
 
 import styles from './NewCaveModal.css'
 
@@ -16,13 +16,13 @@ function mapStateToProps(state) {
   }
 }
 
-@connect(mapStateToProps, { newCave })
+@connect(mapStateToProps, { newCave, rebuildLevel })
 export default class NewCaveModal extends PureComponent {
   static propTypes = {
     logout: PropTypes.func,
     displayName: PropTypes.string,
-    onCaveRebuild: PropTypes.func,
-    newCave: PropTypes.func
+    newCave: PropTypes.func,
+    rebuildLevel: PropTypes.func
   };
 
   constructor(props) {
@@ -53,7 +53,7 @@ export default class NewCaveModal extends PureComponent {
 
   @autobind
   handleCreate(width, height) {
-    this.props.onCaveRebuild(width, height)
+    this.props.rebuildLevel(width, height)
     this.props.newCave(this.state.name, width, height)
     this.handleClose()
   }

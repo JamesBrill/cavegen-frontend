@@ -271,3 +271,16 @@ export function pasteRegion(x, y) {
     }
   }
 }
+
+export function rebuildLevel(width, height) {
+  return function (dispatch, getState) {
+    const { caveWidth, caveHeight } = getState().editor
+    setCaveWidth(width || caveWidth)
+    setCaveHeight(height || caveHeight)
+    startRebuild()
+    setGrid(new Cave({
+      width: width || caveWidth,
+      height: height || caveHeight
+    }))
+  }
+}

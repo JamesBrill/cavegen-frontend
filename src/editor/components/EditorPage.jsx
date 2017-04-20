@@ -1,21 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { autobind } from 'core-decorators'
 import Grid from 'src/editor/components/Grid'
 import EditorControls from 'src/editor/components/EditorControls'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
-import { Cave } from 'src/editor/utils/cave'
 
 import styles from 'src/editor/components/EditorPage.css'
 
 import {
-  setGrid,
-  setCurrentBrush,
-  setCaveWidth,
-  setCaveHeight,
-  startRebuild,
   loadCaveIntoGrid
 } from 'src/editor/actions'
 import {
@@ -25,18 +18,11 @@ import {
 
 function mapStateToProps(state) {
   return {
-    caveWidth: state.editor.caveWidth,
-    caveHeight: state.editor.caveHeight,
     caves: state.levels.myLevels
   }
 }
 
 const mapDispatchToProps = {
-  dispatchSetGrid: setGrid,
-  dispatchSetCurrentBrush: setCurrentBrush,
-  dispatchSetCaveWidth: setCaveWidth,
-  dispatchSetCaveHeight: setCaveHeight,
-  dispatchStartRebuild: startRebuild,
   dispatchLoadMyLevels: loadMyLevels,
   dispatchLoadPublicLevels: loadPublicLevels,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid
@@ -49,14 +35,7 @@ export default class EditorPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    caveWidth: PropTypes.number,
-    caveHeight: PropTypes.number,
     caves: PropTypes.arrayOf(PropTypes.object),
-    dispatchSetGrid: PropTypes.func,
-    dispatchSetCurrentBrush: PropTypes.func,
-    dispatchSetCaveWidth: PropTypes.func,
-    dispatchSetCaveHeight: PropTypes.func,
-    dispatchStartRebuild: PropTypes.func,
     dispatchLoadMyLevels: PropTypes.func,
     dispatchLoadPublicLevels: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func
@@ -71,25 +50,6 @@ export default class EditorPage extends PureComponent {
     if (this.props.caves.length === 0 && nextProps.caves.length > 0) {
       this.props.dispatchLoadCaveIntoGrid(nextProps.caves[0].uuid)
     }
-  }
-
-  @autobind
-  handleRebuild(width, height) {
-    const {
-      caveWidth,
-      caveHeight,
-      dispatchSetGrid,
-      dispatchSetCaveWidth,
-      dispatchSetCaveHeight,
-      dispatchStartRebuild
-    } = this.props
-    dispatchSetCaveWidth(width || caveWidth)
-    dispatchSetCaveHeight(height || caveHeight)
-    dispatchStartRebuild()
-    dispatchSetGrid(new Cave({
-      width: width || caveWidth,
-      height: height || caveHeight
-    }))
   }
 
   render() {
