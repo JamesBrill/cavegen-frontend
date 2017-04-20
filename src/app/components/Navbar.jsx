@@ -1,7 +1,10 @@
+/* eslint-disable no-shadow */
+
 import React, { PureComponent, PropTypes } from 'react'
 import { Link, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import { playCave } from 'src/levels/actions'
 
 import styles from 'src/app/components/Navbar.css'
 
@@ -11,16 +14,17 @@ function mapStateToProps(state) {
   }
 }
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, { playCave })
 @withRouter
 export default class Navbar extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    route: PropTypes.string
+    route: PropTypes.string,
+    playCave: PropTypes.func
   };
 
   render() {
-    const { className, route } = this.props
+    const { className, route, playCave } = this.props
     const computedClassName = classNames(styles.Navbar, className)
     const levelsTabStyles = ['/my-levels', '/public-levels'].indexOf(route) === -1 ?
       classNames(styles.tab, styles.levelsTab) :
@@ -71,7 +75,7 @@ export default class Navbar extends PureComponent {
                     <p className={styles.smallFont}>Build</p>
                   </div>
                 </Link>
-                <div className={styles.tab}>
+                <div className={styles.tab} onClick={() => playCave()}>
                   <p className={styles.smallFont}>Play</p>
                 </div>
                 <Link to='/checkpoints'>
