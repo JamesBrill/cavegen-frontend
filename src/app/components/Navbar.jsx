@@ -5,7 +5,6 @@ import { Link, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { playCave } from 'src/levels/actions'
-import NewCaveModal from 'src/editor/components/NewCaveModal'
 
 import styles from 'src/app/components/Navbar.css'
 
@@ -32,9 +31,10 @@ export default class Navbar extends PureComponent {
       classNames(styles.selectedTab, styles.levelsTab)
     const myLevelsTabStyles = route === '/my-levels' ? styles.selectedTab : styles.tab
     const publicLevelsTabStyles = route === '/public-levels' ? styles.selectedTab : styles.tab
-    const editorTabStyles = ['/build', '/checkpoints', '/properties'].indexOf(route) === -1 ?
+    const editorTabStyles = ['/new-level', '/build', '/checkpoints', '/properties'].indexOf(route) === -1 ?
       classNames(styles.tab, styles.editorTab) :
       classNames(styles.selectedTab, styles.editorTab)
+    const newLevelTabStyles = route === '/new-level' ? styles.selectedTab : styles.tab
     const buildTabStyles = route === '/build' ? styles.selectedTab : styles.tab
     const checkpointsTabStyles = route === '/checkpoints' ? styles.selectedTab : styles.tab
     const propertiesTabStyles = route === '/properties' ? styles.selectedTab : styles.tab
@@ -68,11 +68,11 @@ export default class Navbar extends PureComponent {
             <div className={editorTabStyles}>
               <p>Editor</p>
               <div className={styles.editorSubTabs}>
-                <NewCaveModal trigger={(
-                  <div className={styles.tab}>
+                <Link to='/new-level'>
+                  <div className={newLevelTabStyles}>
                     <p className={styles.smallFont}>New Level</p>
                   </div>
-                )} />
+                </Link>
                 <Link to='/build'>
                   <div className={buildTabStyles}>
                     <p className={styles.smallFont}>Build</p>

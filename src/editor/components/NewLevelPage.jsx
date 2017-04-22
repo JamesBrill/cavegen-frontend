@@ -1,12 +1,15 @@
 import React, { PureComponent, PropTypes } from 'react'
-import Modal from 'src/components/Modal'
+import { browserHistory } from 'react-router'
+import classNames from 'classnames'
 import Input from 'src/components/Input'
 import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
 import { newCave, rebuildLevel, loadCaveIntoGrid } from 'src/editor/actions'
+import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
+import withNavbar from 'src/app/utils/withNavbar'
 
-import styles from './NewCaveModal.css'
+import styles from './NewLevelPage.css'
 
 function mapStateToProps(state) {
   return {
@@ -16,10 +19,12 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps, { newCave, rebuildLevel, loadCaveIntoGrid })
-export default class NewCaveModal extends PureComponent {
+@requiresAuthentication
+@withNavbar
+export default class NewLevelPage extends PureComponent {
   static propTypes = {
+    children: PropTypes.node,
     logout: PropTypes.func,
-    trigger: PropTypes.node,
     displayName: PropTypes.string,
     newCave: PropTypes.func,
     rebuildLevel: PropTypes.func,
@@ -30,19 +35,8 @@ export default class NewCaveModal extends PureComponent {
     super(props)
 
     this.state = {
-      isOpen: false,
       name: 'Untitled'
     }
-  }
-
-  @autobind
-  handleClick() {
-    this.setState({ isOpen: !this.state.isOpen })
-  }
-
-  @autobind
-  handleClose() {
-    this.setState({ isOpen: false })
   }
 
   @autobind
@@ -56,27 +50,26 @@ export default class NewCaveModal extends PureComponent {
   handleCreate(width, height) {
     this.props.rebuildLevel(width, height)
     this.props.newCave(this.state.name, width, height)
-    this.handleClose()
+    browserHistory.push('/build')
   }
 
   render() {
-    const { trigger } = this.props
-    const { isOpen, name } = this.state
+    const { className, children } = this.props
+    const { name } = this.state
+    const computedClassName = classNames(styles.NewLevelPage, className)
 
     return (
-      <div className={styles.NewCaveModal}>
-        {React.cloneElement(trigger, { onClick: this.handleClick })}
-        <Modal className={styles.modal} isOpen={isOpen} onRequestClose={this.handleClose}>
-          <div className={styles.modalContents}>
-            <div className={styles.content}>
-              <h2 className={styles.title}>Name</h2>
-              <Input onChange={this.handleNameChange} value={name} />
-            </div>
-            <CaveDimensionsInput
-              className={styles.content}
-              onCreate={this.handleCreate} />
+      <div className={computedClassName}>
+        {children}
+        <div className={styles.contents}>
+          <div className={styles.content}>
+            <h2 className={styles.title}>Name</h2>
+            <Input onChange={this.handleNameChange} value={name} />
           </div>
-        </Modal>
+          <CaveDimensionsInput
+            className={styles.content}
+            onCreate={this.handleCreate} />
+        </div>
       </div>
     )
   }

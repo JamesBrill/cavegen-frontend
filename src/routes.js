@@ -4,6 +4,7 @@ import App from 'src/app/components/App'
 import MyLevelsPage from 'src/levels/components/MyLevelsPage'
 import PublicLevelsPage from 'src/levels/components/PublicLevelsPage'
 import LevelPage from 'src/levels/components/LevelPage'
+import NewLevelPage from 'src/editor/components/NewLevelPage'
 import EditorPage from 'src/editor/components/EditorPage'
 import CheckpointsPage from 'src/editor/components/CheckpointsPage'
 import PropertiesPage from 'src/editor/components/PropertiesPage'
@@ -17,6 +18,7 @@ export default (
     <Route path='my-levels' component={MyLevelsPage} />
     <Route path='public-levels' component={PublicLevelsPage} />
     <Route path='level/:id' component={LevelPage} />
+    <Route path='new-level' component={NewLevelPage} />
     <Route path='build' component={EditorPage} />
     <Route path='checkpoints' component={CheckpointsPage} />
     <Route path='properties' component={PropertiesPage} />
