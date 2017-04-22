@@ -15,7 +15,11 @@ export function getCaveCodeOfDimensions(width, height) {
 
   for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
-      caveCode += 'x'
+      if (i === 0 || i === height - 1 || j === 0 || j === width - 1) {
+        caveCode += 'x'
+      } else {
+        caveCode += ' '
+      }
     }
     caveCode += '\n'
   }
