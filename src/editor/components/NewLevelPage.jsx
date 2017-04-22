@@ -47,9 +47,9 @@ export default class NewLevelPage extends PureComponent {
   }
 
   @autobind
-  handleCreate(width, height) {
+  async handleCreate(width, height) {
     this.props.rebuildLevel(width, height)
-    this.props.newCave(this.state.name, width, height)
+    await this.props.newCave(this.state.name, width, height)
     browserHistory.push('/build')
   }
 
