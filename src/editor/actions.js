@@ -42,7 +42,7 @@ export function updateCave(change, uuid) {
       return dispatch({
         type: 'UPDATE_CAVE',
         payload: {
-          uuid,
+          uuid: caveUuid,
           updatedCave: json,
           change
         }
