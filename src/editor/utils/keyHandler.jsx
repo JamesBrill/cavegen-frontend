@@ -2,7 +2,6 @@ import { getTileFromSymbol } from 'src/editor/utils/tiles'
 
 export function setUpTileKeyListeners(selectBrush, insertTile) {
   function applyHotkey(e, brush) {
-    e.preventDefault()
     if (!e.metaKey && !e.ctrlKey) {
       if (e.altKey) {
         insertTile(brush)
