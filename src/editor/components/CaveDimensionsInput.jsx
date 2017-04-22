@@ -23,16 +23,14 @@ export default class CaveDimensionsInput extends PureComponent {
 
   @autobind
   handleWidthChange(e) {
-    this.setState({
-      width: parseInt(e.target.value, 10)
-    })
+    const width = e.target.value === '' ? 0 : parseInt(e.target.value, 10)
+    this.setState({ width })
   }
 
   @autobind
   handleHeightChange(e) {
-    this.setState({
-      height: parseInt(e.target.value, 10)
-    })
+    const height = e.target.value === '' ? 0 : parseInt(e.target.value, 10)
+    this.setState({ height })
   }
 
   @autobind
