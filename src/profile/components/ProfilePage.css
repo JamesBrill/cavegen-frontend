@@ -1,5 +1,31 @@
+@import 'src/palette.css';
+
 .ProfilePage {
   display: flex;
   flex-direction: column;
   color: white;
+}
+
+.contents {
+  padding-left: 1.75em;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.logoutButton {
+  width: 8em;
+  height: 2.57em;
+  color: white;
+  margin-top: 1.75em;
+  background-color: var(--alizarin-crimson) !important; /* stylelint-disable-line declaration-no-important */
+}
+
+.title {
+  margin-bottom: 0.5em;
+  font-size: 0.9em;
+  font-weight: normal;
 }
