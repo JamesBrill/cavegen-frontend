@@ -59,7 +59,7 @@ export const PALETTE_BRUSHES = {
     { fileName: 'clone', symbol: 'c', tooltip: 'Fake Crate c' }
   ]
 }
-const ASSETS_PATH = 'static'
+const ASSETS_PATH = '/static'
 export const PALETTE_IMAGES_PATH = `${ASSETS_PATH}/palette-tiles`
 export const MISC_IMAGES_PATH = `${ASSETS_PATH}/misc`
 Object.keys(PALETTE_BRUSHES).forEach(category => {
