@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
-import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
+import { PALETTE_BRUSH_IMAGES } from 'src/utils/ImageLoader'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
@@ -40,29 +40,6 @@ export default class LearnPage extends PureComponent {
   render() {
     const { className, children } = this.props
     const computedClassName = classNames(styles.LearnPage, className)
-    const tileData = PALETTE_BRUSHES_LIST.map(brush => {
-      let selectTileHotkey, placeTileHotkey
-      switch (brush.symbol) {
-        case 'D':
-          selectTileHotkey = 'd'
-          placeTileHotkey = 'Alt + d'
-          break
-        case ' ':
-          selectTileHotkey = 's'
-          placeTileHotkey = 'Alt + s'
-          break
-        default:
-          selectTileHotkey = brush.symbol
-          placeTileHotkey = `Alt + ${brush.symbol}`
-      }
-      return {
-        imagePath: brush.imagePath,
-        tooltip: brush.tooltip,
-        selectTileHotkey,
-        placeTileHotkey
-      }
-    })
-
     return (
       <div className={computedClassName}>
         {children}
@@ -141,7 +118,7 @@ export default class LearnPage extends PureComponent {
             </tbody>
           </table>
           <h2 className={styles.title}>Region Selector</h2>
-          {this.renderRegionIcon(tileData.find(x => x.tooltip === 'Select Region a'))}
+          {this.renderRegionIcon(PALETTE_BRUSH_IMAGES.find(x => x.tooltip === 'Select Region a'))}
           <table className={styles.actionTable}>
             <tbody>
               <tr className={styles.actionDividerRow}>
@@ -210,7 +187,7 @@ export default class LearnPage extends PureComponent {
                 <th>Select tile type</th>
                 <th>Place tile</th>
               </tr>
-              {tileData.filter(x => x.tooltip !== 'Select Region a').map(data => (
+              {PALETTE_BRUSH_IMAGES.filter(x => x.tooltip !== 'Select Region a').map(data => (
                 <tr key={data.selectTileHotkey}>
                   <td className={styles.cell}>{this.renderImageCell(data)}</td>
                   <td className={styles.cell}>{data.selectTileHotkey}</td>

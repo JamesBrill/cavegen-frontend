@@ -66,3 +66,25 @@ Object.keys(PALETTE_BRUSHES).forEach(category => {
   PALETTE_BRUSHES[category].forEach(brush => Object.assign(brush, { imagePath: `${PALETTE_IMAGES_PATH}/${brush.fileName}.png` }))
 })
 export const PALETTE_BRUSHES_LIST = Object.keys(PALETTE_BRUSHES).reduce((brushes, category) => brushes.concat(PALETTE_BRUSHES[category]), [])
+export const PALETTE_BRUSH_IMAGES = PALETTE_BRUSHES_LIST.map(brush => {
+  let selectTileHotkey, placeTileHotkey
+  switch (brush.symbol) {
+    case 'D':
+      selectTileHotkey = 'd'
+      placeTileHotkey = 'Alt + d'
+      break
+    case ' ':
+      selectTileHotkey = 's'
+      placeTileHotkey = 'Alt + s'
+      break
+    default:
+      selectTileHotkey = brush.symbol
+      placeTileHotkey = `Alt + ${brush.symbol}`
+  }
+  return {
+    imagePath: brush.imagePath,
+    tooltip: brush.tooltip,
+    selectTileHotkey,
+    placeTileHotkey
+  }
+})
