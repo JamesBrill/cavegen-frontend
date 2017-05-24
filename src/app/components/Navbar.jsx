@@ -44,7 +44,7 @@ export default class Navbar extends PureComponent {
     return (
       <div className={computedClassName}>
         <div className={styles.left}>
-
+          <p className={styles.logo}>CaveGen</p>
         </div>
         <div className={styles.right}>
           <Link to='/my-levels'>
