@@ -227,7 +227,7 @@ export function loadImages() {
         image.onload = function () {
           resolve({ fileName, image: this })
         }
-        image.src = brush.imagePath
+        image.src = fileName === 'space' ? '/static/misc/black.png' : brush.imagePath
       })))
 
       return dispatch({

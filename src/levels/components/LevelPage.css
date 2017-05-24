@@ -1,100 +1,21 @@
 /* stylelint-disable declaration-no-important */
 
 .LevelPage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.contents {
+  height: calc(100vh - 4em);
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: white;
 }
 
-.informationContainer {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1em;
-}
-
-.information {
-  padding-left: 0.5em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.title {
-  color: white;
-  font-weight: normal;
-}
-
-.informationValue {
-  color: white;
-  padding-left: 0.75em;
-  font-weight: normal;
-}
-
-.likesContainer {
-  padding-left: 0.5em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.like {
-  width: 2em;
-  height: 2em;
-}
-
-.like:hover {
-  animation: pop 0.3s ease-in;
-}
-
-@keyframes pop {
-  0% {
-    transform: translate(0, 0);
-  }
-
-  50% {
-    transform: translate(0, -3px);
-  }
-
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-.propertyInput {
-  margin-left: 1em;
-}
-
-.iconButton {
-  width: 3em;
-  height: 3em;
-  margin-left: 0.25em;
-  margin-right: 0.25em;
-  padding: 0 !important;
-  font-size: 16px !important;
-  background-color: #567cde !important;
-  color: white;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-}
-
-.iconButton:hover {
-  & > * {
-    opacity: 0.5;
-  }
-}
-
-.icon {
-  width: 80%;
-  height: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.buttonContainer {
-  display: flex;
-  flex-direction: row;
-  margin-top: 1em;
-  padding-left: 0.5em;
+.caveInformation {
+  min-height: 300px;
+  margin-bottom: 1em;
 }

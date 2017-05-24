@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import CaveInformation from 'src/levels/components/CaveInformation'
+import LevelPreview from 'src/levels/components/LevelPreview'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
@@ -21,7 +22,10 @@ export default class LevelPage extends PureComponent {
     return (
       <div className={computedClassName}>
         {children}
-        <CaveInformation levelId={parseInt(params.id, 10)} />
+        <div className={styles.contents}>
+          <LevelPreview className={styles.levelPreview} levelId={parseInt(params.id, 10)} />
+          <CaveInformation className={styles.caveInformation} levelId={parseInt(params.id, 10)} />
+        </div>
       </div>
     )
   }
