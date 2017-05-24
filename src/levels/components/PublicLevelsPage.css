@@ -3,3 +3,8 @@
   flex-direction: column;
   color: white;
 }
+
+.levels {
+  height: calc(100vh - 4em);
+  overflow-y: auto;
+}
