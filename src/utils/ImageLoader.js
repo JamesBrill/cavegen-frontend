@@ -88,3 +88,7 @@ export const PALETTE_BRUSH_IMAGES = PALETTE_BRUSHES_LIST.map(brush => {
     placeTileHotkey
   }
 })
+export const PALETTE_BRUSH_IMAGE_MAP = {}
+PALETTE_BRUSHES_LIST.forEach(brush => {
+  PALETTE_BRUSH_IMAGE_MAP[brush.symbol] = brush.imagePath
+})
