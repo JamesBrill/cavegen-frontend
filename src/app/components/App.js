@@ -13,7 +13,7 @@ import styles from 'src/app/components/App.css'
 
 function mapStateToProps(state) {
   const location = state.routing.locationBeforeTransitions
-  const isEditorOpen = location.pathname.startsWith('/build')
+  const isEditorOpen = !location.pathname.startsWith('/login')
   const isAuthenticated = !!(state.authentication && state.authentication.token !== null)
   return {
     tokenExpiryTime: state.authentication.claims.exp,
