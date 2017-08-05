@@ -71,9 +71,15 @@ export default class EditorControls extends PureComponent {
     this.props.dispatchRedo()
   }
 
+  @autobind
+  handlePlay(e) {
+    e.preventDefault()
+    this.props.dispatchPlayCave()
+  }
+
   render() {
     const { className, caveCode, currentBrush, dispatchSetBrushSize,
-            dispatchPlayCave, dispatchSetCurrentBrush, dispatchFillRegion } = this.props
+            dispatchSetCurrentBrush, dispatchFillRegion } = this.props
     const computedClassName = classNames(styles.EditorControls, className)
 
     return (
@@ -87,7 +93,7 @@ export default class EditorControls extends PureComponent {
           <Button className={styles.iconButton} onClick={this.handleRedo} data-tip='Redo'>
             <Redo className={styles.icon} />
           </Button>
-          <Button className={styles.iconButton} onClick={dispatchPlayCave} data-tip='Play'>
+          <Button className={styles.iconButton} onClick={this.handlePlay} data-tip='Play'>
             <Play className={styles.icon} />
           </Button>
           <ReactTooltip effect='solid' delayShow={250} />
