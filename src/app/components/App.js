@@ -8,13 +8,16 @@ import moment from 'moment'
 import ScheduledEvent from 'src/utils/ScheduledEvent'
 import Spinner from 'src/components/Spinner'
 import { LOGIN_URL } from 'src/config'
+import { loadMyLevels, loadPublicLevels } from 'src/levels/actions'
 
 import styles from 'src/app/components/App.css'
 
 function mapStateToProps(state) {
   const location = state.routing.locationBeforeTransitions
   const isEditorOpen = !location.pathname.startsWith('/login')
-  const isAuthenticated = !!(state.authentication && state.authentication.token !== null)
+  const isAuthenticated = !!(
+    state.authentication && state.authentication.token !== null
+  )
   return {
     tokenExpiryTime: state.authentication.claims.exp,
     isAuthenticated,
@@ -23,7 +26,12 @@ function mapStateToProps(state) {
   }
 }
 
-@connect(mapStateToProps, { logout, loadImages })
+@connect(mapStateToProps, {
+  logout,
+  loadImages,
+  loadMyLevels,
+  loadPublicLevels
+})
 @withRouter
 export default class App extends PureComponent {
   static propTypes = {
@@ -33,8 +41,10 @@ export default class App extends PureComponent {
     isEmailVerified: PropTypes.bool,
     isEditorOpen: PropTypes.bool,
     logout: PropTypes.func,
-    loadImages: PropTypes.func
-  };
+    loadImages: PropTypes.func,
+    loadMyLevels: PropTypes.func,
+    loadPublicLevels: PropTypes.func
+  }
 
   constructor(props) {
     super(props)
@@ -45,10 +55,18 @@ export default class App extends PureComponent {
   }
 
   componentWillMount() {
+    if (this.props.isAuthenticated) {
+      this.props.loadMyLevels()
+      this.props.loadPublicLevels()
+    }
     this.loadImagesOrRedirectToLogin(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!this.props.isAuthenticated && nextProps.isAuthenticated) {
+      this.props.loadMyLevels()
+      this.props.loadPublicLevels()
+    }
     this.loadImagesOrRedirectToLogin(nextProps)
   }
 
@@ -64,7 +82,13 @@ export default class App extends PureComponent {
   }
 
   render() {
-    const { logout, isAuthenticated, tokenExpiryTime, isEmailVerified, isEditorOpen } = this.props // eslint-disable-line no-shadow
+    const {
+      logout,
+      isAuthenticated,
+      tokenExpiryTime,
+      isEmailVerified,
+      isEditorOpen
+    } = this.props // eslint-disable-line no-shadow
 
     if (isEditorOpen && isAuthenticated && !isEmailVerified) {
       return (
@@ -96,7 +120,9 @@ export default class App extends PureComponent {
     return (
       <div className={styles.App}>
         <ScheduledEvent when={moment.unix(tokenExpiryTime)} action={logout} />
-        {cloneElement(Children.only(this.props.children), { className: styles.page })}
+        {cloneElement(Children.only(this.props.children), {
+          className: styles.page
+        })}
       </div>
     )
   }

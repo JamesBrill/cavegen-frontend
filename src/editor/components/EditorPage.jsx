@@ -8,13 +8,7 @@ import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from 'src/editor/components/EditorPage.css'
 
-import {
-  loadCaveIntoGrid
-} from 'src/editor/actions'
-import {
-  loadMyLevels,
-  loadPublicLevels
-} from 'src/levels/actions'
+import { loadCaveIntoGrid } from 'src/editor/actions'
 
 function mapStateToProps(state) {
   return {
@@ -23,8 +17,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  dispatchLoadMyLevels: loadMyLevels,
-  dispatchLoadPublicLevels: loadPublicLevels,
   dispatchLoadCaveIntoGrid: loadCaveIntoGrid
 }
 
@@ -39,11 +31,6 @@ export default class EditorPage extends PureComponent {
     dispatchLoadMyLevels: PropTypes.func,
     dispatchLoadPublicLevels: PropTypes.func,
     dispatchLoadCaveIntoGrid: PropTypes.func
-  };
-
-  componentWillMount() {
-    this.props.dispatchLoadMyLevels()
-    this.props.dispatchLoadPublicLevels()
   }
 
   componentWillReceiveProps(nextProps) {
