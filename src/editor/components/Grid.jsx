@@ -7,7 +7,6 @@ import {
   mergeTileChanges
 } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
-import { getCaveCode } from 'src/editor/utils/cave-code'
 import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
@@ -18,7 +17,6 @@ import keydown from 'react-keydown'
 
 // TODO: add to validation
 import {
-  updateCave,
   setGrid,
   setCaveView,
   setCaveWidth,
@@ -28,7 +26,6 @@ import {
   setPreviousCursorSize,
   setPreviousCursorPosition,
   setLastUsedBrushSize,
-  setCaveCode,
   stopRebuild,
   fillRegion,
   pasteRegion,
