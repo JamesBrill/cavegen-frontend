@@ -5,7 +5,8 @@ import { splitCaveStringAndEvents } from 'src/editor/utils/cave-code'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import {
   getCaveCode,
-  getCaveCodeOfDimensions
+  getCaveCodeOfDimensions,
+  getCaveCodeWithEvents
 } from 'src/editor/utils/cave-code'
 
 export function newCave(name, width, height) {
@@ -175,10 +176,10 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
 
 export function undoCaveChange() {
   return function (dispatch, getState) {
-    const { changeController, caveView, grid } = getState().editor
+    const { changeController, caveView, grid, eventsText } = getState().editor
     const { caveName } = getState().editor
     changeController.applyUndo(grid, caveView)
-    const caveCode = getCaveCode(grid, caveName)
+    const caveCode = getCaveCodeWithEvents(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'UNDO_CAVE_CHANGE' })
   }
@@ -186,10 +187,10 @@ export function undoCaveChange() {
 
 export function redoCaveChange() {
   return function (dispatch, getState) {
-    const { changeController, caveView, grid } = getState().editor
+    const { changeController, caveView, grid, eventsText } = getState().editor
     const { caveName } = getState().editor
     changeController.applyRedo(grid, caveView)
-    const caveCode = getCaveCode(grid, caveName)
+    const caveCode = getCaveCodeWithEvents(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'REDO_CAVE_CHANGE' })
   }
@@ -270,7 +271,13 @@ export function loadImages() {
 
 export function fillRegion(brush) {
   return function (dispatch, getState) {
-    const { cursorType, caveView, changeController, grid } = getState().editor
+    const {
+      cursorType,
+      caveView,
+      changeController,
+      grid,
+      eventsText
+    } = getState().editor
     const { caveName } = getState().editor
     if (
       cursorType === 'SELECTREGION' &&
@@ -279,7 +286,13 @@ export function fillRegion(brush) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+      const caveCode = getCaveCodeWithEvents(
+        grid,
+        caveName,
+        eventsText,
+        '1',
+        'clear'
+      )
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -287,13 +300,25 @@ export function fillRegion(brush) {
 
 export function pasteRegion(x, y) {
   return function (dispatch, getState) {
-    const { cursorType, caveView, changeController, grid } = getState().editor
+    const {
+      cursorType,
+      caveView,
+      changeController,
+      grid,
+      eventsText
+    } = getState().editor
     const { caveName } = getState().editor
     if (cursorType === 'SELECTREGION') {
       const tileChanges = caveView.pasteRegion(x, y)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+      const caveCode = getCaveCodeWithEvents(
+        grid,
+        caveName,
+        eventsText,
+        '1',
+        'clear'
+      )
       dispatch(updateCave({ text: caveCode }))
     }
   }

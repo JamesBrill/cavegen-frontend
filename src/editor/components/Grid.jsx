@@ -1,9 +1,13 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
-import { getBorder, getTileSize, mergeTileChanges } from 'src/editor/utils/tiles'
+import {
+  getBorder,
+  getTileSize,
+  mergeTileChanges
+} from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
-import { getCaveCode } from 'src/editor/utils/cave-code'
+import { getCaveCodeWithEvents } from 'src/editor/utils/cave-code'
 import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
@@ -54,7 +58,8 @@ function mapStateToProps(state) {
     imageMap: state.editor.imageMap,
     currentCave,
     caveName: state.editor.caveName,
-    cursorType: state.editor.cursorType
+    cursorType: state.editor.cursorType,
+    eventsText: state.editor.eventsText
   }
 }
 
@@ -100,8 +105,9 @@ export default class Grid extends PureComponent {
     needsRebuild: PropTypes.bool,
     imageMap: PropTypes.object,
     currentCave: PropTypes.object,
-    caveName: PropTypes.string
-  };
+    caveName: PropTypes.string,
+    eventsText: PropTypes.string
+  }
 
   constructor(props) {
     super(props)
@@ -129,7 +135,13 @@ export default class Grid extends PureComponent {
     setUpTileKeyListeners(this.handleSelectBrush, this.handleInsertTile)
   }
 
-  componentWillReceiveProps({ caveView, caveWidth, caveHeight, grid, needsRebuild }) {
+  componentWillReceiveProps({
+    caveView,
+    caveWidth,
+    caveHeight,
+    grid,
+    needsRebuild
+  }) {
     const { dispatch } = this.props
     if (caveView && this.props.caveView !== caveView) {
       this.setState({ redrawCanvas: true })
@@ -155,8 +167,19 @@ export default class Grid extends PureComponent {
 
   @autobind
   buildCaveView(grid, caveWidth, caveHeight) {
-    const tileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
-    const border = getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight(), tileSize)
+    const tileSize = getTileSize(
+      caveWidth,
+      caveHeight,
+      this.getCanvasWidth(),
+      this.getCanvasHeight()
+    )
+    const border = getBorder(
+      caveWidth,
+      caveHeight,
+      this.getCanvasWidth(),
+      this.getCanvasHeight(),
+      tileSize
+    )
     return new CaveView({
       x: caveWidth,
       y: caveHeight,
@@ -182,7 +205,7 @@ export default class Grid extends PureComponent {
 
   @autobind
   rebuildCave(width, height, grid) {
-    const { dispatch, caveView, caveName } = this.props
+    const { dispatch, caveView, caveName, eventsText } = this.props
     const caveWidth = width || this.props.caveWidth
     const caveHeight = height || this.props.caveHeight
     if (caveView) {
@@ -193,7 +216,13 @@ export default class Grid extends PureComponent {
     dispatch(setCaveHeight(caveHeight))
     const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
-    const caveCode = getCaveCode(newGrid, caveName, '1', 'clear')
+    const caveCode = getCaveCodeWithEvents(
+      newGrid,
+      caveName,
+      eventsText,
+      '1',
+      'clear'
+    )
     dispatch(setCaveCode(caveCode))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
@@ -203,12 +232,27 @@ export default class Grid extends PureComponent {
   @autobind
   handleWindowResize() {
     const { caveWidth, caveHeight, imageMap } = this.props
-    const unscaledTileSize = getTileSize(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight())
-    const border = this.props.caveView.border || getBorder(caveWidth, caveHeight, this.getCanvasWidth(), this.getCanvasHeight(), unscaledTileSize)
+    const unscaledTileSize = getTileSize(
+      caveWidth,
+      caveHeight,
+      this.getCanvasWidth(),
+      this.getCanvasHeight()
+    )
+    const border =
+      this.props.caveView.border ||
+      getBorder(
+        caveWidth,
+        caveHeight,
+        this.getCanvasWidth(),
+        this.getCanvasHeight(),
+        unscaledTileSize
+      )
     const newCaveView = new CaveView({
       x: caveWidth,
       y: caveHeight,
-      tileSize: Math.round((this.props.caveView.scalingFactor || 1) * unscaledTileSize),
+      tileSize: Math.round(
+        (this.props.caveView.scalingFactor || 1) * unscaledTileSize
+      ),
       unscaledTileSize,
       border,
       scalingFactor: this.props.caveView.scalingFactor,
@@ -235,15 +279,23 @@ export default class Grid extends PureComponent {
 
   @autobind
   updateCursor(x, y) {
-    const { dispatch, caveView, brushSize, previousCursor, cursorType } = this.props
+    const {
+      dispatch,
+      caveView,
+      brushSize,
+      previousCursor,
+      cursorType
+    } = this.props
     const { pixelX, pixelY } = this.state
     if (previousCursor.size !== brushSize) {
       dispatch(setPreviousCursorSize(brushSize))
     }
-    caveView.erasePreviousCursor(previousCursor.position.x,
-                                 previousCursor.position.y,
-                                 previousCursor.size,
-                                 cursorType)
+    caveView.erasePreviousCursor(
+      previousCursor.position.x,
+      previousCursor.position.y,
+      previousCursor.size,
+      cursorType
+    )
     caveView.drawCursor(x, y, pixelX, pixelY, brushSize, cursorType)
     dispatch(setPreviousCursorPosition({ x, y }))
     this.setState({ cursorPosition: { x, y } })
@@ -251,8 +303,21 @@ export default class Grid extends PureComponent {
 
   @autobind
   finishPainting() {
-    const { dispatch, caveView, grid, changeController, caveName } = this.props
-    const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+    const {
+      dispatch,
+      caveView,
+      grid,
+      changeController,
+      caveName,
+      eventsText
+    } = this.props
+    const caveCode = getCaveCodeWithEvents(
+      grid,
+      caveName,
+      eventsText,
+      '1',
+      'clear'
+    )
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
@@ -273,11 +338,23 @@ export default class Grid extends PureComponent {
       let positions = positionsBetweenPoints(lineStart, lineEnd)
       positions = positions.slice(1)
       for (let i = 0; i < positions.length; i++) {
-        const newTileChanges = grid.getTileChangesFromBrush(positions[i].x, positions[i].y, brush, grid, brushSize)
+        const newTileChanges = grid.getTileChangesFromBrush(
+          positions[i].x,
+          positions[i].y,
+          brush,
+          grid,
+          brushSize
+        )
         tileChanges = mergeTileChanges(tileChanges, newTileChanges)
       }
     } else {
-      const newTileChanges = grid.getTileChangesFromBrush(column, row, brush, grid, brushSize)
+      const newTileChanges = grid.getTileChangesFromBrush(
+        column,
+        row,
+        brush,
+        grid,
+        brushSize
+      )
       tileChanges = mergeTileChanges(tileChanges, newTileChanges)
     }
     caveView.previousPaintedPoint = currentPoint
@@ -310,13 +387,25 @@ export default class Grid extends PureComponent {
 
   @autobind
   startPaintingAtMousePosition(optionalBrush, ignoreCursor) {
-    const { dispatch, caveView, currentBrush, grid, brushSize, lastUsedBrushSize } = this.props
+    const {
+      dispatch,
+      caveView,
+      currentBrush,
+      grid,
+      brushSize,
+      lastUsedBrushSize
+    } = this.props
     const { pixelX, pixelY, cursorPosition } = this.state
     caveView.isMouseDown = true
     const gridX = cursorPosition.x || caveView.getGridX(pixelX)
     const gridY = cursorPosition.y || caveView.getGridY(pixelY)
     if (grid.withinLimits(gridX, gridY)) {
-      this.applyBrushAtPosition(gridX, gridY, optionalBrush || currentBrush, ignoreCursor)
+      this.applyBrushAtPosition(
+        gridX,
+        gridY,
+        optionalBrush || currentBrush,
+        ignoreCursor
+      )
       caveView.paintLineMode = true
     }
 
@@ -326,20 +415,31 @@ export default class Grid extends PureComponent {
   }
 
   continuePaintingAtMousePosition() {
-    const { caveView, previousCursor, grid, currentBrush, cursorType } = this.props
+    const {
+      caveView,
+      previousCursor,
+      grid,
+      currentBrush,
+      cursorType
+    } = this.props
     const { pixelX, pixelY, deleting } = this.state
     const spaceBrush = { fileName: 'space', symbol: ' ' }
     const gridX = caveView.getGridX(pixelX)
     const gridY = caveView.getGridY(pixelY)
 
     if (cursorType === 'SQUARE') {
-      if (gridX === previousCursor.position.x && gridY === previousCursor.position.y) {
+      if (
+        gridX === previousCursor.position.x &&
+        gridY === previousCursor.position.y
+      ) {
         return
       }
 
       if (!grid.withinLimits(gridX, gridY)) {
-        const x = (gridX < 0) ? 0 : ((gridX > grid.width - 1) ? grid.width - 1 : gridX)
-        const y = (gridY < 0) ? 0 : ((gridY > grid.height - 1) ? grid.height - 1 : gridY)
+        const x =
+          gridX < 0 ? 0 : gridX > grid.width - 1 ? grid.width - 1 : gridX
+        const y =
+          gridY < 0 ? 0 : gridY > grid.height - 1 ? grid.height - 1 : gridY
         caveView.previousPaintedPoint = { x, y }
       }
 
@@ -348,7 +448,11 @@ export default class Grid extends PureComponent {
       }
 
       if (caveView.isMouseDown && grid.withinLimits(gridX, gridY)) {
-        this.applyBrushAtPosition(gridX, gridY, deleting ? spaceBrush : currentBrush)
+        this.applyBrushAtPosition(
+          gridX,
+          gridY,
+          deleting ? spaceBrush : currentBrush
+        )
       }
     }
     if (grid.withinLimits(gridX, gridY)) {
@@ -360,8 +464,19 @@ export default class Grid extends PureComponent {
     const { dispatch, grid, imageMap } = this.props
     const width = grid.width
     const height = grid.height
-    const tileSize = getTileSize(width, height, this.getCanvasWidth(), this.getCanvasHeight())
-    const border = getBorder(width, height, this.getCanvasWidth(), this.getCanvasHeight(), tileSize)
+    const tileSize = getTileSize(
+      width,
+      height,
+      this.getCanvasWidth(),
+      this.getCanvasHeight()
+    )
+    const border = getBorder(
+      width,
+      height,
+      this.getCanvasWidth(),
+      this.getCanvasHeight(),
+      tileSize
+    )
 
     dispatch(setGrid(cave || new Cave({ width, height })))
     const newCaveView = new CaveView({
@@ -379,7 +494,15 @@ export default class Grid extends PureComponent {
   }
 
   addColumn(x, y, ignoreCursor) {
-    const { dispatch, caveWidth, caveView, brushSize, cursorType, grid, changeController } = this.props
+    const {
+      dispatch,
+      caveWidth,
+      caveView,
+      brushSize,
+      cursorType,
+      grid,
+      changeController
+    } = this.props
     const { pixelX, pixelY } = this.state
     const gridX = caveView.getGridX(pixelX)
     const columnInsertionX = caveView.getColumnInsertionX(pixelX)
@@ -405,7 +528,15 @@ export default class Grid extends PureComponent {
   }
 
   removeColumn(x, y, ignoreCursor) {
-    const { dispatch, caveWidth, caveView, brushSize, cursorType, grid, changeController } = this.props
+    const {
+      dispatch,
+      caveWidth,
+      caveView,
+      brushSize,
+      cursorType,
+      grid,
+      changeController
+    } = this.props
     const { pixelX, pixelY } = this.state
     const gridX = caveView.getGridX(pixelX)
     const before = grid.getGridClone()
@@ -430,7 +561,15 @@ export default class Grid extends PureComponent {
   }
 
   addRow(x, y, ignoreCursor) {
-    const { dispatch, caveHeight, caveView, brushSize, cursorType, grid, changeController } = this.props
+    const {
+      dispatch,
+      caveHeight,
+      caveView,
+      brushSize,
+      cursorType,
+      grid,
+      changeController
+    } = this.props
     const { pixelX, pixelY } = this.state
     const gridY = caveView.getGridY(pixelY)
     const rowInsertionY = caveView.getRowInsertionY(pixelY)
@@ -456,7 +595,15 @@ export default class Grid extends PureComponent {
   }
 
   removeRow(x, y, ignoreCursor) {
-    const { dispatch, caveHeight, caveView, brushSize, cursorType, grid, changeController } = this.props
+    const {
+      dispatch,
+      caveHeight,
+      caveView,
+      brushSize,
+      cursorType,
+      grid,
+      changeController
+    } = this.props
     const { pixelX, pixelY } = this.state
     const gridY = caveView.getGridY(pixelY)
     const before = grid.getGridClone()
@@ -547,7 +694,14 @@ export default class Grid extends PureComponent {
     const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x - 1, cursorPosition.y)) {
+    if (
+      caveView.isLineWithinLimits(
+        pixelX,
+        pixelY,
+        cursorPosition.x - 1,
+        cursorPosition.y
+      )
+    ) {
       if (cursorType === 'ADDCOLUMN') {
         caveView.moveAddColumnLeft()
         const newCursorPosition = {
@@ -563,8 +717,10 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (grid.withinLimits(cursorPosition.x - 1, cursorPosition.y) &&
-                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+      } else if (
+        grid.withinLimits(cursorPosition.x - 1, cursorPosition.y) &&
+        (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')
+      ) {
         if (cursorType === 'SELECTREGION') {
           caveView.setAnchorPoint(cursorPosition.x - 1, cursorPosition.y)
         }
@@ -593,12 +749,25 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_LEFT_KEY)
   handleMoveRegionLeft() {
-    const { dispatch, grid, caveView, changeController, caveName } = this.props
+    const {
+      dispatch,
+      grid,
+      caveView,
+      changeController,
+      caveName,
+      eventsText
+    } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionLeft()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+      const caveCode = getCaveCodeWithEvents(
+        grid,
+        caveName,
+        eventsText,
+        '1',
+        'clear'
+      )
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -610,7 +779,14 @@ export default class Grid extends PureComponent {
     const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y - 1)) {
+    if (
+      caveView.isLineWithinLimits(
+        pixelX,
+        pixelY,
+        cursorPosition.x,
+        cursorPosition.y - 1
+      )
+    ) {
       if (cursorType === 'ADDROW') {
         caveView.moveAddRowUp()
         const newCursorPosition = {
@@ -626,8 +802,10 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y - 1
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (grid.withinLimits(cursorPosition.x, cursorPosition.y - 1) &&
-                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+      } else if (
+        grid.withinLimits(cursorPosition.x, cursorPosition.y - 1) &&
+        (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')
+      ) {
         if (cursorType === 'SELECTREGION') {
           caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y - 1)
         }
@@ -656,12 +834,25 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_UP_KEY)
   handleMoveRegionUp() {
-    const { dispatch, grid, caveView, changeController, caveName } = this.props
+    const {
+      dispatch,
+      grid,
+      caveView,
+      changeController,
+      caveName,
+      eventsText
+    } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionUp()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+      const caveCode = getCaveCodeWithEvents(
+        grid,
+        caveName,
+        eventsText,
+        '1',
+        'clear'
+      )
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -673,7 +864,14 @@ export default class Grid extends PureComponent {
     const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x + 1, cursorPosition.y)) {
+    if (
+      caveView.isLineWithinLimits(
+        pixelX,
+        pixelY,
+        cursorPosition.x + 1,
+        cursorPosition.y
+      )
+    ) {
       if (cursorType === 'ADDCOLUMN') {
         caveView.moveAddColumnRight()
         const newCursorPosition = {
@@ -689,8 +887,10 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (grid.withinLimits(cursorPosition.x + 1, cursorPosition.y) &&
-                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+      } else if (
+        grid.withinLimits(cursorPosition.x + 1, cursorPosition.y) &&
+        (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')
+      ) {
         if (cursorType === 'SELECTREGION') {
           caveView.setAnchorPoint(cursorPosition.x + 1, cursorPosition.y)
         }
@@ -719,12 +919,25 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_RIGHT_KEY)
   handleMoveRegionRight() {
-    const { dispatch, grid, caveView, changeController, caveName } = this.props
+    const {
+      dispatch,
+      grid,
+      caveView,
+      changeController,
+      caveName,
+      eventsText
+    } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionRight()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+      const caveCode = getCaveCodeWithEvents(
+        grid,
+        caveName,
+        eventsText,
+        '1',
+        'clear'
+      )
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -736,7 +949,14 @@ export default class Grid extends PureComponent {
     const { caveView, cursorType, grid } = this.props
     const { pixelX, pixelY } = this.state
     const cursorPosition = this.state.cursorPosition
-    if (caveView.isLineWithinLimits(pixelX, pixelY, cursorPosition.x, cursorPosition.y + 1)) {
+    if (
+      caveView.isLineWithinLimits(
+        pixelX,
+        pixelY,
+        cursorPosition.x,
+        cursorPosition.y + 1
+      )
+    ) {
       if (cursorType === 'ADDROW') {
         caveView.moveAddRowDown()
         const newCursorPosition = {
@@ -752,8 +972,10 @@ export default class Grid extends PureComponent {
           y: cursorPosition.y + 1
         }
         this.setState({ cursorPosition: newCursorPosition })
-      } else if (grid.withinLimits(cursorPosition.x, cursorPosition.y + 1) &&
-                 (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')) {
+      } else if (
+        grid.withinLimits(cursorPosition.x, cursorPosition.y + 1) &&
+        (cursorType === 'SQUARE' || cursorType === 'SELECTREGION')
+      ) {
         if (cursorType === 'SELECTREGION') {
           caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y + 1)
         }
@@ -782,12 +1004,25 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_DOWN_KEY)
   handleMoveRegionDown() {
-    const { dispatch, grid, caveView, changeController, caveName } = this.props
+    const {
+      dispatch,
+      grid,
+      caveView,
+      changeController,
+      caveName,
+      eventsText
+    } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionDown()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, '1', 'clear')
+      const caveCode = getCaveCodeWithEvents(
+        grid,
+        caveName,
+        eventsText,
+        '1',
+        'clear'
+      )
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -796,13 +1031,22 @@ export default class Grid extends PureComponent {
   handleMouseDown(e) {
     const { caveView, grid, cursorType } = this.props
     const { cursorPosition } = this.state
-    if (cursorType === 'SELECTREGION' && grid.withinLimits(cursorPosition.x, cursorPosition.y)) {
+    if (
+      cursorType === 'SELECTREGION' &&
+      grid.withinLimits(cursorPosition.x, cursorPosition.y)
+    ) {
       caveView.setAnchorPoint(cursorPosition.x, cursorPosition.y)
       caveView.isMouseDown = true
       this.updateCursor(cursorPosition.x, cursorPosition.y)
     } else if (!caveView.zoomer.panning) {
-      this.setState({ pixelX: e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft })
-      this.setState({ pixelY: e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop })
+      this.setState({
+        pixelX:
+          e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
+      })
+      this.setState({
+        pixelY:
+          e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
+      })
       this.startPaintingAtMousePosition()
     }
   }
@@ -815,13 +1059,21 @@ export default class Grid extends PureComponent {
   @autobind
   handleMouseMove(e) {
     const { caveView, grid, cursorType } = this.props
-    const pixelX = e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
-    const pixelY = e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
+    const pixelX =
+      e.pageX - this.canvas.offsetLeft - this.canvas.offsetParent.offsetLeft
+    const pixelY =
+      e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
     this.setState({ pixelX, pixelY })
 
     if (cursorType === 'SELECTREGION' && caveView.isMouseDown) {
-      const gridX = Math.min(Math.max(1, caveView.getGridX(pixelX)), grid.width - 2)
-      const gridY = Math.min(Math.max(1, caveView.getGridY(pixelY)), grid.height - 2)
+      const gridX = Math.min(
+        Math.max(1, caveView.getGridX(pixelX)),
+        grid.width - 2
+      )
+      const gridY = Math.min(
+        Math.max(1, caveView.getGridY(pixelY)),
+        grid.height - 2
+      )
       caveView.setBoundPoint(gridX, gridY)
       this.updateCursor(gridX, gridY)
     } else {
@@ -854,12 +1106,30 @@ export default class Grid extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <KeyHandler keyEventName={KEYDOWN} keyValue='Insert' onKeyHandle={this.handleInsertKeyDown} />
-        <KeyHandler keyEventName={KEYUP} keyValue='Insert' onKeyHandle={this.handleInsertKeyUp} />
-        <KeyHandler keyEventName={KEYDOWN} keyValue='Delete' onKeyHandle={this.handleDeleteKeyDown} />
-        <KeyHandler keyEventName={KEYUP} keyValue='Delete' onKeyHandle={this.handleDeleteKeyUp} />
-        <KeyHandler keyEventName={KEYDOWN} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyDown} />
-        <KeyHandler keyEventName={KEYUP} keyValue='Backspace' onKeyHandle={this.handleDeleteKeyUp} />
+        <KeyHandler
+          keyEventName={KEYDOWN}
+          keyValue='Insert'
+          onKeyHandle={this.handleInsertKeyDown} />
+        <KeyHandler
+          keyEventName={KEYUP}
+          keyValue='Insert'
+          onKeyHandle={this.handleInsertKeyUp} />
+        <KeyHandler
+          keyEventName={KEYDOWN}
+          keyValue='Delete'
+          onKeyHandle={this.handleDeleteKeyDown} />
+        <KeyHandler
+          keyEventName={KEYUP}
+          keyValue='Delete'
+          onKeyHandle={this.handleDeleteKeyUp} />
+        <KeyHandler
+          keyEventName={KEYDOWN}
+          keyValue='Backspace'
+          onKeyHandle={this.handleDeleteKeyDown} />
+        <KeyHandler
+          keyEventName={KEYUP}
+          keyValue='Backspace'
+          onKeyHandle={this.handleDeleteKeyUp} />
         <canvas
           className={styles.canvas}
           width={newCanvasWidth}
