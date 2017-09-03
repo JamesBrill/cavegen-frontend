@@ -164,7 +164,7 @@ export default class CaveInformation extends PureComponent {
       playCave,
       levelLoaded
     } = this.props
-    const { publicChecked, backgroundType } = this.state
+    const { publicChecked, backgroundType, terrainType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
     const nameField = isOwnedByUser
       ? <div className={styles.information}>
@@ -201,6 +201,28 @@ export default class CaveInformation extends PureComponent {
               deleteRemoves={false} />
           </div>
         : null
+    const terrainTypeOptions = [
+      { value: '1', label: '1' },
+      { value: '2', label: '2' },
+      { value: '3', label: '3' },
+      { value: '4', label: '4' },
+      { value: '5', label: '5' }
+    ]
+    const terrainTypeField =
+      isOwnedByUser && levelLoaded
+        ? <div className={styles.information}>
+            <h2 className={styles.title}>Terrain type:</h2>
+            <Select
+              className={styles.selector}
+              options={terrainTypeOptions}
+              onChange={this.handleTerrainTypeChange}
+              value={terrainType}
+              clearable={false}
+              searchable={false}
+              backspaceRemoves={false}
+              deleteRemoves={false} />
+          </div>
+        : null
     const likeColour = isLikedByUser ? 'red' : 'white'
     const likeIcon = isOwnedByUser
       ? <Like className={styles.like} color='red' />
@@ -219,6 +241,7 @@ export default class CaveInformation extends PureComponent {
           </h2>
         </div>
         {backgroundTypeField}
+        {terrainTypeField}
         <div className={styles.information}>
           <h2 className={styles.title}>Date created:</h2>
           <h2 className={styles.informationValue}>
