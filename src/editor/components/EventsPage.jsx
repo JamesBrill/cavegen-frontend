@@ -3,16 +3,15 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
 import Button from 'src/components/Button'
-import { getCaveCode } from 'src/editor/utils/cave-code'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
-import { updateCave } from 'src/editor/actions'
+import { updateCaveCodeOnServer } from 'src/editor/actions'
 
 import styles from 'src/editor/components/EventsPage.css'
 
 function mapStateToProps(state) {
-  const { grid, caveName, caveCode, eventsText } = state.editor
-  return { grid, caveName, caveCode, eventsText }
+  const { caveCode, eventsText } = state.editor
+  return { caveCode, eventsText }
 }
 
 @requiresAuthentication
@@ -23,8 +22,6 @@ export default class EventsPage extends PureComponent {
     className: PropTypes.string,
     dispatch: PropTypes.func,
     children: PropTypes.node,
-    grid: PropTypes.object,
-    caveName: PropTypes.string,
     caveCode: PropTypes.string,
     eventsText: PropTypes.string
   }
@@ -39,10 +36,9 @@ export default class EventsPage extends PureComponent {
 
   @autobind
   handleSaveEvents() {
-    const { dispatch, grid, caveName } = this.props
+    const { dispatch } = this.props
     const { eventsText } = this.state
-    const caveCode = getCaveCode(grid, caveName, eventsText)
-    dispatch(updateCave({ text: caveCode }))
+    dispatch(updateCaveCodeOnServer({ eventsText }))
   }
 
   @autobind

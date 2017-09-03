@@ -74,9 +74,13 @@ export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
 
-export function updateCaveCodeOnServer() {
+export function updateCaveCodeOnServer(changes) {
   return function (dispatch, getState) {
-    const { grid, caveName, eventsText } = getState().editor
+    const { grid, caveName, eventsText } = Object.assign(
+      {},
+      getState().editor,
+      changes
+    )
     const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
   }
