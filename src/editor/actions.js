@@ -97,7 +97,8 @@ export function updateCaveCodeOnServer(changes, uuid) {
       eventsText,
       terrainType,
       backgroundType,
-      waterType
+      waterType,
+      caveUuid
     } = Object.assign({}, getState().editor, changes)
     const caveCode = getCaveCode(
       grid,
@@ -108,6 +109,9 @@ export function updateCaveCodeOnServer(changes, uuid) {
       waterType
     )
     dispatch(updateCave({ text: caveCode }, uuid))
+    if (!uuid || uuid === caveUuid) {
+      dispatch(setCaveCode(caveCode))
+    }
   }
 }
 
@@ -269,7 +273,13 @@ export function loadCaveIntoGrid(uuidToLoad) {
     const { myLevels } = getState().levels
     const uuid = uuidToLoad || (caveUuid === null ? myLevels[0].uuid : caveUuid)
     const cave = myLevels.find(x => x.uuid === uuid)
-    const { caveString, eventsText } = splitCaveCode(cave.text)
+    const {
+      caveString,
+      eventsText,
+      backgroundType,
+      terrainType,
+      waterType
+    } = splitCaveCode(cave.text)
     const grid = new Cave({ caveString })
     dispatch(setGrid(grid))
     if (changeController) {
@@ -284,7 +294,11 @@ export function loadCaveIntoGrid(uuidToLoad) {
         name: cave.name,
         likes: cave.likes,
         isPublic: cave.isPublic,
-        eventsText
+        caveCode: caveString,
+        eventsText,
+        backgroundType,
+        terrainType,
+        waterType
       }
     })
   }

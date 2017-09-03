@@ -67,6 +67,7 @@ function caveCode(state = '', { type, payload }) {
 function backgroundType(state = '1', { type, payload }) {
   switch (type) {
     case 'SET_BACKGROUND_TYPE':
+    case 'LOAD_CAVE_INTO_GRID':
       return payload.backgroundType
 
     default:
@@ -77,6 +78,7 @@ function backgroundType(state = '1', { type, payload }) {
 function terrainType(state = '1', { type, payload }) {
   switch (type) {
     case 'SET_TERRAIN_TYPE':
+    case 'LOAD_CAVE_INTO_GRID':
       return payload.terrainType
 
     default:
@@ -87,6 +89,7 @@ function terrainType(state = '1', { type, payload }) {
 function waterType(state = 'clear', { type, payload }) {
   switch (type) {
     case 'SET_WATER_TYPE':
+    case 'LOAD_CAVE_INTO_GRID':
       return payload.waterType
 
     default:
