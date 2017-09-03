@@ -36,6 +36,7 @@ function mapStateToProps(state, ownProps) {
   const isOwnedByUser = userId === level.author
   const isLikedByUser = state.profile.likedCaves.indexOf(levelId) !== -1
   const { caveString, backgroundType, terrainType } = splitCaveCode(level.text)
+  const levelLoaded = level.uuid === state.editor.caveUuid
   return {
     name: level.name,
     uuid: level.uuid,
@@ -47,7 +48,8 @@ function mapStateToProps(state, ownProps) {
     isOwnedByUser,
     isLikedByUser,
     backgroundType,
-    terrainType
+    terrainType,
+    levelLoaded
   }
 }
 
@@ -79,7 +81,8 @@ export default class CaveInformation extends PureComponent {
     playCave: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func,
     backgroundType: PropTypes.string,
-    terrainType: PropTypes.string
+    terrainType: PropTypes.string,
+    levelLoaded: PropTypes.bool
   }
 
   constructor(props) {
@@ -143,7 +146,8 @@ export default class CaveInformation extends PureComponent {
       isOwnedByUser,
       isLikedByUser,
       likeCave,
-      playCave
+      playCave,
+      levelLoaded
     } = this.props
     const { publicChecked, backgroundType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
@@ -167,20 +171,21 @@ export default class CaveInformation extends PureComponent {
       { value: '2', label: '2' },
       { value: '3', label: '3' }
     ]
-    const backgroundTypeField = isOwnedByUser
-      ? <div className={styles.information}>
-          <h2 className={styles.title}>Background type:</h2>
-          <Select
-            className={styles.selector}
-            options={backgroundTypeOptions}
-            onChange={this.handleBackgroundTypeChange}
-            value={backgroundType}
-            clearable={false}
-            searchable={false}
-            backspaceRemoves={false}
-            deleteRemoves={false} />
-        </div>
-      : null
+    const backgroundTypeField =
+      isOwnedByUser && levelLoaded
+        ? <div className={styles.information}>
+            <h2 className={styles.title}>Background type:</h2>
+            <Select
+              className={styles.selector}
+              options={backgroundTypeOptions}
+              onChange={this.handleBackgroundTypeChange}
+              value={backgroundType}
+              clearable={false}
+              searchable={false}
+              backspaceRemoves={false}
+              deleteRemoves={false} />
+          </div>
+        : null
     const likeColour = isLikedByUser ? 'red' : 'white'
     const likeIcon = isOwnedByUser
       ? <Like className={styles.like} color='red' />
