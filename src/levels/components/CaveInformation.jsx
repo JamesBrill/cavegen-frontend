@@ -171,9 +171,14 @@ export default class CaveInformation extends PureComponent {
       ? <div className={styles.information}>
           <h2 className={styles.title}>Background type:</h2>
           <Select
+            className={styles.selector}
             options={backgroundTypeOptions}
             onChange={this.handleBackgroundTypeChange}
-            value={backgroundType} />
+            value={backgroundType}
+            clearable={false}
+            searchable={false}
+            backspaceRemoves={false}
+            deleteRemoves={false} />
         </div>
       : null
     const likeColour = isLikedByUser ? 'red' : 'white'
