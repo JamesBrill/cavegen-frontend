@@ -58,6 +58,17 @@ export default class EventsPage extends PureComponent {
     return (
       <div className={computedClassName}>
         {children}
+        <h2 className={styles.title}>Events</h2>
+        <p className={styles.subtitle}>
+          Add checkpoints and messages to your level.
+        </p>
+        <a
+          href='http://www.interguild.org/blogs/?id=69411'
+          target='_blank'
+          className={styles.learnMore}
+        >
+          Learn more.
+        </a>
         <textarea
           className={styles.eventsText}
           onChange={this.handleEventsChange}
