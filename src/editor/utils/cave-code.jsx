@@ -11,7 +11,12 @@ export function getCaveCode(grid, name, eventsText, terrainType, waterType) {
   return `${caveCode}${eventsText}`
 }
 
-export function splitCaveStringAndEvents(caveCode) {
+export function splitCaveCode(caveCode) {
+  const caveCodeLines = caveCode.split('\n')
+  const name = caveCodeLines[0]
+  const terrainType = caveCodeLines[1].split(' ')[1]
+  const backgroundType = caveCodeLines[2].split(' ')[1]
+  const waterType = caveCodeLines[3]
   let caveString, eventsText
   const eventsStartIndex = caveCode.indexOf('$')
   if (eventsStartIndex !== -1) {
@@ -21,7 +26,14 @@ export function splitCaveStringAndEvents(caveCode) {
     caveString = caveCode.trim()
     eventsText = ''
   }
-  return { caveString, eventsText }
+  return {
+    name,
+    terrainType,
+    backgroundType,
+    waterType,
+    caveString,
+    eventsText
+  }
 }
 
 export function getCaveCodeOfDimensions(width, height) {

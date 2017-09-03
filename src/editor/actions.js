@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import { apiRequest } from 'src/utils/api'
 import { Cave } from 'src/editor/utils/cave'
-import { splitCaveStringAndEvents } from 'src/editor/utils/cave-code'
+import { splitCaveCode } from 'src/editor/utils/cave-code'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import {
   getCaveCodeOfDimensions,
@@ -214,7 +214,7 @@ export function loadCaveIntoGrid(uuid) {
     const { changeController } = getState().editor
     const { myLevels } = getState().levels
     const cave = myLevels.find(x => x.uuid === uuid)
-    const { caveString, eventsText } = splitCaveStringAndEvents(cave.text)
+    const { caveString, eventsText } = splitCaveCode(cave.text)
     const grid = new Cave({ caveString })
     dispatch(setGrid(grid))
     if (changeController) {

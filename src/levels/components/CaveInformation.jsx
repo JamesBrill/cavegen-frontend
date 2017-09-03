@@ -15,7 +15,7 @@ import Build from 'src/levels/components/icons/Build'
 import ReactTooltip from 'react-tooltip'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
-import { splitCaveStringAndEvents } from 'src/editor/utils/cave-code'
+import { splitCaveCode } from 'src/editor/utils/cave-code'
 
 import styles from 'src/levels/components/CaveInformation.css'
 
@@ -29,7 +29,7 @@ function mapStateToProps(state, ownProps) {
   const userId = state.profile.userId
   const isOwnedByUser = userId === level.author
   const isLikedByUser = state.profile.likedCaves.indexOf(levelId) !== -1
-  const { caveString } = splitCaveStringAndEvents(level.text)
+  const { caveString } = splitCaveCode(level.text)
   return {
     name: level.name,
     uuid: level.uuid,
