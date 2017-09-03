@@ -25,7 +25,9 @@ import { likeCave, playCave } from 'src/levels/actions'
 import {
   updateCave,
   loadCaveIntoGrid,
-  updateCaveCodeOnServer
+  updateCaveCodeOnServer,
+  setBackgroundType,
+  setTerrainType
 } from 'src/editor/actions'
 
 function mapStateToProps(state, ownProps) {
@@ -58,7 +60,9 @@ function mapStateToProps(state, ownProps) {
   updateCave,
   playCave,
   loadCaveIntoGrid,
-  updateCaveCodeOnServer
+  updateCaveCodeOnServer,
+  setBackgroundType,
+  setTerrainType
 })
 @requiresAuthentication
 @withNavbar
@@ -82,7 +86,9 @@ export default class CaveInformation extends PureComponent {
     loadCaveIntoGrid: PropTypes.func,
     backgroundType: PropTypes.string,
     terrainType: PropTypes.string,
-    levelLoaded: PropTypes.bool
+    levelLoaded: PropTypes.bool,
+    setBackgroundType: PropTypes.func,
+    setTerrainType: PropTypes.func
   }
 
   constructor(props) {
@@ -116,7 +122,16 @@ export default class CaveInformation extends PureComponent {
   handleBackgroundTypeChange(val) {
     const { dispatch, uuid } = this.props
     this.setState({ backgroundType: val })
+    dispatch(setBackgroundType(val))
     dispatch(updateCaveCodeOnServer({ backgroundType: val }, uuid))
+  }
+
+  @autobind
+  handleTerrainTypeChange(val) {
+    const { dispatch, uuid } = this.props
+    this.setState({ terrainType: val })
+    dispatch(setTerrainType(val))
+    dispatch(updateCaveCodeOnServer({ terrainType: val }, uuid))
   }
 
   @autobind

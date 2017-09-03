@@ -70,6 +70,17 @@ export const setCaveHeight = createAction('SET_CAVE_HEIGHT', caveHeight => ({
   caveHeight
 }))
 
+export const setBackgroundType = createAction(
+  'SET_BACKGROUND_TYPE',
+  backgroundType => ({
+    backgroundType
+  })
+)
+
+export const setTerrainType = createAction('SET_TERRAIN_TYPE', terrainType => ({
+  terrainType
+}))
+
 export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
