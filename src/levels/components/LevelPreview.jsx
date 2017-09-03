@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import { Cave } from 'src/editor/utils/cave'
+import { splitCaveStringAndEvents } from 'src/editor/utils/cave-code'
 
 import styles from 'src/levels/components/LevelPreview.css'
 
@@ -14,7 +15,8 @@ function mapStateToProps(state, ownProps) {
   const levelId = ownProps.levelId
   const levels = state.levels.myLevels.concat(state.levels.publicLevels)
   const level = levels.find(x => x.id === levelId)
-  const grid = new Cave({ caveString: level.text })
+  const { caveString } = splitCaveStringAndEvents(level.text)
+  const grid = new Cave({ caveString })
   const imageMap = state.editor.imageMap
   return { grid, imageMap }
 }

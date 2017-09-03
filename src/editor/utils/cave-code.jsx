@@ -22,6 +22,19 @@ export function getCaveCodeWithEvents(
   return `${caveCode}${eventsText}`
 }
 
+export function splitCaveStringAndEvents(caveCode) {
+  let caveString, eventsText
+  const eventsStartIndex = caveCode.indexOf('$')
+  if (eventsStartIndex !== -1) {
+    caveString = caveCode.slice(0, eventsStartIndex).trim()
+    eventsText = caveCode.slice(eventsStartIndex).trim()
+  } else {
+    caveString = caveCode.trim()
+    eventsText = ''
+  }
+  return { caveString, eventsText }
+}
+
 export function getCaveCodeOfDimensions(width, height) {
   let caveCode = 'Untitled\nterrain 1\nbackground 1\nwater clear\n'
 
