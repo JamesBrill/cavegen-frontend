@@ -199,7 +199,16 @@ export function loadCaveIntoGrid(uuid) {
     const { changeController } = getState().editor
     const { myLevels } = getState().levels
     const cave = myLevels.find(x => x.uuid === uuid)
-    const grid = new Cave({ caveString: cave.text })
+    let caveString, eventsText
+    const eventsStartIndex = cave.text.indexOf('$')
+    if (eventsStartIndex !== -1) {
+      caveString = cave.text.slice(0, eventsStartIndex)
+      eventsText = cave.text.slice(eventsStartIndex)
+    } else {
+      caveString = cave.text
+      eventsText = ''
+    }
+    const grid = new Cave({ caveString: caveString.trim() })
     dispatch(setGrid(grid))
     if (changeController) {
       changeController.clear()
@@ -212,7 +221,8 @@ export function loadCaveIntoGrid(uuid) {
         uuid: cave.uuid,
         name: cave.name,
         likes: cave.likes,
-        isPublic: cave.isPublic
+        isPublic: cave.isPublic,
+        eventsText
       }
     })
   }

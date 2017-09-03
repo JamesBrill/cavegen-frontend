@@ -10,6 +10,17 @@ export function getCaveCode(grid, name, terrainType, waterType) {
   return caveCode
 }
 
+export function getCaveCodeWithEvents(
+  grid,
+  name,
+  eventsText,
+  terrainType,
+  waterType
+) {
+  const caveCode = getCaveCode(grid, name, terrainType, waterType)
+  return `${caveCode}${eventsText}`
+}
+
 export function getCaveCodeOfDimensions(width, height) {
   let caveCode = 'Untitled\nterrain 1\nbackground 1\nwater clear\n'
 

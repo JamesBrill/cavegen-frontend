@@ -5,6 +5,7 @@ export default combineReducers({
   caveWidth,
   caveHeight,
   caveCode,
+  eventsText,
   caveView,
   changeController,
   currentBrush,
@@ -54,6 +55,16 @@ function caveCode(state = '', { type, payload }) {
   switch (type) {
     case 'SET_CAVE_CODE':
       return payload.caveCode
+
+    default:
+      return state
+  }
+}
+
+function eventsText(state = '', { type, payload }) {
+  switch (type) {
+    case 'LOAD_CAVE_INTO_GRID':
+      return payload.eventsText
 
     default:
       return state
