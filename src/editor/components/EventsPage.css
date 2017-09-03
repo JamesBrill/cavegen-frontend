@@ -27,3 +27,21 @@
 .learnMore {
   color: var(--cornflower-blue);
 }
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.saveButton {
+  position: absolute;
+  right: 1em;
+  width: 8em;
+  height: 2.57em;
+  color: white;
+  background-color: var(
+    --cornflower-blue
+  ) !important; /* stylelint-disable-line declaration-no-important */
+}

@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
+import Button from 'src/components/Button'
 import { getCaveCodeWithEvents } from 'src/editor/utils/cave-code'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
@@ -75,7 +76,11 @@ export default class EventsPage extends PureComponent {
         >
           {eventsText}
         </textarea>
-        <button onClick={this.handleSaveEvents}>Save</button>
+        <div className={styles.buttons}>
+          <Button className={styles.saveButton} onClick={this.handleSaveEvents}>
+            Save
+          </Button>
+        </div>
       </div>
     )
   }
