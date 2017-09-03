@@ -2,10 +2,13 @@ import { createAction } from 'redux-actions'
 import { apiRequest } from 'src/utils/api'
 import { Cave } from 'src/editor/utils/cave'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
-import { getCaveCode, getCaveCodeOfDimensions } from 'src/editor/utils/cave-code'
+import {
+  getCaveCode,
+  getCaveCodeOfDimensions
+} from 'src/editor/utils/cave-code'
 
 export function newCave(name, width, height) {
-  return async function (dispatch, getState) {
+  return async function(dispatch, getState) {
     try {
       const text = getCaveCodeOfDimensions(width || 40, height || 40)
       const { json } = await apiRequest(getState, '/caves/', {
@@ -28,7 +31,7 @@ export function newCave(name, width, height) {
 }
 
 export function updateCave(change, uuid) {
-  return async function (dispatch, getState) {
+  return async function(dispatch, getState) {
     try {
       const caveUuid = uuid || getState().editor.caveUuid
       const caves = getState().levels.myLevels
@@ -56,40 +59,32 @@ export function updateCave(change, uuid) {
   }
 }
 
-export const setGrid = createAction(
-  'SET_GRID',
-  grid => ({ grid })
-)
+export const setGrid = createAction('SET_GRID', grid => ({ grid }))
 
-export const setCaveWidth = createAction(
-  'SET_CAVE_WIDTH',
-  caveWidth => ({ caveWidth })
-)
+export const setCaveWidth = createAction('SET_CAVE_WIDTH', caveWidth => ({
+  caveWidth
+}))
 
-export const setCaveHeight = createAction(
-  'SET_CAVE_HEIGHT',
-  caveHeight => ({ caveHeight })
-)
+export const setCaveHeight = createAction('SET_CAVE_HEIGHT', caveHeight => ({
+  caveHeight
+}))
 
-export const setCaveCode = createAction(
-  'SET_CAVE_CODE',
-  caveCode => ({ caveCode })
-)
+export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
+  caveCode
+}))
 
-export const setCaveView = createAction(
-  'SET_CAVE_VIEW',
-  caveView => ({ caveView })
-)
+export const setCaveView = createAction('SET_CAVE_VIEW', caveView => ({
+  caveView
+}))
 
 export const setChangeController = createAction(
   'SET_CHANGE_CONTROLLER',
   changeController => ({ changeController })
 )
 
-export const setBrushSize = createAction(
-  'SET_BRUSH_SIZE',
-  brushSize => ({ brushSize })
-)
+export const setBrushSize = createAction('SET_BRUSH_SIZE', brushSize => ({
+  brushSize
+}))
 
 export const setLastUsedBrushSize = createAction(
   'SET_LAST_USED_BRUSH_SIZE',
@@ -106,14 +101,18 @@ export const setPreviousCursorPosition = createAction(
   previousCursorPosition => ({ previousCursorPosition })
 )
 
-export const setCursorType = createAction(
-  'SET_CURSOR_TYPE',
-  cursorType => ({ cursorType })
-)
+export const setCursorType = createAction('SET_CURSOR_TYPE', cursorType => ({
+  cursorType
+}))
 
 export function setCurrentBrush(brush, pixelX, pixelY) {
   return function (dispatch, getState) {
-    const { cursorType, caveView, previousCursor, brushSize } = getState().editor
+    const {
+      cursorType,
+      caveView,
+      previousCursor,
+      brushSize
+    } = getState().editor
     const gridX = caveView.getGridX(pixelX || 0)
     const gridY = caveView.getGridY(pixelY || 0)
     let newCursorType
@@ -131,22 +130,37 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
       newCursorType = 'REMOVEROW'
     } else if (brush.symbol === 'a' && cursorType !== 'SELECTREGION') {
       dispatch(setCursorType('SELECTREGION'))
-      caveView.setAnchorPoint(previousCursor.position.x, previousCursor.position.y)
+      caveView.setAnchorPoint(
+        previousCursor.position.x,
+        previousCursor.position.y
+      )
       newCursorType = 'SELECTREGION'
-    } else if (['6', '7', '8', '9', 'a'].indexOf(brush.symbol) === -1 && cursorType !== 'SQUARE') {
+    } else if (
+      ['6', '7', '8', '9', 'a'].indexOf(brush.symbol) === -1 &&
+      cursorType !== 'SQUARE'
+    ) {
       dispatch(setCursorType('SQUARE'))
       newCursorType = 'SQUARE'
     }
     if (newCursorType) {
-      caveView.erasePreviousCursor(previousCursor.position.x,
-                                   previousCursor.position.y,
-                                   previousCursor.size,
-                                   cursorType)
+      caveView.erasePreviousCursor(
+        previousCursor.position.x,
+        previousCursor.position.y,
+        previousCursor.size,
+        cursorType
+      )
       if (newCursorType !== 'SELECTREGION') {
         caveView.resetRegionSelector()
       }
       if (pixelX && pixelY) {
-        caveView.drawCursor(gridX, gridY, pixelX, pixelY, brushSize, newCursorType)
+        caveView.drawCursor(
+          gridX,
+          gridY,
+          pixelX,
+          pixelY,
+          brushSize,
+          newCursorType
+        )
       }
     }
     return dispatch({
@@ -229,16 +243,24 @@ export function loadCaveIntoGrid(uuid) {
 }
 
 export function loadImages() {
-  return async function (dispatch) {
+  return async function(dispatch) {
     try {
-      const imageMap = await Promise.all(PALETTE_BRUSHES_LIST.map(brush => new Promise(resolve => {
-        const fileName = brush.fileName
-        const image = new Image()
-        image.onload = function () {
-          resolve({ fileName, image: this })
-        }
-        image.src = fileName === 'space' ? '/static/misc/black.png' : brush.imagePath
-      })))
+      const imageMap = await Promise.all(
+        PALETTE_BRUSHES_LIST.map(
+          brush =>
+            new Promise(resolve => {
+              const fileName = brush.fileName
+              const image = new Image()
+              image.onload = function () {
+                resolve({ fileName, image: this })
+              }
+              image.src =
+                fileName === 'space'
+                  ? '/static/misc/black.png'
+                  : brush.imagePath
+            })
+        )
+      )
 
       return dispatch({
         type: 'LOAD_IMAGES',
@@ -257,8 +279,10 @@ export function fillRegion(brush) {
   return function (dispatch, getState) {
     const { cursorType, caveView, changeController, grid } = getState().editor
     const { caveName } = getState().editor
-    if (cursorType === 'SELECTREGION' &&
-        ['6', '7', '8', '9', 'a', 'f', 'r'].indexOf(brush.symbol) === -1) {
+    if (
+      cursorType === 'SELECTREGION' &&
+      ['6', '7', '8', '9', 'a', 'f', 'r'].indexOf(brush.symbol) === -1
+    ) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
@@ -288,9 +312,13 @@ export function rebuildLevel(width, height) {
     dispatch(setCaveWidth(width || caveWidth))
     dispatch(setCaveHeight(height || caveHeight))
     dispatch(startRebuild())
-    dispatch(setGrid(new Cave({
-      width: width || caveWidth,
-      height: height || caveHeight
-    })))
+    dispatch(
+      setGrid(
+        new Cave({
+          width: width || caveWidth,
+          height: height || caveHeight
+        })
+      )
+    )
   }
 }

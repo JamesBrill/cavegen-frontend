@@ -91,7 +91,10 @@ function changeController(state = null, { type, payload }) {
   }
 }
 
-function currentBrush(state = { fileName: 'terrain', symbol: 'x' }, { type, payload }) {
+function currentBrush(
+  state = { fileName: 'terrain', symbol: 'x' },
+  { type, payload }
+) {
   switch (type) {
     case 'SET_CURRENT_BRUSH':
       return payload.currentBrush
@@ -121,7 +124,10 @@ function lastUsedBrushSize(state = null, { type, payload }) {
   }
 }
 
-function previousCursor(state = { size: 1, position: { x: 0, y: 0 } }, { type, payload }) {
+function previousCursor(
+  state = { size: 1, position: { x: 0, y: 0 } },
+  { type, payload }
+) {
   switch (type) {
     case 'SET_PREVIOUS_CURSOR_SIZE':
       return {
