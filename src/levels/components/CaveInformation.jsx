@@ -192,13 +192,13 @@ export default class CaveInformation extends PureComponent {
     return (
       <div className={computedClassName}>
         {nameField}
-        {backgroundTypeField}
         <div className={styles.information}>
           <h2 className={styles.title}>Author:</h2>
           <h2 className={styles.informationValue}>
             {author}
           </h2>
         </div>
+        {backgroundTypeField}
         <div className={styles.information}>
           <h2 className={styles.title}>Date created:</h2>
           <h2 className={styles.informationValue}>
