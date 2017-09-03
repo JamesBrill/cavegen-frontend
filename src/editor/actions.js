@@ -81,6 +81,10 @@ export const setTerrainType = createAction('SET_TERRAIN_TYPE', terrainType => ({
   terrainType
 }))
 
+export const setWaterType = createAction('SET_WATER_TYPE', waterType => ({
+  waterType
+}))
+
 export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
@@ -92,14 +96,16 @@ export function updateCaveCodeOnServer(changes, uuid) {
       caveName,
       eventsText,
       terrainType,
-      backgroundType
+      backgroundType,
+      waterType
     } = Object.assign({}, getState().editor, changes)
     const caveCode = getCaveCode(
       grid,
       caveName,
       eventsText,
       terrainType,
-      backgroundType
+      backgroundType,
+      waterType
     )
     dispatch(updateCave({ text: caveCode }, uuid))
   }
@@ -111,14 +117,16 @@ export function updateCaveCodeInRedux(grid) {
       caveName,
       eventsText,
       terrainType,
-      backgroundType
+      backgroundType,
+      waterType
     } = getState().editor
     const caveCode = getCaveCode(
       grid,
       caveName,
       eventsText,
       terrainType,
-      backgroundType
+      backgroundType,
+      waterType
     )
     dispatch(setCaveCode(caveCode))
   }

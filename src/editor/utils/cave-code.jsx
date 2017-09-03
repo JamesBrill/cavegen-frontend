@@ -23,7 +23,7 @@ export function splitCaveCode(caveCode) {
   const name = caveCodeLines[0]
   const terrainType = caveCodeLines[1].split(' ')[1]
   const backgroundType = caveCodeLines[2].split(' ')[1]
-  const waterType = caveCodeLines[3]
+  const waterType = caveCodeLines[3].split(' ')[1]
   let caveString, eventsText
   const eventsStartIndex = caveCode.indexOf('$')
   if (eventsStartIndex !== -1) {

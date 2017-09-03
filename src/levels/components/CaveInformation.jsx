@@ -27,7 +27,8 @@ import {
   loadCaveIntoGrid,
   updateCaveCodeOnServer,
   setBackgroundType,
-  setTerrainType
+  setTerrainType,
+  setWaterType
 } from 'src/editor/actions'
 
 function mapStateToProps(state, ownProps) {
@@ -37,7 +38,9 @@ function mapStateToProps(state, ownProps) {
   const userId = state.profile.userId
   const isOwnedByUser = userId === level.author
   const isLikedByUser = state.profile.likedCaves.indexOf(levelId) !== -1
-  const { caveString, backgroundType, terrainType } = splitCaveCode(level.text)
+  const { caveString, backgroundType, terrainType, waterType } = splitCaveCode(
+    level.text
+  )
   const levelLoaded = level.uuid === state.editor.caveUuid
   return {
     name: level.name,
@@ -51,6 +54,7 @@ function mapStateToProps(state, ownProps) {
     isLikedByUser,
     backgroundType,
     terrainType,
+    waterType,
     levelLoaded
   }
 }
@@ -62,7 +66,8 @@ function mapStateToProps(state, ownProps) {
   loadCaveIntoGrid,
   updateCaveCodeOnServer,
   setBackgroundType,
-  setTerrainType
+  setTerrainType,
+  setWaterType
 })
 @requiresAuthentication
 @withNavbar
@@ -88,7 +93,8 @@ export default class CaveInformation extends PureComponent {
     terrainType: PropTypes.string,
     levelLoaded: PropTypes.bool,
     setBackgroundType: PropTypes.func,
-    setTerrainType: PropTypes.func
+    setTerrainType: PropTypes.func,
+    setWaterType: PropTypes.func
   }
 
   constructor(props) {
@@ -97,7 +103,8 @@ export default class CaveInformation extends PureComponent {
     this.state = {
       publicChecked: false,
       backgroundType: props.backgroundType,
-      terrainType: props.terrainType
+      terrainType: props.terrainType,
+      waterType: props.waterType
     }
   }
 
@@ -135,6 +142,14 @@ export default class CaveInformation extends PureComponent {
   }
 
   @autobind
+  handleWaterTypeChange(val) {
+    const { dispatch, uuid } = this.props
+    this.setState({ waterType: val })
+    dispatch(setWaterType(val))
+    dispatch(updateCaveCodeOnServer({ waterType: val }, uuid))
+  }
+
+  @autobind
   handlePublicChange(e) {
     const { updateCave, uuid } = this.props
     const isPublic = e.target.checked
@@ -164,7 +179,7 @@ export default class CaveInformation extends PureComponent {
       playCave,
       levelLoaded
     } = this.props
-    const { publicChecked, backgroundType, terrainType } = this.state
+    const { publicChecked, backgroundType, terrainType, waterType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
     const nameField = isOwnedByUser
       ? <div className={styles.information}>
@@ -223,6 +238,26 @@ export default class CaveInformation extends PureComponent {
               deleteRemoves={false} />
           </div>
         : null
+    const waterTypeOptions = [
+      { value: 'clear', label: 'clear' },
+      { value: 'dark', label: 'dark' },
+      { value: 'murky', label: 'murky' }
+    ]
+    const waterTypeField =
+      isOwnedByUser && levelLoaded
+        ? <div className={styles.information}>
+            <h2 className={styles.title}>Water type:</h2>
+            <Select
+              className={styles.selector}
+              options={waterTypeOptions}
+              onChange={this.handleWaterTypeChange}
+              value={waterType}
+              clearable={false}
+              searchable={false}
+              backspaceRemoves={false}
+              deleteRemoves={false} />
+          </div>
+        : null
     const likeColour = isLikedByUser ? 'red' : 'white'
     const likeIcon = isOwnedByUser
       ? <Like className={styles.like} color='red' />
@@ -242,6 +277,7 @@ export default class CaveInformation extends PureComponent {
         </div>
         {backgroundTypeField}
         {terrainTypeField}
+        {waterTypeField}
         <div className={styles.information}>
           <h2 className={styles.title}>Date created:</h2>
           <h2 className={styles.informationValue}>
