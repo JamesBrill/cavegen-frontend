@@ -1,6 +1,13 @@
-export function getCaveCode(grid, name, eventsText, terrainType, waterType) {
+export function getCaveCode(
+  grid,
+  name,
+  eventsText,
+  terrainType,
+  waterType,
+  backgroundType
+) {
   let caveCode = `${validatedCaveName(name)}\nterrain ${terrainType ||
-    '1'}\nbackground 1\nwater ${waterType || 'clear'}\n`
+    '1'}\nbackground ${backgroundType || '1'}\nwater ${waterType || 'clear'}\n`
 
   for (let i = 0; i < grid.height; i++) {
     for (let j = 0; j < grid.width; j++) {
