@@ -33,7 +33,8 @@ import {
   fillRegion,
   pasteRegion,
   loadCaveIntoGrid,
-  updateCaveCodeOnServer
+  updateCaveCodeOnServer,
+  updateCaveCodeInRedux
 } from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
@@ -206,7 +207,7 @@ export default class Grid extends PureComponent {
 
   @autobind
   rebuildCave(width, height, grid) {
-    const { dispatch, caveView, caveName, eventsText } = this.props
+    const { dispatch, caveView } = this.props
     const caveWidth = width || this.props.caveWidth
     const caveHeight = height || this.props.caveHeight
     if (caveView) {
@@ -217,8 +218,7 @@ export default class Grid extends PureComponent {
     dispatch(setCaveHeight(caveHeight))
     const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
-    const caveCode = getCaveCode(newGrid, caveName, eventsText)
-    dispatch(setCaveCode(caveCode))
+    dispatch(updateCaveCodeInRedux(newGrid))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
     return newCaveView
@@ -298,19 +298,11 @@ export default class Grid extends PureComponent {
 
   @autobind
   finishPainting() {
-    const {
-      dispatch,
-      caveView,
-      grid,
-      changeController,
-      caveName,
-      eventsText
-    } = this.props
-    const caveCode = getCaveCode(grid, caveName, eventsText)
-    dispatch(setCaveCode(caveCode))
+    const { dispatch, caveView, grid, changeController } = this.props
+    dispatch(updateCaveCodeInRedux(grid))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
     caveView.isMouseDown = false
     caveView.paintLineMode = false

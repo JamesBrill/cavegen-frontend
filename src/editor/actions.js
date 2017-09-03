@@ -31,14 +31,6 @@ export function newCave(name, width, height) {
   }
 }
 
-export function updateCaveCodeOnServer() {
-  return function (dispatch, getState) {
-    const { grid, caveName, eventsText } = getState().editor
-    const caveCode = getCaveCode(grid, caveName, eventsText)
-    dispatch(updateCave({ text: caveCode }))
-  }
-}
-
 export function updateCave(change, uuid) {
   return async function(dispatch, getState) {
     try {
@@ -81,6 +73,22 @@ export const setCaveHeight = createAction('SET_CAVE_HEIGHT', caveHeight => ({
 export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
+
+export function updateCaveCodeOnServer() {
+  return function (dispatch, getState) {
+    const { grid, caveName, eventsText } = getState().editor
+    const caveCode = getCaveCode(grid, caveName, eventsText)
+    dispatch(updateCave({ text: caveCode }))
+  }
+}
+
+export function updateCaveCodeInRedux(grid) {
+  return function (dispatch, getState) {
+    const { caveName, eventsText } = getState().editor
+    const caveCode = getCaveCode(grid, caveName, eventsText)
+    dispatch(setCaveCode(caveCode))
+  }
+}
 
 export const setCaveView = createAction('SET_CAVE_VIEW', caveView => ({
   caveView
