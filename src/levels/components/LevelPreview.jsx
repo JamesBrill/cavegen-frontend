@@ -27,7 +27,7 @@ export default class LevelPreview extends PureComponent {
     className: PropTypes.string,
     grid: PropTypes.object,
     imageMap: PropTypes.arrayOf(PropTypes.object)
-  };
+  }
 
   componentDidMount() {
     this.renderGrid()
@@ -56,16 +56,26 @@ export default class LevelPreview extends PureComponent {
     const context = this.canvas.getContext('2d')
     const tileWidth = WIDTH / grid.width
     const tileHeight = HEIGHT / grid.height
-    const tileSize = Math.floor((tileWidth * grid.height > HEIGHT) ? tileHeight : tileWidth)
-    const xOffset = Math.floor((WIDTH - (tileSize * grid.width)) / 2)
-    const yOffset = Math.floor((HEIGHT - (tileSize * grid.height)) / 2)
+    const tileSize = Math.floor(
+      tileWidth * grid.height > HEIGHT ? tileHeight : tileWidth
+    )
+    const xOffset = Math.floor((WIDTH - tileSize * grid.width) / 2)
+    const yOffset = Math.floor((HEIGHT - tileSize * grid.height) / 2)
     grid.grid.forEach((column, columnIndex) => {
       column.forEach((cell, rowIndex) => {
-        const fileName = PALETTE_BRUSHES_LIST.find(x => x.symbol === cell.symbol).fileName
+        const fileName = PALETTE_BRUSHES_LIST.find(
+          x => x.symbol === cell.symbol
+        ).fileName
         const image = imageMap.filter(x => x.fileName === fileName)[0].image
         const left = Math.floor(columnIndex * tileSize)
         const top = Math.floor(rowIndex * tileSize)
-        context.drawImage(image, left + xOffset, top + yOffset, tileSize, tileSize)
+        context.drawImage(
+          image,
+          left + xOffset,
+          top + yOffset,
+          tileSize,
+          tileSize
+        )
       })
     })
   }
