@@ -13,7 +13,7 @@ export default class LevelPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node
-  };
+  }
 
   render() {
     const { className, children, params } = this.props
@@ -23,8 +23,13 @@ export default class LevelPage extends PureComponent {
       <div className={computedClassName}>
         {children}
         <div className={styles.contents}>
-          <LevelPreview className={styles.levelPreview} levelId={parseInt(params.id, 10)} />
-          <CaveInformation className={styles.caveInformation} levelId={parseInt(params.id, 10)} />
+          <LevelPreview
+            className={styles.levelPreview}
+            levelId={parseInt(params.id, 10)} />
+          <CaveInformation
+            className={styles.caveInformation}
+            levelId={parseInt(params.id, 10)}
+            editableAttributes={false} />
         </div>
       </div>
     )

@@ -41,7 +41,6 @@ function mapStateToProps(state, ownProps) {
   const { caveString, backgroundType, terrainType, waterType } = splitCaveCode(
     level.text
   )
-  const levelLoaded = level.uuid === state.editor.caveUuid
   return {
     name: level.name,
     uuid: level.uuid,
@@ -54,8 +53,7 @@ function mapStateToProps(state, ownProps) {
     isLikedByUser,
     backgroundType,
     terrainType,
-    waterType,
-    levelLoaded
+    waterType
   }
 }
 
@@ -91,10 +89,14 @@ export default class CaveInformation extends PureComponent {
     loadCaveIntoGrid: PropTypes.func,
     backgroundType: PropTypes.string,
     terrainType: PropTypes.string,
-    levelLoaded: PropTypes.bool,
+    editableAttributes: PropTypes.bool,
     setBackgroundType: PropTypes.func,
     setTerrainType: PropTypes.func,
     setWaterType: PropTypes.func
+  }
+
+  static defaultProps = {
+    editableAttributes: true
   }
 
   constructor(props) {
@@ -177,7 +179,7 @@ export default class CaveInformation extends PureComponent {
       isLikedByUser,
       likeCave,
       playCave,
-      levelLoaded
+      editableAttributes
     } = this.props
     const { publicChecked, backgroundType, terrainType, waterType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
@@ -202,7 +204,7 @@ export default class CaveInformation extends PureComponent {
       { value: '3', label: '3' }
     ]
     const backgroundTypeField =
-      isOwnedByUser && levelLoaded
+      isOwnedByUser && editableAttributes
         ? <div className={styles.information}>
             <h2 className={styles.title}>Background type:</h2>
             <Select
@@ -224,7 +226,7 @@ export default class CaveInformation extends PureComponent {
       { value: '5', label: '5' }
     ]
     const terrainTypeField =
-      isOwnedByUser && levelLoaded
+      isOwnedByUser && editableAttributes
         ? <div className={styles.information}>
             <h2 className={styles.title}>Terrain type:</h2>
             <Select
@@ -244,7 +246,7 @@ export default class CaveInformation extends PureComponent {
       { value: 'murky', label: 'murky' }
     ]
     const waterTypeField =
-      isOwnedByUser && levelLoaded
+      isOwnedByUser && editableAttributes
         ? <div className={styles.information}>
             <h2 className={styles.title}>Water type:</h2>
             <Select
