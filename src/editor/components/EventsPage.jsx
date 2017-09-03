@@ -10,8 +10,8 @@ import { updateCaveCodeOnServer } from 'src/editor/actions'
 import styles from 'src/editor/components/EventsPage.css'
 
 function mapStateToProps(state) {
-  const { caveCode, eventsText } = state.editor
-  return { caveCode, eventsText }
+  const { eventsText } = state.editor
+  return { eventsText }
 }
 
 @requiresAuthentication
@@ -22,7 +22,6 @@ export default class EventsPage extends PureComponent {
     className: PropTypes.string,
     dispatch: PropTypes.func,
     children: PropTypes.node,
-    caveCode: PropTypes.string,
     eventsText: PropTypes.string
   }
 
