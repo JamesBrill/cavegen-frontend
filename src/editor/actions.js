@@ -70,26 +70,56 @@ export const setCaveHeight = createAction('SET_CAVE_HEIGHT', caveHeight => ({
   caveHeight
 }))
 
+export const setBackgroundType = createAction(
+  'SET_BACKGROUND_TYPE',
+  backgroundType => ({
+    backgroundType
+  })
+)
+
+export const setTerrainType = createAction('SET_TERRAIN_TYPE', terrainType => ({
+  terrainType
+}))
+
 export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
 
 export function updateCaveCodeOnServer(changes) {
   return function (dispatch, getState) {
-    const { grid, caveName, eventsText } = Object.assign(
-      {},
-      getState().editor,
-      changes
+    const {
+      grid,
+      caveName,
+      eventsText,
+      backgroundType,
+      terrainType
+    } = Object.assign({}, getState().editor, changes)
+    const caveCode = getCaveCode(
+      grid,
+      caveName,
+      eventsText,
+      backgroundType,
+      terrainType
     )
-    const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
   }
 }
 
 export function updateCaveCodeInRedux(grid) {
   return function (dispatch, getState) {
-    const { caveName, eventsText } = getState().editor
-    const caveCode = getCaveCode(grid, caveName, eventsText)
+    const {
+      caveName,
+      eventsText,
+      backgroundType,
+      terrainType
+    } = getState().editor
+    const caveCode = getCaveCode(
+      grid,
+      caveName,
+      eventsText,
+      backgroundType,
+      terrainType
+    )
     dispatch(setCaveCode(caveCode))
   }
 }

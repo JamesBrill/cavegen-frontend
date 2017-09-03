@@ -5,6 +5,8 @@ export default combineReducers({
   caveWidth,
   caveHeight,
   caveCode,
+  backgroundType,
+  terrainType,
   eventsText,
   caveView,
   changeController,
@@ -55,6 +57,26 @@ function caveCode(state = '', { type, payload }) {
   switch (type) {
     case 'SET_CAVE_CODE':
       return payload.caveCode
+
+    default:
+      return state
+  }
+}
+
+function backgroundType(state = 1, { type, payload }) {
+  switch (type) {
+    case 'SET_BACKGROUND_TYPE':
+      return payload.backgroundType
+
+    default:
+      return state
+  }
+}
+
+function terrainType(state = 1, { type, payload }) {
+  switch (type) {
+    case 'SET_TERRAIN_TYPE':
+      return payload.terrainType
 
     default:
       return state
