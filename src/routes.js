@@ -6,7 +6,7 @@ import PublicLevelsPage from 'src/levels/components/PublicLevelsPage'
 import LevelPage from 'src/levels/components/LevelPage'
 import NewLevelPage from 'src/editor/components/NewLevelPage'
 import EditorPage from 'src/editor/components/EditorPage'
-import CheckpointsPage from 'src/editor/components/CheckpointsPage'
+import EventsPage from 'src/editor/components/EventsPage'
 import PropertiesPage from 'src/editor/components/PropertiesPage'
 import LearnPage from 'src/learn/components/LearnPage'
 import ProfilePage from 'src/profile/components/ProfilePage'
@@ -20,7 +20,7 @@ export default (
     <Route path='level/:id' component={LevelPage} />
     <Route path='new-level' component={NewLevelPage} />
     <Route path='build' component={EditorPage} />
-    <Route path='checkpoints' component={CheckpointsPage} />
+    <Route path='events' component={EventsPage} />
     <Route path='properties' component={PropertiesPage} />
     <Route path='learn' component={LearnPage} />
     <Route path='profile' component={ProfilePage} />

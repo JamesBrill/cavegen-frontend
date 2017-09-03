@@ -21,25 +21,33 @@ export default class Navbar extends PureComponent {
     className: PropTypes.string,
     route: PropTypes.string,
     playCave: PropTypes.func
-  };
+  }
 
   render() {
     const { className, route, playCave } = this.props
     const computedClassName = classNames(styles.Navbar, className)
-    const levelsTabStyles = ['/my-levels', '/public-levels'].indexOf(route) === -1 ?
-      classNames(styles.tab, styles.levelsTab) :
-      classNames(styles.selectedTab, styles.levelsTab)
-    const myLevelsTabStyles = route === '/my-levels' ? styles.selectedTab : styles.tab
-    const publicLevelsTabStyles = route === '/public-levels' ? styles.selectedTab : styles.tab
-    const editorTabStyles = ['/new-level', '/build', '/checkpoints', '/properties'].indexOf(route) === -1 ?
-      classNames(styles.tab, styles.editorTab) :
-      classNames(styles.selectedTab, styles.editorTab)
-    const newLevelTabStyles = route === '/new-level' ? styles.selectedTab : styles.tab
+    const levelsTabStyles =
+      ['/my-levels', '/public-levels'].indexOf(route) === -1
+        ? classNames(styles.tab, styles.levelsTab)
+        : classNames(styles.selectedTab, styles.levelsTab)
+    const myLevelsTabStyles =
+      route === '/my-levels' ? styles.selectedTab : styles.tab
+    const publicLevelsTabStyles =
+      route === '/public-levels' ? styles.selectedTab : styles.tab
+    const editorTabStyles =
+      ['/new-level', '/build', '/events', '/properties'].indexOf(route) === -1
+        ? classNames(styles.tab, styles.editorTab)
+        : classNames(styles.selectedTab, styles.editorTab)
+    const newLevelTabStyles =
+      route === '/new-level' ? styles.selectedTab : styles.tab
     const buildTabStyles = route === '/build' ? styles.selectedTab : styles.tab
-    const checkpointsTabStyles = route === '/checkpoints' ? styles.selectedTab : styles.tab
-    const propertiesTabStyles = route === '/properties' ? styles.selectedTab : styles.tab
+    const eventsTabStyles =
+      route === '/events' ? styles.selectedTab : styles.tab
+    const propertiesTabStyles =
+      route === '/properties' ? styles.selectedTab : styles.tab
     const learnTabStyles = route === '/learn' ? styles.selectedTab : styles.tab
-    const profileTabStyles = route === '/profile' ? styles.selectedTab : styles.tab
+    const profileTabStyles =
+      route === '/profile' ? styles.selectedTab : styles.tab
 
     return (
       <div className={computedClassName}>
@@ -81,9 +89,9 @@ export default class Navbar extends PureComponent {
                 <div className={styles.tab} onClick={() => playCave()}>
                   <p className={styles.smallFont}>Play</p>
                 </div>
-                <Link to='/checkpoints'>
-                  <div className={checkpointsTabStyles}>
-                    <p className={styles.smallFont}>Checkpoints</p>
+                <Link to='/events'>
+                  <div className={eventsTabStyles}>
+                    <p className={styles.smallFont}>Events</p>
                   </div>
                 </Link>
                 <Link to='/properties'>
