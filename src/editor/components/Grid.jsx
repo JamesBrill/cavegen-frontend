@@ -7,7 +7,7 @@ import {
   mergeTileChanges
 } from 'src/editor/utils/tiles'
 import { positionsBetweenPoints } from 'src/editor/utils/cave-network'
-import { getCaveCodeWithEvents } from 'src/editor/utils/cave-code'
+import { getCaveCode } from 'src/editor/utils/cave-code'
 import { ChangeController } from 'src/editor/utils/change-controller'
 import { Cave } from 'src/editor/utils/cave'
 import { CaveView } from 'src/editor/utils/cave-view'
@@ -216,13 +216,7 @@ export default class Grid extends PureComponent {
     dispatch(setCaveHeight(caveHeight))
     const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
-    const caveCode = getCaveCodeWithEvents(
-      newGrid,
-      caveName,
-      eventsText,
-      '1',
-      'clear'
-    )
+    const caveCode = getCaveCode(newGrid, caveName, eventsText, '1', 'clear')
     dispatch(setCaveCode(caveCode))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
@@ -311,13 +305,7 @@ export default class Grid extends PureComponent {
       caveName,
       eventsText
     } = this.props
-    const caveCode = getCaveCodeWithEvents(
-      grid,
-      caveName,
-      eventsText,
-      '1',
-      'clear'
-    )
+    const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
@@ -761,13 +749,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionLeft()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCodeWithEvents(
-        grid,
-        caveName,
-        eventsText,
-        '1',
-        'clear'
-      )
+      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -846,13 +828,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionUp()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCodeWithEvents(
-        grid,
-        caveName,
-        eventsText,
-        '1',
-        'clear'
-      )
+      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -931,13 +907,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionRight()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCodeWithEvents(
-        grid,
-        caveName,
-        eventsText,
-        '1',
-        'clear'
-      )
+      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -1016,13 +986,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionDown()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCodeWithEvents(
-        grid,
-        caveName,
-        eventsText,
-        '1',
-        'clear'
-      )
+      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }

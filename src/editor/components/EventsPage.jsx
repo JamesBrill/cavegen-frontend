@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
 import Button from 'src/components/Button'
-import { getCaveCodeWithEvents } from 'src/editor/utils/cave-code'
+import { getCaveCode } from 'src/editor/utils/cave-code'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 import { updateCave } from 'src/editor/actions'
@@ -41,7 +41,7 @@ export default class EventsPage extends PureComponent {
   handleSaveEvents() {
     const { dispatch, grid, caveName } = this.props
     const { eventsText } = this.state
-    const caveCode = getCaveCodeWithEvents(grid, caveName, eventsText)
+    const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
   }
 

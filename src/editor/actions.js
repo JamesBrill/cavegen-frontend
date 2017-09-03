@@ -4,9 +4,8 @@ import { Cave } from 'src/editor/utils/cave'
 import { splitCaveStringAndEvents } from 'src/editor/utils/cave-code'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
 import {
-  getCaveCode,
   getCaveCodeOfDimensions,
-  getCaveCodeWithEvents
+  getCaveCode
 } from 'src/editor/utils/cave-code'
 
 export function newCave(name, width, height) {
@@ -179,7 +178,7 @@ export function undoCaveChange() {
     const { changeController, caveView, grid, eventsText } = getState().editor
     const { caveName } = getState().editor
     changeController.applyUndo(grid, caveView)
-    const caveCode = getCaveCodeWithEvents(grid, caveName, eventsText)
+    const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'UNDO_CAVE_CHANGE' })
   }
@@ -190,7 +189,7 @@ export function redoCaveChange() {
     const { changeController, caveView, grid, eventsText } = getState().editor
     const { caveName } = getState().editor
     changeController.applyRedo(grid, caveView)
-    const caveCode = getCaveCodeWithEvents(grid, caveName, eventsText)
+    const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
     return dispatch({ type: 'REDO_CAVE_CHANGE' })
   }
@@ -286,13 +285,7 @@ export function fillRegion(brush) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCodeWithEvents(
-        grid,
-        caveName,
-        eventsText,
-        '1',
-        'clear'
-      )
+      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -312,13 +305,7 @@ export function pasteRegion(x, y) {
       const tileChanges = caveView.pasteRegion(x, y)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCodeWithEvents(
-        grid,
-        caveName,
-        eventsText,
-        '1',
-        'clear'
-      )
+      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
       dispatch(updateCave({ text: caveCode }))
     }
   }

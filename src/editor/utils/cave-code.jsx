@@ -1,4 +1,4 @@
-export function getCaveCode(grid, name, terrainType, waterType) {
+export function getCaveCode(grid, name, eventsText, terrainType, waterType) {
   let caveCode = `${validatedCaveName(name)}\nterrain ${terrainType ||
     '1'}\nbackground 1\nwater ${waterType || 'clear'}\n`
 
@@ -8,17 +8,6 @@ export function getCaveCode(grid, name, terrainType, waterType) {
     }
     caveCode += '\n'
   }
-  return caveCode
-}
-
-export function getCaveCodeWithEvents(
-  grid,
-  name,
-  eventsText,
-  terrainType,
-  waterType
-) {
-  const caveCode = getCaveCode(grid, name, terrainType, waterType)
   return `${caveCode}${eventsText}`
 }
 
