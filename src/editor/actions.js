@@ -175,8 +175,13 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
 
 export function undoCaveChange() {
   return function (dispatch, getState) {
-    const { changeController, caveView, grid, eventsText } = getState().editor
-    const { caveName } = getState().editor
+    const {
+      changeController,
+      caveView,
+      grid,
+      eventsText,
+      caveName
+    } = getState().editor
     changeController.applyUndo(grid, caveView)
     const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
@@ -186,8 +191,13 @@ export function undoCaveChange() {
 
 export function redoCaveChange() {
   return function (dispatch, getState) {
-    const { changeController, caveView, grid, eventsText } = getState().editor
-    const { caveName } = getState().editor
+    const {
+      changeController,
+      caveView,
+      grid,
+      eventsText,
+      caveName
+    } = getState().editor
     changeController.applyRedo(grid, caveView)
     const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(updateCave({ text: caveCode }))
