@@ -111,9 +111,9 @@ export default class CaveInformation extends PureComponent {
 
   @autobind
   handleBackgroundTypeChange(val) {
-    const { dispatch } = this.props
+    const { dispatch, uuid } = this.props
     this.setState({ backgroundType: val })
-    dispatch(updateCaveCodeOnServer({ backgroundType: val }))
+    dispatch(updateCaveCodeOnServer({ backgroundType: val }, uuid))
   }
 
   @autobind

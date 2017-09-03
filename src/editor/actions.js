@@ -74,7 +74,7 @@ export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
 
-export function updateCaveCodeOnServer(changes) {
+export function updateCaveCodeOnServer(changes, uuid) {
   return function (dispatch, getState) {
     const {
       grid,
@@ -90,7 +90,7 @@ export function updateCaveCodeOnServer(changes) {
       terrainType,
       backgroundType
     )
-    dispatch(updateCave({ text: caveCode }))
+    dispatch(updateCave({ text: caveCode }, uuid))
   }
 }
 
