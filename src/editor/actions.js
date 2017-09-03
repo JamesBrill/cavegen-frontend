@@ -285,7 +285,7 @@ export function fillRegion(brush) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, eventsText)
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -305,7 +305,7 @@ export function pasteRegion(x, y) {
       const tileChanges = caveView.pasteRegion(x, y)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, eventsText)
       dispatch(updateCave({ text: caveCode }))
     }
   }

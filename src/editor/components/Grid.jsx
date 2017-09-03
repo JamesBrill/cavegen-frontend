@@ -216,7 +216,7 @@ export default class Grid extends PureComponent {
     dispatch(setCaveHeight(caveHeight))
     const newGrid = grid || new Cave({ width: caveWidth, height: caveHeight })
     dispatch(setGrid(newGrid))
-    const caveCode = getCaveCode(newGrid, caveName, eventsText, '1', 'clear')
+    const caveCode = getCaveCode(newGrid, caveName, eventsText)
     dispatch(setCaveCode(caveCode))
     const newCaveView = this.buildCaveView(newGrid, caveWidth, caveHeight)
     dispatch(setCaveView(newCaveView))
@@ -305,7 +305,7 @@ export default class Grid extends PureComponent {
       caveName,
       eventsText
     } = this.props
-    const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+    const caveCode = getCaveCode(grid, caveName, eventsText)
     dispatch(setCaveCode(caveCode))
     if (caveView.isMouseDown) {
       changeController.addPaintedLineChange()
@@ -749,7 +749,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionLeft()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, eventsText)
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -828,7 +828,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionUp()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, eventsText)
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -907,7 +907,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionRight()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, eventsText)
       dispatch(updateCave({ text: caveCode }))
     }
   }
@@ -986,7 +986,7 @@ export default class Grid extends PureComponent {
     const regionMoved = caveView.moveRegionDown()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText, '1', 'clear')
+      const caveCode = getCaveCode(grid, caveName, eventsText)
       dispatch(updateCave({ text: caveCode }))
     }
   }
