@@ -31,6 +31,14 @@ export function newCave(name, width, height) {
   }
 }
 
+export function updateCaveCodeOnServer() {
+  return function (dispatch, getState) {
+    const { grid, caveName, eventsText } = getState().editor
+    const caveCode = getCaveCode(grid, caveName, eventsText)
+    dispatch(updateCave({ text: caveCode }))
+  }
+}
+
 export function updateCave(change, uuid) {
   return async function(dispatch, getState) {
     try {
@@ -175,32 +183,18 @@ export function setCurrentBrush(brush, pixelX, pixelY) {
 
 export function undoCaveChange() {
   return function (dispatch, getState) {
-    const {
-      changeController,
-      caveView,
-      grid,
-      eventsText,
-      caveName
-    } = getState().editor
+    const { changeController, caveView, grid } = getState().editor
     changeController.applyUndo(grid, caveView)
-    const caveCode = getCaveCode(grid, caveName, eventsText)
-    dispatch(updateCave({ text: caveCode }))
+    dispatch(updateCaveCodeOnServer())
     return dispatch({ type: 'UNDO_CAVE_CHANGE' })
   }
 }
 
 export function redoCaveChange() {
   return function (dispatch, getState) {
-    const {
-      changeController,
-      caveView,
-      grid,
-      eventsText,
-      caveName
-    } = getState().editor
+    const { changeController, caveView, grid } = getState().editor
     changeController.applyRedo(grid, caveView)
-    const caveCode = getCaveCode(grid, caveName, eventsText)
-    dispatch(updateCave({ text: caveCode }))
+    dispatch(updateCaveCodeOnServer())
     return dispatch({ type: 'REDO_CAVE_CHANGE' })
   }
 }
@@ -280,14 +274,7 @@ export function loadImages() {
 
 export function fillRegion(brush) {
   return function (dispatch, getState) {
-    const {
-      cursorType,
-      caveView,
-      changeController,
-      grid,
-      eventsText
-    } = getState().editor
-    const { caveName } = getState().editor
+    const { cursorType, caveView, changeController } = getState().editor
     if (
       cursorType === 'SELECTREGION' &&
       ['6', '7', '8', '9', 'a', 'f', 'r'].indexOf(brush.symbol) === -1
@@ -295,28 +282,19 @@ export function fillRegion(brush) {
       const tileChanges = caveView.fillRegion(brush)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, caveName, eventsText)
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
   }
 }
 
 export function pasteRegion(x, y) {
   return function (dispatch, getState) {
-    const {
-      cursorType,
-      caveView,
-      changeController,
-      grid,
-      eventsText
-    } = getState().editor
-    const { caveName } = getState().editor
+    const { cursorType, caveView, changeController } = getState().editor
     if (cursorType === 'SELECTREGION') {
       const tileChanges = caveView.pasteRegion(x, y)
       changeController.addTileChanges(tileChanges)
       changeController.addPaintedLineChange()
-      const caveCode = getCaveCode(grid, caveName, eventsText)
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
   }
 }

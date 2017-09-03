@@ -32,7 +32,8 @@ import {
   stopRebuild,
   fillRegion,
   pasteRegion,
-  loadCaveIntoGrid
+  loadCaveIntoGrid,
+  updateCaveCodeOnServer
 } from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
@@ -737,20 +738,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_LEFT_KEY)
   handleMoveRegionLeft() {
-    const {
-      dispatch,
-      grid,
-      caveView,
-      changeController,
-      caveName,
-      eventsText
-    } = this.props
+    const { dispatch, grid, caveView, changeController } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionLeft()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText)
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
   }
 
@@ -816,20 +809,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_UP_KEY)
   handleMoveRegionUp() {
-    const {
-      dispatch,
-      grid,
-      caveView,
-      changeController,
-      caveName,
-      eventsText
-    } = this.props
+    const { dispatch, grid, caveView, changeController } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionUp()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText)
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
   }
 
@@ -895,20 +880,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_RIGHT_KEY)
   handleMoveRegionRight() {
-    const {
-      dispatch,
-      grid,
-      caveView,
-      changeController,
-      caveName,
-      eventsText
-    } = this.props
+    const { dispatch, grid, caveView, changeController } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionRight()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText)
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
   }
 
@@ -974,20 +951,12 @@ export default class Grid extends PureComponent {
   @autobind
   @keydown(MOVE_REGION_DOWN_KEY)
   handleMoveRegionDown() {
-    const {
-      dispatch,
-      grid,
-      caveView,
-      changeController,
-      caveName,
-      eventsText
-    } = this.props
+    const { dispatch, grid, caveView, changeController } = this.props
     const before = grid.getGridClone()
     const regionMoved = caveView.moveRegionDown()
     if (regionMoved) {
       changeController.addCaveChange(before, grid.grid)
-      const caveCode = getCaveCode(grid, caveName, eventsText)
-      dispatch(updateCave({ text: caveCode }))
+      dispatch(updateCaveCodeOnServer())
     }
   }
 
