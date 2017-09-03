@@ -70,17 +70,6 @@ export const setCaveHeight = createAction('SET_CAVE_HEIGHT', caveHeight => ({
   caveHeight
 }))
 
-export const setBackgroundType = createAction(
-  'SET_BACKGROUND_TYPE',
-  backgroundType => ({
-    backgroundType
-  })
-)
-
-export const setTerrainType = createAction('SET_TERRAIN_TYPE', terrainType => ({
-  terrainType
-}))
-
 export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
@@ -91,15 +80,15 @@ export function updateCaveCodeOnServer(changes) {
       grid,
       caveName,
       eventsText,
-      backgroundType,
-      terrainType
+      terrainType,
+      backgroundType
     } = Object.assign({}, getState().editor, changes)
     const caveCode = getCaveCode(
       grid,
       caveName,
       eventsText,
-      backgroundType,
-      terrainType
+      terrainType,
+      backgroundType
     )
     dispatch(updateCave({ text: caveCode }))
   }
@@ -110,15 +99,15 @@ export function updateCaveCodeInRedux(grid) {
     const {
       caveName,
       eventsText,
-      backgroundType,
-      terrainType
+      terrainType,
+      backgroundType
     } = getState().editor
     const caveCode = getCaveCode(
       grid,
       caveName,
       eventsText,
-      backgroundType,
-      terrainType
+      terrainType,
+      backgroundType
     )
     dispatch(setCaveCode(caveCode))
   }
@@ -255,10 +244,11 @@ export function startRebuild() {
 
 export const stopRebuild = createAction('STOP_REBUILD')
 
-export function loadCaveIntoGrid(uuid) {
+export function loadCaveIntoGrid(uuidToLoad) {
   return function (dispatch, getState) {
-    const { changeController } = getState().editor
+    const { changeController, caveUuid } = getState().editor
     const { myLevels } = getState().levels
+    const uuid = uuidToLoad || (caveUuid === null ? myLevels[0].uuid : caveUuid)
     const cave = myLevels.find(x => x.uuid === uuid)
     const { caveString, eventsText } = splitCaveCode(cave.text)
     const grid = new Cave({ caveString })

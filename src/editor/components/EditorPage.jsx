@@ -8,35 +8,20 @@ import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from 'src/editor/components/EditorPage.css'
 
-import { loadCaveIntoGrid } from 'src/editor/actions'
-
 function mapStateToProps(state) {
   return {
     caves: state.levels.myLevels
   }
 }
 
-const mapDispatchToProps = {
-  dispatchLoadCaveIntoGrid: loadCaveIntoGrid
-}
-
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 @requiresAuthentication
 @withNavbar
 export default class EditorPage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    caves: PropTypes.arrayOf(PropTypes.object),
-    dispatchLoadMyLevels: PropTypes.func,
-    dispatchLoadPublicLevels: PropTypes.func,
-    dispatchLoadCaveIntoGrid: PropTypes.func
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.caves.length === 0 && nextProps.caves.length > 0) {
-      this.props.dispatchLoadCaveIntoGrid(nextProps.caves[0].uuid)
-    }
+    caves: PropTypes.arrayOf(PropTypes.object)
   }
 
   render() {

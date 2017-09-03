@@ -3,8 +3,8 @@ export function getCaveCode(
   name,
   eventsText,
   terrainType,
-  waterType,
-  backgroundType
+  backgroundType,
+  waterType
 ) {
   let caveCode = `${validatedCaveName(name)}\nterrain ${terrainType ||
     '1'}\nbackground ${backgroundType || '1'}\nwater ${waterType || 'clear'}\n`

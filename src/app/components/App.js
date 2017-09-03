@@ -9,6 +9,7 @@ import ScheduledEvent from 'src/utils/ScheduledEvent'
 import Spinner from 'src/components/Spinner'
 import { LOGIN_URL } from 'src/config'
 import { loadMyLevels, loadPublicLevels } from 'src/levels/actions'
+import { loadCaveIntoGrid } from 'src/editor/actions'
 
 import styles from 'src/app/components/App.css'
 
@@ -22,7 +23,8 @@ function mapStateToProps(state) {
     tokenExpiryTime: state.authentication.claims.exp,
     isAuthenticated,
     isEmailVerified: state.authentication.claims['email_verified'],
-    isEditorOpen
+    isEditorOpen,
+    levelsLoaded: state.levels.myLevels && state.levels.myLevels.length > 0
   }
 }
 
@@ -30,7 +32,8 @@ function mapStateToProps(state) {
   logout,
   loadImages,
   loadMyLevels,
-  loadPublicLevels
+  loadPublicLevels,
+  loadCaveIntoGrid
 })
 @withRouter
 export default class App extends PureComponent {
@@ -43,7 +46,10 @@ export default class App extends PureComponent {
     logout: PropTypes.func,
     loadImages: PropTypes.func,
     loadMyLevels: PropTypes.func,
-    loadPublicLevels: PropTypes.func
+    loadPublicLevels: PropTypes.func,
+    loadCaveIntoGrid: PropTypes.func,
+    caveUuid: PropTypes.string,
+    levelsLoaded: PropTypes.bool
   }
 
   constructor(props) {
@@ -55,6 +61,9 @@ export default class App extends PureComponent {
   }
 
   componentWillMount() {
+    if (this.props.levelsLoaded) {
+      this.props.loadCaveIntoGrid()
+    }
     if (this.props.isAuthenticated) {
       this.props.loadMyLevels()
       this.props.loadPublicLevels()
@@ -66,6 +75,9 @@ export default class App extends PureComponent {
     if (!this.props.isAuthenticated && nextProps.isAuthenticated) {
       this.props.loadMyLevels()
       this.props.loadPublicLevels()
+    }
+    if (!this.props.levelsLoaded && nextProps.levelsLoaded) {
+      this.props.loadCaveIntoGrid()
     }
     this.loadImagesOrRedirectToLogin(nextProps)
   }

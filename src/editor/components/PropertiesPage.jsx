@@ -10,7 +10,8 @@ import styles from 'src/editor/components/PropertiesPage.css'
 function mapStateToProps(state) {
   const levels = state.levels.myLevels
   const currentLevelUuid = state.editor.caveUuid
-  const currentLevel = levels.find(x => x.uuid === currentLevelUuid) || levels[0]
+  const currentLevel =
+    levels.find(x => x.uuid === currentLevelUuid) || levels[0]
   return {
     levelId: currentLevel.id
   }
@@ -24,7 +25,7 @@ export default class PropertiesPage extends PureComponent {
     className: PropTypes.string,
     children: PropTypes.node,
     levelId: PropTypes.number
-  };
+  }
 
   render() {
     const { className, children, levelId } = this.props

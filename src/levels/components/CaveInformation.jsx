@@ -2,6 +2,8 @@
 
 import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import Select from 'react-select'
+import 'react-select/dist/react-select.css'
 import { browserHistory } from 'react-router'
 import { autobind } from 'core-decorators'
 import classNames from 'classnames'
@@ -20,7 +22,11 @@ import { splitCaveCode } from 'src/editor/utils/cave-code'
 import styles from 'src/levels/components/CaveInformation.css'
 
 import { likeCave, playCave } from 'src/levels/actions'
-import { updateCave, loadCaveIntoGrid } from 'src/editor/actions'
+import {
+  updateCave,
+  loadCaveIntoGrid,
+  updateCaveCodeOnServer
+} from 'src/editor/actions'
 
 function mapStateToProps(state, ownProps) {
   const levelId = ownProps.levelId
@@ -29,7 +35,7 @@ function mapStateToProps(state, ownProps) {
   const userId = state.profile.userId
   const isOwnedByUser = userId === level.author
   const isLikedByUser = state.profile.likedCaves.indexOf(levelId) !== -1
-  const { caveString } = splitCaveCode(level.text)
+  const { caveString, backgroundType, terrainType } = splitCaveCode(level.text)
   return {
     name: level.name,
     uuid: level.uuid,
@@ -39,11 +45,19 @@ function mapStateToProps(state, ownProps) {
     likes: level.likes,
     code: caveString,
     isOwnedByUser,
-    isLikedByUser
+    isLikedByUser,
+    backgroundType,
+    terrainType
   }
 }
 
-@connect(mapStateToProps, { likeCave, updateCave, playCave, loadCaveIntoGrid })
+@connect(mapStateToProps, {
+  likeCave,
+  updateCave,
+  playCave,
+  loadCaveIntoGrid,
+  updateCaveCodeOnServer
+})
 @requiresAuthentication
 @withNavbar
 export default class CaveInformation extends PureComponent {
@@ -61,15 +75,20 @@ export default class CaveInformation extends PureComponent {
     isLikedByUser: PropTypes.bool,
     likeCave: PropTypes.func,
     updateCave: PropTypes.func,
+    updateCaveCodeOnServer: PropTypes.func,
     playCave: PropTypes.func,
-    loadCaveIntoGrid: PropTypes.func
+    loadCaveIntoGrid: PropTypes.func,
+    backgroundType: PropTypes.string,
+    terrainType: PropTypes.string
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      publicChecked: false
+      publicChecked: false,
+      backgroundType: props.backgroundType,
+      terrainType: props.terrainType
     }
   }
 
@@ -88,6 +107,13 @@ export default class CaveInformation extends PureComponent {
     const { updateCave, uuid } = this.props
     const name = e.target.value
     updateCave({ name }, uuid)
+  }
+
+  @autobind
+  handleBackgroundTypeChange(val) {
+    const { dispatch } = this.props
+    this.setState({ backgroundType: val })
+    dispatch(updateCaveCodeOnServer({ backgroundType: val }))
   }
 
   @autobind
@@ -119,7 +145,7 @@ export default class CaveInformation extends PureComponent {
       likeCave,
       playCave
     } = this.props
-    const { publicChecked } = this.state
+    const { publicChecked, backgroundType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
     const nameField = isOwnedByUser
       ? <div className={styles.information}>
@@ -136,6 +162,20 @@ export default class CaveInformation extends PureComponent {
             {name}
           </h2>
         </div>
+    const backgroundTypeOptions = [
+      { value: '1', label: '1' },
+      { value: '2', label: '2' },
+      { value: '3', label: '3' }
+    ]
+    const backgroundTypeField = isOwnedByUser
+      ? <div className={styles.information}>
+          <h2 className={styles.title}>Background type:</h2>
+          <Select
+            options={backgroundTypeOptions}
+            onChange={this.handleBackgroundTypeChange}
+            value={backgroundType} />
+        </div>
+      : null
     const likeColour = isLikedByUser ? 'red' : 'white'
     const likeIcon = isOwnedByUser
       ? <Like className={styles.like} color='red' />
@@ -147,6 +187,7 @@ export default class CaveInformation extends PureComponent {
     return (
       <div className={computedClassName}>
         {nameField}
+        {backgroundTypeField}
         <div className={styles.information}>
           <h2 className={styles.title}>Author:</h2>
           <h2 className={styles.informationValue}>

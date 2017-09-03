@@ -41,10 +41,12 @@ if (module.hot) {
   module.hot.accept('src/reducers', () => {
     const newReducers = require('src/reducers')
 
-    store.replaceReducer(combineReducers({
-      ...newReducers,
-      routing: routerReducer
-    }))
+    store.replaceReducer(
+      combineReducers({
+        ...newReducers,
+        routing: routerReducer
+      })
+    )
   })
 }
 
