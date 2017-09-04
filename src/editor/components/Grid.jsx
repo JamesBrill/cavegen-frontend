@@ -31,7 +31,8 @@ import {
   pasteRegion,
   loadCaveIntoGrid,
   updateCaveCodeOnServer,
-  updateCaveCodeInRedux
+  updateCaveCodeInRedux,
+  hoverAtCoordinates
 } from 'src/editor/actions'
 
 import styles from 'src/editor/components/Grid.css'
@@ -979,6 +980,20 @@ export default class Grid extends PureComponent {
   }
 
   @autobind
+  updateHoverCoordinates(pixelX, pixelY) {
+    const { dispatch, caveView, grid } = this.props
+    const hoverXCoordinate = Math.min(
+      Math.max(1, caveView.getGridX(pixelX) + 1),
+      grid.width
+    )
+    const hoverYCoordinate = Math.min(
+      Math.max(1, caveView.getGridY(pixelY) + 1),
+      grid.height
+    )
+    dispatch(hoverAtCoordinates(hoverXCoordinate, hoverYCoordinate))
+  }
+
+  @autobind
   handleMouseMove(e) {
     const { caveView, grid, cursorType } = this.props
     const pixelX =
@@ -986,7 +1001,7 @@ export default class Grid extends PureComponent {
     const pixelY =
       e.pageY - this.canvas.offsetTop - this.canvas.offsetParent.offsetTop
     this.setState({ pixelX, pixelY })
-
+    this.updateHoverCoordinates(pixelX, pixelY)
     if (cursorType === 'SELECTREGION' && caveView.isMouseDown) {
       const gridX = Math.min(
         Math.max(1, caveView.getGridX(pixelX)),

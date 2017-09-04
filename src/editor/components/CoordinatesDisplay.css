@@ -1,0 +1,9 @@
+.CoordinatesDisplay {
+  position: fixed;
+  right: 1em;
+  bottom: 1em;
+  color: white;
+  user-select: none;
+  cursor: default;
+  pointer-events: none;
+}

@@ -21,7 +21,9 @@ export default combineReducers({
   caveUuid,
   caveName,
   isCavePublic,
-  caveLikes
+  caveLikes,
+  hoverXCoordinate,
+  hoverYCoordinate
 })
 
 function grid(state = null, { type, payload }) {
@@ -280,6 +282,26 @@ function caveLikes(state = 0, { type, payload }) {
 
     case 'LIKE_CAVE':
       return state + 1
+
+    default:
+      return state
+  }
+}
+
+function hoverXCoordinate(state = 0, { type, payload }) {
+  switch (type) {
+    case 'HOVER_AT_COORDINATES':
+      return payload.x
+
+    default:
+      return state
+  }
+}
+
+function hoverYCoordinate(state = 0, { type, payload }) {
+  switch (type) {
+    case 'HOVER_AT_COORDINATES':
+      return payload.y
 
     default:
       return state

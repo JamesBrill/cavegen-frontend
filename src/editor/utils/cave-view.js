@@ -7,7 +7,19 @@ import RegionSelector from 'src/editor/utils/region-selector'
 import { getBorder, getTileSize } from 'src/editor/utils/tiles'
 
 export class CaveView {
-  constructor({ x, y, tileSize, unscaledTileSize, border, scalingFactor, canvas, grid, updateCursor, zoomer, imageMap }) {
+  constructor({
+    x,
+    y,
+    tileSize,
+    unscaledTileSize,
+    border,
+    scalingFactor,
+    canvas,
+    grid,
+    updateCursor,
+    zoomer,
+    imageMap
+  }) {
     this.grid = grid
     this.location = { x: 0, y: 0 }
     this.tileSize = tileSize
@@ -66,14 +78,22 @@ export class CaveView {
     this.linePainter.setColour('#FFFFFF', this)
     for (let i = 1; i < this.width; i++) {
       const x = i * this.tileSize + this.leftBorder()
-      this.linePainter.plotVerticalLine(x, this.topBorder() + offset,
-        this.topBorder() + this.height * this.tileSize - offset, this)
+      this.linePainter.plotVerticalLine(
+        x,
+        this.topBorder() + offset,
+        this.topBorder() + this.height * this.tileSize - offset,
+        this
+      )
     }
 
     for (let i = 1; i < this.height; i++) {
       const y = i * this.tileSize + this.topBorder()
-      this.linePainter.plotHorizontalLine(this.leftBorder() + offset,
-        this.leftBorder() + this.width * this.tileSize - offset, y, this)
+      this.linePainter.plotHorizontalLine(
+        this.leftBorder() + offset,
+        this.leftBorder() + this.width * this.tileSize - offset,
+        y,
+        this
+      )
     }
   }
 
@@ -107,17 +127,21 @@ export class CaveView {
 
   getGridX = function (pixelX) {
     const newPixelX = this.zoomer.transformPixelX(pixelX) - this.leftBorder()
-    return ((newPixelX - (newPixelX % this.tileSize)) / this.tileSize)
+    return (newPixelX - newPixelX % this.tileSize) / this.tileSize
   }
 
   getGridY = function (pixelY) {
     const newPixelY = this.zoomer.transformPixelY(pixelY) - this.topBorder()
-    return ((newPixelY - (newPixelY % this.tileSize)) / this.tileSize)
+    return (newPixelY - newPixelY % this.tileSize) / this.tileSize
   }
 
   applyTileChanges = function (tileChanges) {
     for (let i = 0; i < tileChanges.length; i++) {
-      this.drawAtGridCoordinates(tileChanges[i].x, tileChanges[i].y, tileChanges[i].after)
+      this.drawAtGridCoordinates(
+        tileChanges[i].x,
+        tileChanges[i].y,
+        tileChanges[i].after
+      )
     }
   }
 
@@ -151,7 +175,13 @@ export class CaveView {
   }
 
   erasePreviousCursor(column, row, squareSize, cursorType) {
-    const { anchorPoint, previousTopLeft, previousBottomRight, topLeft, bottomRight } = this.regionSelector
+    const {
+      anchorPoint,
+      previousTopLeft,
+      previousBottomRight,
+      topLeft,
+      bottomRight
+    } = this.regionSelector
     switch (cursorType) {
       case 'ADDCOLUMN':
         this.drawNewColumnLine(this.previousColumnLineX, '#FFFFFF')
@@ -193,23 +223,33 @@ export class CaveView {
     const linePixelX = this.getColumnInsertionPixelX(pixelX)
     this.previousColumnLineX = pixelX
     this.linePainter.setColour(colour || '#50F442', this)
-    if (linePixelX - this.leftBorder() >= this.tileSize && linePixelX - this.leftBorder() <= this.tileSize * (this.width - 1)) {
-      this.linePainter.plotVerticalLine(linePixelX,
-                                        this.topBorder() + this.tileSize,
-                                        this.topBorder() + this.tileSize * (this.height - 1),
-                                        this)
+    if (
+      linePixelX - this.leftBorder() >= this.tileSize &&
+      linePixelX - this.leftBorder() <= this.tileSize * (this.width - 1)
+    ) {
+      this.linePainter.plotVerticalLine(
+        linePixelX,
+        this.topBorder() + this.tileSize,
+        this.topBorder() + this.tileSize * (this.height - 1),
+        this
+      )
     }
   }
 
   drawRemoveColumnLine(pixelX, colour) {
     this.previousColumnLineX = pixelX
     const column = this.getGridX(pixelX)
-    const unboundedLeft = (Math.min(Math.max(column, 1), this.width - 2)) * this.tileSize + this.leftBorder()
+    const unboundedLeft =
+      Math.min(Math.max(column, 1), this.width - 2) * this.tileSize +
+      this.leftBorder()
     const unboundedRight = unboundedLeft + this.tileSize
     const top = this.topBorder() + this.tileSize
     const left = Math.max(unboundedLeft, this.leftBorder() + this.tileSize)
     const bottom = this.topBorder() + this.tileSize * (this.height - 1)
-    const right = Math.min(unboundedRight, this.leftBorder() + this.tileSize * (this.width - 1))
+    const right = Math.min(
+      unboundedRight,
+      this.leftBorder() + this.tileSize * (this.width - 1)
+    )
 
     this.linePainter.setColour(colour || '#FF0000', this)
     this.linePainter.plotVerticalLine(left, top, bottom, this)
@@ -230,22 +270,32 @@ export class CaveView {
     const linePixelY = this.getRowInsertionPixelY(pixelY)
     this.previousRowLineY = pixelY
     this.linePainter.setColour(colour || '#50F442', this)
-    if (linePixelY - this.topBorder() >= this.tileSize && linePixelY - this.topBorder() <= this.tileSize * (this.height - 1)) {
-      this.linePainter.plotHorizontalLine(this.leftBorder() + this.tileSize,
-                                          this.leftBorder() + this.tileSize * (this.width - 1),
-                                          linePixelY,
-                                          this)
+    if (
+      linePixelY - this.topBorder() >= this.tileSize &&
+      linePixelY - this.topBorder() <= this.tileSize * (this.height - 1)
+    ) {
+      this.linePainter.plotHorizontalLine(
+        this.leftBorder() + this.tileSize,
+        this.leftBorder() + this.tileSize * (this.width - 1),
+        linePixelY,
+        this
+      )
     }
   }
 
   drawRemoveRowLine(pixelY, colour) {
     this.previousRowLineY = pixelY
     const row = this.getGridY(pixelY)
-    const unboundedTop = (Math.min(Math.max(row, 1), this.height - 2) * this.tileSize + this.topBorder())
+    const unboundedTop =
+      Math.min(Math.max(row, 1), this.height - 2) * this.tileSize +
+      this.topBorder()
     const unboundedBottom = unboundedTop + this.tileSize
     const top = Math.max(unboundedTop, this.topBorder() + this.tileSize)
     const left = this.leftBorder() + this.tileSize
-    const bottom = Math.min(unboundedBottom, this.topBorder() + this.tileSize * (this.height - 1))
+    const bottom = Math.min(
+      unboundedBottom,
+      this.topBorder() + this.tileSize * (this.height - 1)
+    )
     const right = this.leftBorder() + this.tileSize * (this.width - 1)
 
     this.linePainter.setColour(colour || '#FF0000', this)
@@ -258,14 +308,24 @@ export class CaveView {
   drawRegion(topLeft, bottomRight, colour) {
     const width = bottomRight.x - topLeft.x + 1
     const height = bottomRight.y - topLeft.y + 1
-    const unboundedTop = (Math.min(Math.max(topLeft.y, 1), this.height - 2)) * this.tileSize + this.topBorder()
-    const unboundedLeft = (Math.min(Math.max(topLeft.x, 1), this.width - 2)) * this.tileSize + this.leftBorder()
+    const unboundedTop =
+      Math.min(Math.max(topLeft.y, 1), this.height - 2) * this.tileSize +
+      this.topBorder()
+    const unboundedLeft =
+      Math.min(Math.max(topLeft.x, 1), this.width - 2) * this.tileSize +
+      this.leftBorder()
     const unboundedBottom = unboundedTop + height * this.tileSize
     const unboundedRight = unboundedLeft + width * this.tileSize
     const top = Math.max(unboundedTop, this.topBorder() + this.tileSize)
     const left = Math.max(unboundedLeft, this.leftBorder() + this.tileSize)
-    const bottom = Math.min(unboundedBottom, this.topBorder() + this.tileSize * (this.height - 1))
-    const right = Math.min(unboundedRight, this.leftBorder() + this.tileSize * (this.width - 1))
+    const bottom = Math.min(
+      unboundedBottom,
+      this.topBorder() + this.tileSize * (this.height - 1)
+    )
+    const right = Math.min(
+      unboundedRight,
+      this.leftBorder() + this.tileSize * (this.width - 1)
+    )
 
     this.linePainter.setColour(colour || '#FF0000', this)
     this.linePainter.plotVerticalLine(left, top, bottom, this)
@@ -287,8 +347,10 @@ export class CaveView {
 
   getColumnInsertionPixelX(pixelX) {
     const transformedPixel = this.zoomer.transformPixelX(pixelX)
-    const distanceToPreviousVerticalGridLineX = ((transformedPixel - this.leftBorder()) % this.tileSize)
-    const previousVerticalGridLineX = transformedPixel - distanceToPreviousVerticalGridLineX
+    const distanceToPreviousVerticalGridLineX =
+      (transformedPixel - this.leftBorder()) % this.tileSize
+    const previousVerticalGridLineX =
+      transformedPixel - distanceToPreviousVerticalGridLineX
     let linePixelX
     if (distanceToPreviousVerticalGridLineX < 0.5 * this.tileSize) {
       linePixelX = previousVerticalGridLineX
@@ -299,14 +361,17 @@ export class CaveView {
   }
 
   getColumnInsertionX(pixelX) {
-    const columnInsertionPixelX = this.getColumnInsertionPixelX(pixelX) - this.leftBorder()
+    const columnInsertionPixelX =
+      this.getColumnInsertionPixelX(pixelX) - this.leftBorder()
     return Math.floor(columnInsertionPixelX / this.tileSize)
   }
 
   getRowInsertionPixelY(pixelY) {
     const transformedPixel = this.zoomer.transformPixelY(pixelY)
-    const distanceToPreviousHorizontalGridLineY = ((transformedPixel - this.topBorder()) % this.tileSize)
-    const previousHorizontalGridLineY = transformedPixel - distanceToPreviousHorizontalGridLineY
+    const distanceToPreviousHorizontalGridLineY =
+      (transformedPixel - this.topBorder()) % this.tileSize
+    const previousHorizontalGridLineY =
+      transformedPixel - distanceToPreviousHorizontalGridLineY
     let linePixelY
     if (distanceToPreviousHorizontalGridLineY < 0.5 * this.tileSize) {
       linePixelY = previousHorizontalGridLineY
@@ -317,19 +382,34 @@ export class CaveView {
   }
 
   getRowInsertionY(pixelY) {
-    const rowInsertionPixelY = this.getRowInsertionPixelY(pixelY) - this.topBorder()
+    const rowInsertionPixelY =
+      this.getRowInsertionPixelY(pixelY) - this.topBorder()
     return Math.floor(rowInsertionPixelY / this.tileSize)
   }
 
   drawSquareOutline = function (column, row, colour, squareSize) {
-    const unboundedTop = (Math.min(Math.max(row, 1), this.height - 2) - Math.floor(squareSize / 2)) * this.tileSize + this.topBorder()
-    const unboundedLeft = (Math.min(Math.max(column, 1), this.width - 2) - Math.floor(squareSize / 2)) * this.tileSize + this.leftBorder()
+    const unboundedTop =
+      (Math.min(Math.max(row, 1), this.height - 2) -
+        Math.floor(squareSize / 2)) *
+        this.tileSize +
+      this.topBorder()
+    const unboundedLeft =
+      (Math.min(Math.max(column, 1), this.width - 2) -
+        Math.floor(squareSize / 2)) *
+        this.tileSize +
+      this.leftBorder()
     const unboundedBottom = unboundedTop + squareSize * this.tileSize
     const unboundedRight = unboundedLeft + squareSize * this.tileSize
     const top = Math.max(unboundedTop, this.topBorder() + this.tileSize)
     const left = Math.max(unboundedLeft, this.leftBorder() + this.tileSize)
-    const bottom = Math.min(unboundedBottom, this.topBorder() + this.tileSize * (this.height - 1))
-    const right = Math.min(unboundedRight, this.leftBorder() + this.tileSize * (this.width - 1))
+    const bottom = Math.min(
+      unboundedBottom,
+      this.topBorder() + this.tileSize * (this.height - 1)
+    )
+    const right = Math.min(
+      unboundedRight,
+      this.leftBorder() + this.tileSize * (this.width - 1)
+    )
 
     this.linePainter.setColour(colour || '#FFFFFF', this)
     this.linePainter.plotVerticalLine(left, top, bottom, this)
@@ -340,13 +420,17 @@ export class CaveView {
 
   paintPositions = function (paintedPositions) {
     for (let i = 0; i < paintedPositions.length; i++) {
-      this.drawAtGridCoordinates(paintedPositions[i].x, paintedPositions[i].y, paintedPositions[i].brush)
+      this.drawAtGridCoordinates(
+        paintedPositions[i].x,
+        paintedPositions[i].y,
+        paintedPositions[i].brush
+      )
     }
   }
 
   setMaxScalingFactor = function () {
     const largestDimension = Math.max(this.width, this.height)
-    return 3 + (largestDimension / 10) * 1.5
+    return 3 + largestDimension / 10 * 1.5
   }
 
   multiplyScalingFactor = function (coefficient) {
@@ -368,10 +452,12 @@ export class CaveView {
   }
 
   clear = function () {
-    this.context.clearRect(0,
-                           0,
-                           this.zoomer.transformPixelX(this.canvas.clientWidth),
-                           this.zoomer.transformPixelY(this.canvas.clientHeight))
+    this.context.clearRect(
+      0,
+      0,
+      this.zoomer.transformPixelX(this.canvas.clientWidth),
+      this.zoomer.transformPixelY(this.canvas.clientHeight)
+    )
   }
 
   addColumn(x) {
@@ -469,8 +555,19 @@ export class CaveView {
   updateToGrid() {
     this.width = this.grid.width
     this.height = this.grid.height
-    this.unscaledTileSize = getTileSize(this.width, this.height, this.canvas.width, this.canvas.height)
-    this.border = getBorder(this.width, this.height, this.canvas.width, this.canvas.height, this.unscaledTileSize)
+    this.unscaledTileSize = getTileSize(
+      this.width,
+      this.height,
+      this.canvas.width,
+      this.canvas.height
+    )
+    this.border = getBorder(
+      this.width,
+      this.height,
+      this.canvas.width,
+      this.canvas.height,
+      this.unscaledTileSize
+    )
     this.scaleTileSize()
     this.clear()
     this.draw({})
@@ -489,8 +586,10 @@ export class CaveView {
     if (this.grid.withinLimits(gridX, gridY)) {
       return true
     }
-    const xOffset = (this.zoomer.transformPixelX(pixelX) - this.leftBorder()) % this.tileSize
-    const yOffset = (this.zoomer.transformPixelY(pixelY) - this.topBorder()) % this.tileSize
+    const xOffset =
+      (this.zoomer.transformPixelX(pixelX) - this.leftBorder()) % this.tileSize
+    const yOffset =
+      (this.zoomer.transformPixelY(pixelY) - this.topBorder()) % this.tileSize
     let adjustedGridX, adjustedGridY
     if (xOffset > 0.5 * this.tileSize) {
       adjustedGridX = gridX + 1
@@ -558,8 +657,18 @@ export class CaveView {
   }
 
   moveRegion() {
-    const { preMoveGridSnapshot, movingRegion, movingRegionX, movingRegionY } = this.regionSelector
-    this.grid.moveRegion(preMoveGridSnapshot, movingRegion, movingRegionX, movingRegionY)
+    const {
+      preMoveGridSnapshot,
+      movingRegion,
+      movingRegionX,
+      movingRegionY
+    } = this.regionSelector
+    this.grid.moveRegion(
+      preMoveGridSnapshot,
+      movingRegion,
+      movingRegionX,
+      movingRegionY
+    )
     this.drawGridContents(this.grid)
   }
 }

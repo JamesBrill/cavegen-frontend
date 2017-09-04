@@ -168,6 +168,14 @@ export const setCursorType = createAction('SET_CURSOR_TYPE', cursorType => ({
   cursorType
 }))
 
+export const hoverAtCoordinates = createAction(
+  'HOVER_AT_COORDINATES',
+  (x, y) => ({
+    x,
+    y
+  })
+)
+
 export function setCurrentBrush(brush, pixelX, pixelY) {
   return function (dispatch, getState) {
     const {

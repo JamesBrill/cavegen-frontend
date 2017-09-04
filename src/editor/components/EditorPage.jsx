@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import Grid from 'src/editor/components/Grid'
 import EditorControls from 'src/editor/components/EditorControls'
+import CoordinatesDisplay from 'src/editor/components/CoordinatesDisplay'
 import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
@@ -35,6 +36,7 @@ export default class EditorPage extends PureComponent {
           <EditorControls className={styles.editorControls} />
           <Grid className={styles.grid} ref={grid => (this.grid = grid)} />
         </div>
+        <CoordinatesDisplay />
       </div>
     )
   }
