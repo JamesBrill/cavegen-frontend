@@ -23,6 +23,12 @@
   justify-content: center !important;
 }
 
+.button:hover {
+  & > * {
+    opacity: 0.5;
+  }
+}
+
 .copyIcon {
   width: 80%;
   height: 80%;
