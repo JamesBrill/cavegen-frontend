@@ -47,6 +47,10 @@ export default class App extends PureComponent {
     this.loadImagesOrRedirectToLogin(this.props)
   }
 
+  componentDidMount() {
+    this.props.loadMyLevels()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.levelsLoaded && nextProps.levelsLoaded) {
       this.props.loadCaveIntoGrid()
