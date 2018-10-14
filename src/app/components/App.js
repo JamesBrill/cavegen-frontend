@@ -27,7 +27,7 @@ export default class App extends PureComponent {
     loadImages: PropTypes.func,
     loadMyLevels: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func,
-    caveUuid: PropTypes.string,
+    caveId: PropTypes.string,
     levelsLoaded: PropTypes.bool
   }
 

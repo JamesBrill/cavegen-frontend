@@ -19,7 +19,7 @@ function myLevels(state = [], { type, payload }) {
       currentCaveIndex = state.indexOf(currentCave)
       return [
         ...state.slice(0, currentCaveIndex),
-        payload.updatedCave,
+        payload,
         ...state.slice(currentCaveIndex + 1)
       ]
 

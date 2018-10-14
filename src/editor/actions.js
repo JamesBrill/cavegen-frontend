@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions'
 import { Cave } from 'src/editor/utils/cave'
 import { splitCaveCode } from 'src/editor/utils/cave-code'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
-import { writeCave, writeCaveName, writeCaveText } from 'src/utils/storage'
+import { writeCave } from 'src/utils/storage'
 import {
   getCaveCodeOfDimensions,
   getCaveCode
@@ -32,11 +32,7 @@ export function newCave(name, width, height) {
 export function updateCave({ id, name, text }) {
   return dispatch => {
     try {
-      if (name) {
-        writeCaveName({ id, name })
-      } else {
-        writeCaveText({ id, text })
-      }
+      writeCave({ id, name, text })
       return dispatch({
         type: 'UPDATE_CAVE',
         payload: { id, name, text }
@@ -79,7 +75,7 @@ export const setCaveCode = createAction('SET_CAVE_CODE', caveCode => ({
   caveCode
 }))
 
-export function updateCaveCodeOnServer(changes, uuid) {
+export function updateCaveCodeOnServer(changes, id) {
   return function (dispatch, getState) {
     const {
       grid,
@@ -88,18 +84,24 @@ export function updateCaveCodeOnServer(changes, uuid) {
       terrainType,
       backgroundType,
       waterType,
-      caveUuid
+      caveId
     } = Object.assign({}, getState().editor, changes)
     const caveCode = getCaveCode(
       grid,
-      caveName,
-      eventsText,
-      terrainType,
-      backgroundType,
-      waterType
+      (changes && changes.name) || caveName,
+      (changes && changes.eventsText) || eventsText,
+      (changes && changes.terrainType) || terrainType,
+      (changes && changes.backgroundType) || backgroundType,
+      (changes && changes.waterType) || waterType
     )
-    dispatch(updateCave({ id: uuid, text: caveCode, name: caveName }))
-    if (!uuid || uuid === caveUuid) {
+    dispatch(
+      updateCave({
+        id: caveId,
+        text: caveCode,
+        name: (changes && changes.name) || caveName
+      })
+    )
+    if (!id || id === caveId) {
       dispatch(setCaveCode(caveCode))
     }
   }
@@ -265,11 +267,11 @@ export function startRebuild() {
 
 export const stopRebuild = createAction('STOP_REBUILD')
 
-export function loadCaveIntoGrid(uuidToLoad) {
+export function loadCaveIntoGrid(idToLoad) {
   return function (dispatch, getState) {
-    const { changeController, caveUuid } = getState().editor
+    const { changeController, caveId } = getState().editor
     const { myLevels } = getState().levels
-    const id = uuidToLoad || (caveUuid === null ? myLevels[0].id : caveUuid)
+    const id = idToLoad || (caveId === null ? myLevels[0].id : caveId)
     const cave = myLevels.find(x => x.id === id)
     const {
       caveString,

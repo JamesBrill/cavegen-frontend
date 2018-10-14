@@ -14,7 +14,7 @@ const store = compose(
         paths.forEach(path => {
           if (path === 'editor') {
             subset[path] = {}
-            subset[path].caveUuid = state.editor.caveUuid
+            subset[path].caveId = state.editor.caveId
           } else {
             subset[path] = state[path]
           }

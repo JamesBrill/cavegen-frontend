@@ -19,7 +19,6 @@ import { splitCaveCode } from 'src/editor/utils/cave-code'
 import styles from 'src/levels/components/CaveInformation.css'
 
 import {
-  updateCave,
   loadCaveIntoGrid,
   updateCaveCodeOnServer,
   setBackgroundType,
@@ -36,7 +35,7 @@ function mapStateToProps(state, ownProps) {
   )
   return {
     name: level.name,
-    uuid: level.uuid,
+    id: level.id,
     author: level.authorName,
     dateCreated: level.dateCreated,
     code: caveString,
@@ -47,7 +46,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 @connect(mapStateToProps, {
-  updateCave,
   loadCaveIntoGrid,
   updateCaveCodeOnServer,
   setBackgroundType,
@@ -57,14 +55,14 @@ function mapStateToProps(state, ownProps) {
 @withNavbar
 export default class CaveInformation extends PureComponent {
   static propTypes = {
+    dispatch: PropTypes.func,
     className: PropTypes.string,
     levelId: PropTypes.number,
     name: PropTypes.string,
-    uuid: PropTypes.string,
+    id: PropTypes.string,
     author: PropTypes.string,
     dateCreated: PropTypes.string,
     code: PropTypes.string,
-    updateCave: PropTypes.func,
     updateCaveCodeOnServer: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func,
     backgroundType: PropTypes.string,
@@ -91,47 +89,47 @@ export default class CaveInformation extends PureComponent {
 
   @autobind
   handleNameChange(e) {
-    const { updateCave, uuid } = this.props
+    const { id } = this.props
     const name = e.target.value
-    updateCave({ name }, uuid)
+    this.props.updateCaveCodeOnServer({ id, name })
   }
 
   @autobind
   handleBackgroundTypeChange(val) {
-    const { dispatch, uuid } = this.props
+    const { id } = this.props
     this.setState({ backgroundType: val })
-    dispatch(setBackgroundType(val))
-    dispatch(updateCaveCodeOnServer({ backgroundType: val }, uuid))
+    this.props.setBackgroundType(val)
+    this.props.updateCaveCodeOnServer({ id, backgroundType: val })
   }
 
   @autobind
   handleTerrainTypeChange(val) {
-    const { dispatch, uuid } = this.props
+    const { id } = this.props
     this.setState({ terrainType: val })
-    dispatch(setTerrainType(val))
-    dispatch(updateCaveCodeOnServer({ terrainType: val }, uuid))
+    this.props.setTerrainType(val)
+    this.props.updateCaveCodeOnServer({ id, terrainType: val })
   }
 
   @autobind
   handleWaterTypeChange(val) {
-    const { dispatch, uuid } = this.props
+    const { id } = this.props
     this.setState({ waterType: val })
-    dispatch(setWaterType(val))
-    dispatch(updateCaveCodeOnServer({ waterType: val }, uuid))
+    this.props.setWaterType(val)
+    this.props.updateCaveCodeOnServer({ id, waterType: val })
   }
 
   @autobind
   handleBuild() {
-    const { uuid, loadCaveIntoGrid } = this.props
+    const { id } = this.props
     browserHistory.push('/build')
-    loadCaveIntoGrid(uuid)
+    this.props.loadCaveIntoGrid(id)
   }
 
   render() {
     const {
       className,
       name,
-      uuid,
+      id,
       author,
       dateCreated,
       code,
@@ -145,7 +143,7 @@ export default class CaveInformation extends PureComponent {
         <Input
           className={styles.propertyInput}
           onChange={this.handleNameChange}
-          key={uuid}
+          key={id}
           defaultValue={name} />
       </div>
     )

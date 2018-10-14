@@ -38,9 +38,9 @@ import {
 import styles from 'src/editor/components/Grid.css'
 
 function mapStateToProps(state) {
-  const caveUuid = state.editor.caveUuid
+  const caveId = state.editor.caveId
   const caves = state.levels.myLevels
-  let currentCave = caves && caves.filter(cave => cave.uuid === caveUuid)[0]
+  let currentCave = caves && caves.filter(cave => cave.id === caveId)[0]
   if (caves && !currentCave) {
     currentCave = caves[0]
   }
@@ -130,7 +130,7 @@ export default class Grid extends PureComponent {
     dispatch(setChangeController(changeController))
     window.addEventListener('resize', this.handleWindowResize)
     if (currentCave) {
-      dispatch(loadCaveIntoGrid(currentCave.uuid))
+      dispatch(loadCaveIntoGrid(currentCave.id))
     }
     setUpTileKeyListeners(this.handleSelectBrush, this.handleInsertTile)
   }

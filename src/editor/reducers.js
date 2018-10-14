@@ -18,7 +18,7 @@ export default combineReducers({
   cursorType,
   needsRebuild,
   imageMap,
-  caveUuid,
+  caveId,
   caveName,
   hoverXCoordinate,
   hoverYCoordinate
@@ -216,14 +216,14 @@ function imageMap(state = [], { type, payload }) {
   }
 }
 
-function caveUuid(state = null, { type, payload }) {
+function caveId(state = null, { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
       return payload.id
 
     case 'UPDATE_CAVE':
     case 'LOAD_CAVE_INTO_GRID':
-      return payload.id
+      return payload.id || state
 
     default:
       return state
@@ -236,7 +236,7 @@ function caveName(state = 'Untitled', { type, payload }) {
       return payload.name
 
     case 'UPDATE_CAVE':
-      return payload.name
+      return payload.name || state
 
     case 'LOAD_CAVE_INTO_GRID':
       return payload.name
