@@ -9,13 +9,13 @@ function myLevels(state = [], { type, payload }) {
   let currentCaveIndex
   switch (type) {
     case 'NEW_CAVE':
-      return [...state, payload.newCave]
+      return [...state, payload]
 
     case 'LOAD_CAVES':
       return payload.caves
 
     case 'UPDATE_CAVE':
-      currentCave = state.filter(cave => cave.uuid === payload.uuid)[0]
+      currentCave = state.filter(cave => cave.id === payload.id)[0]
       currentCaveIndex = state.indexOf(currentCave)
       return [
         ...state.slice(0, currentCaveIndex),

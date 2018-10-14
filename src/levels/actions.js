@@ -1,18 +1,16 @@
-import { apiRequest } from 'src/utils/api'
+import { readAllCaves } from 'src/utils/storage'
 import { newCave } from 'src/editor/actions'
 
 export function loadMyLevels() {
-  return async function(dispatch, getState) {
+  return dispatch => {
     try {
-      const { json } = await apiRequest(getState, '/my-caves/')
-      if (json.length === 0) {
+      const caves = readAllCaves()
+      if (caves.length === 0) {
         dispatch(newCave('Untitled'))
       }
       return dispatch({
         type: 'LOAD_CAVES',
-        payload: {
-          caves: json
-        }
+        payload: { caves }
       })
     } catch (e) {
       return dispatch({

@@ -219,11 +219,11 @@ function imageMap(state = [], { type, payload }) {
 function caveUuid(state = null, { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
-      return payload.newCave.uuid
+      return payload.id
 
     case 'UPDATE_CAVE':
     case 'LOAD_CAVE_INTO_GRID':
-      return payload.uuid
+      return payload.id
 
     default:
       return state
@@ -233,10 +233,10 @@ function caveUuid(state = null, { type, payload }) {
 function caveName(state = 'Untitled', { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
-      return payload.newCave.name
+      return payload.name
 
     case 'UPDATE_CAVE':
-      return payload.updatedCave.name
+      return payload.name
 
     case 'LOAD_CAVE_INTO_GRID':
       return payload.name

@@ -15,7 +15,7 @@ export default function analyticsMiddleware(store) {
         break
 
       case 'UPDATE_CAVE':
-        handleUpdateCave(result.payload.change, nextState)
+        handleUpdateCave(result.payload, nextState)
         break
 
       case 'LOAD_CAVE_INTO_GRID':

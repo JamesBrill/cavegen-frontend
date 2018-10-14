@@ -1,26 +1,24 @@
+import uuid from 'uuid'
 import { createAction } from 'redux-actions'
-import { apiRequest } from 'src/utils/api'
 import { Cave } from 'src/editor/utils/cave'
 import { splitCaveCode } from 'src/editor/utils/cave-code'
 import { PALETTE_BRUSHES_LIST } from 'src/utils/ImageLoader'
+import { writeCave, writeCaveName, writeCaveText } from 'src/utils/storage'
 import {
   getCaveCodeOfDimensions,
   getCaveCode
 } from 'src/editor/utils/cave-code'
 
 export function newCave(name, width, height) {
-  return async function(dispatch, getState) {
+  return dispatch => {
     try {
       const text = getCaveCodeOfDimensions(width || 40, height || 40)
-      const { json } = await apiRequest(getState, '/caves/', {
-        method: 'post',
-        headers: { 'content-type': 'application/json' },
-        body: { name, text }
-      })
+      const id = uuid.v1()
+      writeCave({ id, name, text })
 
       return dispatch({
         type: 'NEW_CAVE',
-        payload: { newCave: json }
+        payload: { id, name, text }
       })
     } catch (e) {
       return dispatch({
@@ -31,25 +29,17 @@ export function newCave(name, width, height) {
   }
 }
 
-export function updateCave(change, uuid) {
-  return async function(dispatch, getState) {
+export function updateCave({ id, name, text }) {
+  return dispatch => {
     try {
-      const caveUuid = uuid || getState().editor.caveUuid
-      const caves = getState().levels.myLevels
-      const currentCave = caves && caves.filter(c => c.uuid === caveUuid)[0]
-      const { json } = await apiRequest(getState, `/caves/${caveUuid}/`, {
-        method: 'put',
-        headers: { 'content-type': 'application/json' },
-        body: Object.assign({}, currentCave, change)
-      })
-
+      if (name) {
+        writeCaveName({ id, name })
+      } else {
+        writeCaveText({ id, text })
+      }
       return dispatch({
         type: 'UPDATE_CAVE',
-        payload: {
-          uuid: caveUuid,
-          updatedCave: json,
-          change
-        }
+        payload: { id, name, text }
       })
     } catch (e) {
       return dispatch({
