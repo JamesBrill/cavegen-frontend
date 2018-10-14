@@ -56,7 +56,7 @@ export default class CaveInformation extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func,
     className: PropTypes.string,
-    levelId: PropTypes.number,
+    levelId: PropTypes.string,
     name: PropTypes.string,
     id: PropTypes.string,
     dateCreated: PropTypes.string,

@@ -21,12 +21,10 @@ export default class LevelPage extends PureComponent {
       <div className={computedClassName}>
         {children}
         <div className={styles.contents}>
-          <LevelPreview
-            className={styles.levelPreview}
-            levelId={parseInt(params.id, 10)} />
+          <LevelPreview className={styles.levelPreview} levelId={params.id} />
           <CaveInformation
             className={styles.caveInformation}
-            levelId={parseInt(params.id, 10)}
+            levelId={params.id}
             editableAttributes={false} />
         </div>
       </div>
