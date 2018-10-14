@@ -8,3 +8,7 @@
   height: calc(100vh - 4em);
   overflow-y: auto;
 }
+
+.levelLink {
+  cursor: pointer;
+}
