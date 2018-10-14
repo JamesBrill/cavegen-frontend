@@ -36,7 +36,6 @@ function mapStateToProps(state, ownProps) {
   return {
     name: level.name,
     id: level.id,
-    dateCreated: level.dateCreated,
     code: caveString,
     backgroundType,
     terrainType,
@@ -59,7 +58,6 @@ export default class CaveInformation extends PureComponent {
     levelId: PropTypes.string,
     name: PropTypes.string,
     id: PropTypes.string,
-    dateCreated: PropTypes.string,
     code: PropTypes.string,
     updateCaveCodeOnServer: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func,
@@ -124,14 +122,7 @@ export default class CaveInformation extends PureComponent {
   }
 
   render() {
-    const {
-      className,
-      name,
-      id,
-      dateCreated,
-      code,
-      editableAttributes
-    } = this.props
+    const { className, name, id, code, editableAttributes } = this.props
     const { backgroundType, terrainType, waterType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
     const nameField = (
@@ -209,12 +200,6 @@ export default class CaveInformation extends PureComponent {
         {backgroundTypeField}
         {terrainTypeField}
         {waterTypeField}
-        <div className={styles.information}>
-          <h2 className={styles.title}>Date created:</h2>
-          <h2 className={styles.informationValue}>
-            {moment(dateCreated).format('MM/DD/YYYY, h:mm a')}
-          </h2>
-        </div>
         <div className={styles.buttonContainer}>
           <CopyToClipboard caveCode={code} data-tip='Copy' />
           <Button
