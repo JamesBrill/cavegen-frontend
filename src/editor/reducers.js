@@ -225,9 +225,6 @@ function caveUuid(state = null, { type, payload }) {
     case 'LOAD_CAVE_INTO_GRID':
       return payload.uuid
 
-    case 'LOGOUT':
-      return null
-
     default:
       return state
   }
@@ -237,9 +234,6 @@ function caveName(state = 'Untitled', { type, payload }) {
   switch (type) {
     case 'NEW_CAVE':
       return payload.newCave.name
-
-    case 'LOGOUT':
-      return 'Untitled'
 
     case 'UPDATE_CAVE':
       return payload.updatedCave.name

@@ -19,7 +19,6 @@ function mapStateToProps() {
 export default class NewLevelPage extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    logout: PropTypes.func,
     newCave: PropTypes.func,
     rebuildLevel: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func

@@ -23,9 +23,6 @@ function myLevels(state = [], { type, payload }) {
         ...state.slice(currentCaveIndex + 1)
       ]
 
-    case 'LOGOUT':
-      return []
-
     default:
       return state
   }
