@@ -9,10 +9,11 @@ import {
   getCaveCode
 } from 'src/editor/utils/cave-code'
 
-export function newCave(name, width, height) {
+export function newCave(name, width, height, initialText) {
   return dispatch => {
     try {
-      const text = getCaveCodeOfDimensions(width || 40, height || 40)
+      const text =
+        initialText || getCaveCodeOfDimensions(width || 40, height || 40)
       const id = uuid.v1()
       writeCave({ id, name, text })
 

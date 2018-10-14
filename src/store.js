@@ -7,7 +7,7 @@ import analyticsMiddleware from 'src/middleware/analytics'
 import * as reducers from 'src/reducers'
 
 const store = compose(
-  persistState(['levels', 'editor'], {
+  persistState(['editor'], {
     slicer: paths => {
       return state => {
         const subset = {}
