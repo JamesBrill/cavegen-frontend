@@ -1,7 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
-import ReactZeroClipboard from 'react-zeroclipboard'
-import 'src/components/ZeroClipboard.css'
+import { CopyToClipboard as ReactCopytoClipboard } from 'react-copy-to-clipboard'
 import Button from 'src/components/Button'
 import CopyIcon from 'src/editor/components/icons/CopyIcon'
 
@@ -11,7 +10,7 @@ export default class CopyToClipboard extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     caveCode: PropTypes.string
-  };
+  }
 
   render() {
     const { className, caveCode } = this.props
@@ -19,11 +18,11 @@ export default class CopyToClipboard extends PureComponent {
 
     return (
       <div className={computedClassName}>
-        <ReactZeroClipboard text={caveCode} swfPath='static/zero-clipboard/ZeroClipboard.swf'>
+        <ReactCopytoClipboard text={caveCode}>
           <Button className={styles.button} data-tip='Copy'>
             <CopyIcon className={styles.copyIcon} />
           </Button>
-        </ReactZeroClipboard>
+        </ReactCopytoClipboard>
       </div>
     )
   }
