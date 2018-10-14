@@ -98,7 +98,7 @@ export function updateCaveCodeOnServer(changes, uuid) {
       backgroundType,
       waterType
     )
-    dispatch(updateCave({ text: caveCode }, uuid))
+    dispatch(updateCave({ id: uuid, text: caveCode, name: caveName }))
     if (!uuid || uuid === caveUuid) {
       dispatch(setCaveCode(caveCode))
     }
@@ -269,8 +269,8 @@ export function loadCaveIntoGrid(uuidToLoad) {
   return function (dispatch, getState) {
     const { changeController, caveUuid } = getState().editor
     const { myLevels } = getState().levels
-    const uuid = uuidToLoad || (caveUuid === null ? myLevels[0].uuid : caveUuid)
-    const cave = myLevels.find(x => x.uuid === uuid)
+    const id = uuidToLoad || (caveUuid === null ? myLevels[0].id : caveUuid)
+    const cave = myLevels.find(x => x.id === id)
     const {
       caveString,
       eventsText,
@@ -288,7 +288,7 @@ export function loadCaveIntoGrid(uuidToLoad) {
     dispatch({
       type: 'LOAD_CAVE_INTO_GRID',
       payload: {
-        uuid: cave.uuid,
+        id: cave.id,
         name: cave.name,
         caveCode: caveString,
         eventsText,
