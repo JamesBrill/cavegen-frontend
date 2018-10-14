@@ -36,7 +36,6 @@ function mapStateToProps(state, ownProps) {
   return {
     name: level.name,
     id: level.id,
-    author: level.authorName,
     dateCreated: level.dateCreated,
     code: caveString,
     backgroundType,
@@ -60,7 +59,6 @@ export default class CaveInformation extends PureComponent {
     levelId: PropTypes.number,
     name: PropTypes.string,
     id: PropTypes.string,
-    author: PropTypes.string,
     dateCreated: PropTypes.string,
     code: PropTypes.string,
     updateCaveCodeOnServer: PropTypes.func,
@@ -130,7 +128,6 @@ export default class CaveInformation extends PureComponent {
       className,
       name,
       id,
-      author,
       dateCreated,
       code,
       editableAttributes
@@ -209,12 +206,6 @@ export default class CaveInformation extends PureComponent {
     return (
       <div className={computedClassName}>
         {nameField}
-        <div className={styles.information}>
-          <h2 className={styles.title}>Author:</h2>
-          <h2 className={styles.informationValue}>
-            {author}
-          </h2>
-        </div>
         {backgroundTypeField}
         {terrainTypeField}
         {waterTypeField}
