@@ -15,7 +15,6 @@ import Like from 'src/editor/components/icons/Like'
 import Play from 'src/editor/components/icons/Play'
 import Build from 'src/levels/components/icons/Build'
 import ReactTooltip from 'react-tooltip'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 import { splitCaveCode } from 'src/editor/utils/cave-code'
 
@@ -67,7 +66,6 @@ function mapStateToProps(state, ownProps) {
   setTerrainType,
   setWaterType
 })
-@requiresAuthentication
 @withNavbar
 export default class CaveInformation extends PureComponent {
   static propTypes = {

@@ -2,11 +2,6 @@
 
 export default function analyticsMiddleware(store) {
   const isProduction = process.env.NODE_ENV === 'production'
-  const initialState = store.getState()
-
-  if (initialState.authentication.token && isProduction) {
-    handleAuthentication(initialState)
-  }
 
   return next => action => {
     const result = next(action)
@@ -15,14 +10,6 @@ export default function analyticsMiddleware(store) {
       return result
     }
     switch (action.type) {
-      case 'STORE_TOKEN':
-        handleAuthentication(nextState)
-        break
-
-      case 'LOGOUT':
-        handleLogout(nextState)
-        break
-
       case 'NEW_CAVE':
         handleNewCave()
         break
@@ -70,15 +57,6 @@ export default function analyticsMiddleware(store) {
 
     return result
   }
-}
-
-function handleAuthentication(newState) {
-  ga('set', 'userId', newState.authentication.claims.sub)
-  ga('send', 'event', 'CaveGen', 'login', newState.authentication.claims.sub)
-}
-
-function handleLogout(newState) {
-  ga('send', 'event', 'CaveGen', 'logout', newState.authentication.claims.sub)
 }
 
 function handleNewCave() {

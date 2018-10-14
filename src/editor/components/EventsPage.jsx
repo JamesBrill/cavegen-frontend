@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
 import Button from 'src/components/Button'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 import { updateCaveCodeOnServer } from 'src/editor/actions'
 
@@ -14,7 +13,6 @@ function mapStateToProps(state) {
   return { eventsText }
 }
 
-@requiresAuthentication
 @withNavbar
 @connect(mapStateToProps)
 export default class EventsPage extends PureComponent {

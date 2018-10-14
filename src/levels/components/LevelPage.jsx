@@ -2,12 +2,10 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import CaveInformation from 'src/levels/components/CaveInformation'
 import LevelPreview from 'src/levels/components/LevelPreview'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from 'src/levels/components/LevelPage.css'
 
-@requiresAuthentication
 @withNavbar
 export default class LevelPage extends PureComponent {
   static propTypes = {

@@ -2,7 +2,6 @@ import React, { PureComponent, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import classNames from 'classnames'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
 import { loadPublicLevels } from 'src/levels/actions'
@@ -16,7 +15,6 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps, { loadPublicLevels })
-@requiresAuthentication
 @withNavbar
 export default class PublicLevelsPage extends PureComponent {
   static propTypes = {
@@ -24,7 +22,7 @@ export default class PublicLevelsPage extends PureComponent {
     children: PropTypes.node,
     publicLevels: PropTypes.arrayOf(PropTypes.object),
     loadPublicLevels: PropTypes.func
-  };
+  }
 
   componentWillMount() {
     this.props.loadPublicLevels()
@@ -38,11 +36,13 @@ export default class PublicLevelsPage extends PureComponent {
       <div className={computedClassName}>
         {children}
         <div className={styles.levels}>
-          {publicLevels.map(level => (
+          {publicLevels.map(level =>
             <Link key={level.id} to={`/level/${level.id}`}>
-              <p>{level.name}</p>
+              <p>
+                {level.name}
+              </p>
             </Link>
-          ))}
+          )}
         </div>
       </div>
     )

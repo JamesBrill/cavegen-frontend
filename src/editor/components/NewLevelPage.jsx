@@ -6,7 +6,6 @@ import CaveDimensionsInput from 'src/editor/components/CaveDimensionsInput'
 import { autobind } from 'core-decorators'
 import { connect } from 'react-redux'
 import { newCave, rebuildLevel, loadCaveIntoGrid } from 'src/editor/actions'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from './NewLevelPage.css'
@@ -19,7 +18,6 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps, { newCave, rebuildLevel, loadCaveIntoGrid })
-@requiresAuthentication
 @withNavbar
 export default class NewLevelPage extends PureComponent {
   static propTypes = {
@@ -29,7 +27,7 @@ export default class NewLevelPage extends PureComponent {
     newCave: PropTypes.func,
     rebuildLevel: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func
-  };
+  }
 
   constructor(props) {
     super(props)

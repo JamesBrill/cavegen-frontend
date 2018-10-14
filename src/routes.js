@@ -10,7 +10,6 @@ import EventsPage from 'src/editor/components/EventsPage'
 import PropertiesPage from 'src/editor/components/PropertiesPage'
 import LearnPage from 'src/learn/components/LearnPage'
 import ProfilePage from 'src/profile/components/ProfilePage'
-import LoginPage from 'src/authentication/components/LoginPage'
 
 export default (
   <Route path='/' component={App}>
@@ -24,6 +23,5 @@ export default (
     <Route path='properties' component={PropertiesPage} />
     <Route path='learn' component={LearnPage} />
     <Route path='profile' component={ProfilePage} />
-    <Route path='login' component={LoginPage} />
   </Route>
 )

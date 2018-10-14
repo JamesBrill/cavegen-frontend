@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Grid from 'src/editor/components/Grid'
 import EditorControls from 'src/editor/components/EditorControls'
 import CoordinatesDisplay from 'src/editor/components/CoordinatesDisplay'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from 'src/editor/components/EditorPage.css'
@@ -16,7 +15,6 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps)
-@requiresAuthentication
 @withNavbar
 export default class EditorPage extends PureComponent {
   static propTypes = {

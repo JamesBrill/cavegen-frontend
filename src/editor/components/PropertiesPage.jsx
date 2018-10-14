@@ -2,7 +2,6 @@ import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import CaveInformation from 'src/levels/components/CaveInformation'
-import requiresAuthentication from 'src/authentication/utils/requiresAuthentication'
 import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from 'src/editor/components/PropertiesPage.css'
@@ -18,7 +17,6 @@ function mapStateToProps(state) {
 }
 
 @connect(mapStateToProps)
-@requiresAuthentication
 @withNavbar
 export default class PropertiesPage extends PureComponent {
   static propTypes = {
