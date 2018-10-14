@@ -13,7 +13,7 @@ export function newCave(name, width, height, initialText) {
   return dispatch => {
     try {
       const text =
-        initialText || getCaveCodeOfDimensions(width || 40, height || 40)
+        initialText || getCaveCodeOfDimensions(width || 40, height || 40, name)
       const id = uuid.v1()
       writeCave({ id, name, text })
 

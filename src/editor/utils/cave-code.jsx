@@ -43,8 +43,9 @@ export function splitCaveCode(caveCode) {
   }
 }
 
-export function getCaveCodeOfDimensions(width, height) {
-  let caveCode = 'Untitled\nterrain 1\nbackground 1\nwater clear\n'
+export function getCaveCodeOfDimensions(width, height, name) {
+  const caveName = name || 'Untitled'
+  let caveCode = `${caveName}\nterrain 1\nbackground 1\nwater clear\n`
 
   for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
