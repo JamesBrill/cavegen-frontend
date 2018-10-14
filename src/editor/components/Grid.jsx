@@ -103,7 +103,7 @@ export default class Grid extends PureComponent {
     ]),
     currentBrush: PropTypes.object,
     needsRebuild: PropTypes.bool,
-    imageMap: PropTypes.object,
+    imageMap: PropTypes.arrayOf(PropTypes.object),
     currentCave: PropTypes.object,
     caveName: PropTypes.string,
     eventsText: PropTypes.string
