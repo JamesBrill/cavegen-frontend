@@ -9,7 +9,6 @@ import EditorPage from 'src/editor/components/EditorPage'
 import EventsPage from 'src/editor/components/EventsPage'
 import PropertiesPage from 'src/editor/components/PropertiesPage'
 import LearnPage from 'src/learn/components/LearnPage'
-import ProfilePage from 'src/profile/components/ProfilePage'
 
 export default (
   <Route path='/' component={App}>
@@ -22,6 +21,5 @@ export default (
     <Route path='events' component={EventsPage} />
     <Route path='properties' component={PropertiesPage} />
     <Route path='learn' component={LearnPage} />
-    <Route path='profile' component={ProfilePage} />
   </Route>
 )

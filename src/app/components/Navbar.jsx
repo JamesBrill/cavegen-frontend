@@ -44,8 +44,6 @@ export default class Navbar extends PureComponent {
     const propertiesTabStyles =
       route === '/properties' ? styles.selectedTab : styles.tab
     const learnTabStyles = route === '/learn' ? styles.selectedTab : styles.tab
-    const profileTabStyles =
-      route === '/profile' ? styles.selectedTab : styles.tab
 
     return (
       <div className={computedClassName}>
@@ -100,11 +98,6 @@ export default class Navbar extends PureComponent {
           <Link to='/learn'>
             <div className={learnTabStyles}>
               <p>Learn</p>
-            </div>
-          </Link>
-          <Link to='/profile'>
-            <div className={profileTabStyles}>
-              <p>Profile</p>
             </div>
           </Link>
         </div>

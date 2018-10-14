@@ -31,8 +31,6 @@ function mapStateToProps(state, ownProps) {
   const levelId = ownProps.levelId
   const levels = state.levels.myLevels
   const level = levels.find(x => x.id === levelId)
-  const userId = state.profile.userId
-  const isOwnedByUser = userId === level.author
   const { caveString, backgroundType, terrainType, waterType } = splitCaveCode(
     level.text
   )
@@ -42,7 +40,6 @@ function mapStateToProps(state, ownProps) {
     author: level.authorName,
     dateCreated: level.dateCreated,
     code: caveString,
-    isOwnedByUser,
     backgroundType,
     terrainType,
     waterType
@@ -67,7 +64,6 @@ export default class CaveInformation extends PureComponent {
     author: PropTypes.string,
     dateCreated: PropTypes.string,
     code: PropTypes.string,
-    isOwnedByUser: PropTypes.bool,
     updateCave: PropTypes.func,
     updateCaveCodeOnServer: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func,
@@ -139,46 +135,39 @@ export default class CaveInformation extends PureComponent {
       author,
       dateCreated,
       code,
-      isOwnedByUser,
       editableAttributes
     } = this.props
     const { backgroundType, terrainType, waterType } = this.state
     const computedClassName = classNames(styles.CaveInformation, className)
-    const nameField = isOwnedByUser
-      ? <div className={styles.information}>
-          <h2 className={styles.title}>Name:</h2>
-          <Input
-            className={styles.propertyInput}
-            onChange={this.handleNameChange}
-            key={uuid}
-            defaultValue={name} />
-        </div>
-      : <div className={styles.information}>
-          <h2 className={styles.title}>Name:</h2>
-          <h2 className={styles.informationValue}>
-            {name}
-          </h2>
-        </div>
+    const nameField = (
+      <div className={styles.information}>
+        <h2 className={styles.title}>Name:</h2>
+        <Input
+          className={styles.propertyInput}
+          onChange={this.handleNameChange}
+          key={uuid}
+          defaultValue={name} />
+      </div>
+    )
     const backgroundTypeOptions = [
       { value: '1', label: '1' },
       { value: '2', label: '2' },
       { value: '3', label: '3' }
     ]
-    const backgroundTypeField =
-      isOwnedByUser && editableAttributes
-        ? <div className={styles.information}>
-            <h2 className={styles.title}>Background type:</h2>
-            <Select
-              className={styles.selector}
-              options={backgroundTypeOptions}
-              onChange={this.handleBackgroundTypeChange}
-              value={backgroundType}
-              clearable={false}
-              searchable={false}
-              backspaceRemoves={false}
-              deleteRemoves={false} />
-          </div>
-        : null
+    const backgroundTypeField = editableAttributes
+      ? <div className={styles.information}>
+          <h2 className={styles.title}>Background type:</h2>
+          <Select
+            className={styles.selector}
+            options={backgroundTypeOptions}
+            onChange={this.handleBackgroundTypeChange}
+            value={backgroundType}
+            clearable={false}
+            searchable={false}
+            backspaceRemoves={false}
+            deleteRemoves={false} />
+        </div>
+      : null
     const terrainTypeOptions = [
       { value: '1', label: '1' },
       { value: '2', label: '2' },
@@ -186,41 +175,39 @@ export default class CaveInformation extends PureComponent {
       { value: '4', label: '4' },
       { value: '5', label: '5' }
     ]
-    const terrainTypeField =
-      isOwnedByUser && editableAttributes
-        ? <div className={styles.information}>
-            <h2 className={styles.title}>Terrain type:</h2>
-            <Select
-              className={styles.selector}
-              options={terrainTypeOptions}
-              onChange={this.handleTerrainTypeChange}
-              value={terrainType}
-              clearable={false}
-              searchable={false}
-              backspaceRemoves={false}
-              deleteRemoves={false} />
-          </div>
-        : null
+    const terrainTypeField = editableAttributes
+      ? <div className={styles.information}>
+          <h2 className={styles.title}>Terrain type:</h2>
+          <Select
+            className={styles.selector}
+            options={terrainTypeOptions}
+            onChange={this.handleTerrainTypeChange}
+            value={terrainType}
+            clearable={false}
+            searchable={false}
+            backspaceRemoves={false}
+            deleteRemoves={false} />
+        </div>
+      : null
     const waterTypeOptions = [
       { value: 'clear', label: 'clear' },
       { value: 'dark', label: 'dark' },
       { value: 'murky', label: 'murky' }
     ]
-    const waterTypeField =
-      isOwnedByUser && editableAttributes
-        ? <div className={styles.information}>
-            <h2 className={styles.title}>Water type:</h2>
-            <Select
-              className={styles.selector}
-              options={waterTypeOptions}
-              onChange={this.handleWaterTypeChange}
-              value={waterType}
-              clearable={false}
-              searchable={false}
-              backspaceRemoves={false}
-              deleteRemoves={false} />
-          </div>
-        : null
+    const waterTypeField = editableAttributes
+      ? <div className={styles.information}>
+          <h2 className={styles.title}>Water type:</h2>
+          <Select
+            className={styles.selector}
+            options={waterTypeOptions}
+            onChange={this.handleWaterTypeChange}
+            value={waterType}
+            clearable={false}
+            searchable={false}
+            backspaceRemoves={false}
+            deleteRemoves={false} />
+        </div>
+      : null
     return (
       <div className={computedClassName}>
         {nameField}
@@ -241,14 +228,13 @@ export default class CaveInformation extends PureComponent {
         </div>
         <div className={styles.buttonContainer}>
           <CopyToClipboard caveCode={code} data-tip='Copy' />
-          {isOwnedByUser &&
-            <Button
-              className={styles.iconButton}
-              onClick={this.handleBuild}
-              data-tip='Edit'
-            >
-              <Build className={styles.icon} />
-            </Button>}
+          <Button
+            className={styles.iconButton}
+            onClick={this.handleBuild}
+            data-tip='Edit'
+          >
+            <Build className={styles.icon} />
+          </Button>
           <ReactTooltip effect='solid' delayShow={250} />
         </div>
       </div>

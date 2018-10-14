@@ -10,10 +10,8 @@ import withNavbar from 'src/app/utils/withNavbar'
 
 import styles from './NewLevelPage.css'
 
-function mapStateToProps(state) {
-  return {
-    displayName: state.profile.displayName
-  }
+function mapStateToProps() {
+  return {}
 }
 
 @connect(mapStateToProps, { newCave, rebuildLevel, loadCaveIntoGrid })
@@ -22,7 +20,6 @@ export default class NewLevelPage extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     logout: PropTypes.func,
-    displayName: PropTypes.string,
     newCave: PropTypes.func,
     rebuildLevel: PropTypes.func,
     loadCaveIntoGrid: PropTypes.func

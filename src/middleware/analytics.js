@@ -41,10 +41,6 @@ export default function analyticsMiddleware(store) {
       case 'START_REBUILD':
         handleRebuild(result.payload.area, nextState)
         break
-
-      case 'UPDATE_USER_PROFILE':
-        handleUpdateProfile(result.payload.change)
-        break
     }
 
     return result
@@ -86,13 +82,4 @@ function handleSetBrushSize(size) {
 
 function handleRebuild(area, newState) {
   ga('send', 'event', 'Caves', 'rebuild', newState.editor.caveName, area)
-}
-
-function handleUpdateProfile(change) {
-  if (change.displayName) {
-    ga('send', 'event', 'Profile', 'update display name', change.displayName)
-  }
-  if (change.picture) {
-    ga('send', 'event', 'Profile', 'update picture', change.picture)
-  }
 }
