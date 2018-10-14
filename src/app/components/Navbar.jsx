@@ -24,14 +24,8 @@ export default class Navbar extends PureComponent {
   render() {
     const { className, route } = this.props
     const computedClassName = classNames(styles.Navbar, className)
-    const levelsTabStyles =
-      ['/my-levels', '/public-levels'].indexOf(route) === -1
-        ? classNames(styles.tab, styles.levelsTab)
-        : classNames(styles.selectedTab, styles.levelsTab)
     const myLevelsTabStyles =
       route === '/my-levels' ? styles.selectedTab : styles.tab
-    const publicLevelsTabStyles =
-      route === '/public-levels' ? styles.selectedTab : styles.tab
     const editorTabStyles =
       ['/new-level', '/build', '/events', '/properties'].indexOf(route) === -1
         ? classNames(styles.tab, styles.editorTab)
@@ -52,20 +46,8 @@ export default class Navbar extends PureComponent {
         </div>
         <div className={styles.right}>
           <Link to='/my-levels'>
-            <div className={levelsTabStyles}>
+            <div className={myLevelsTabStyles}>
               <p>Levels</p>
-              <div className={styles.levelsSubTabs}>
-                <Link to='/my-levels'>
-                  <div className={myLevelsTabStyles}>
-                    <p className={styles.smallFont}>My Levels</p>
-                  </div>
-                </Link>
-                <Link to='/public-levels'>
-                  <div className={publicLevelsTabStyles}>
-                    <p className={styles.smallFont}>Public Levels</p>
-                  </div>
-                </Link>
-              </div>
             </div>
           </Link>
           <Link to='/build'>

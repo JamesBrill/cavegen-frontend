@@ -2,7 +2,6 @@ import React from 'react'
 import { IndexRedirect, Route } from 'react-router'
 import App from 'src/app/components/App'
 import MyLevelsPage from 'src/levels/components/MyLevelsPage'
-import PublicLevelsPage from 'src/levels/components/PublicLevelsPage'
 import LevelPage from 'src/levels/components/LevelPage'
 import NewLevelPage from 'src/editor/components/NewLevelPage'
 import EditorPage from 'src/editor/components/EditorPage'
@@ -14,7 +13,6 @@ export default (
   <Route path='/' component={App}>
     <IndexRedirect to='/build' />
     <Route path='my-levels' component={MyLevelsPage} />
-    <Route path='public-levels' component={PublicLevelsPage} />
     <Route path='level/:id' component={LevelPage} />
     <Route path='new-level' component={NewLevelPage} />
     <Route path='build' component={EditorPage} />
