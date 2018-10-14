@@ -42,16 +42,8 @@ export default function analyticsMiddleware(store) {
         handleRebuild(result.payload.area, nextState)
         break
 
-      case 'PLAY_CAVE':
-        handlePlayCave(nextState)
-        break
-
       case 'UPDATE_USER_PROFILE':
         handleUpdateProfile(result.payload.change)
-        break
-
-      case 'LIKE_CAVE':
-        handleLikeCave(result.payload.newLikedCave.name)
         break
     }
 
@@ -69,12 +61,6 @@ function handleUpdateCave(change, newState) {
   }
   if (change.name) {
     ga('send', 'event', 'Caves', 'update cave name', change.name)
-  }
-  if (change.isPublic) {
-    ga('send', 'event', 'Caves', 'make cave public', newState.editor.caveName)
-  }
-  if (change.isPublic === false) {
-    ga('send', 'event', 'Caves', 'make cave private', newState.editor.caveName)
   }
 }
 
@@ -102,10 +88,6 @@ function handleRebuild(area, newState) {
   ga('send', 'event', 'Caves', 'rebuild', newState.editor.caveName, area)
 }
 
-function handlePlayCave(newState) {
-  ga('send', 'event', 'Caves', 'play', newState.editor.caveName)
-}
-
 function handleUpdateProfile(change) {
   if (change.displayName) {
     ga('send', 'event', 'Profile', 'update display name', change.displayName)
@@ -113,8 +95,4 @@ function handleUpdateProfile(change) {
   if (change.picture) {
     ga('send', 'event', 'Profile', 'update picture', change.picture)
   }
-}
-
-function handleLikeCave(likedCave) {
-  ga('send', 'event', 'Caves', 'like', likedCave)
 }

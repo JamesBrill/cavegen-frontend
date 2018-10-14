@@ -13,7 +13,7 @@ const HEIGHT = 250
 
 function mapStateToProps(state, ownProps) {
   const levelId = ownProps.levelId
-  const levels = state.levels.myLevels.concat(state.levels.publicLevels)
+  const levels = state.levels.myLevels
   const level = levels.find(x => x.id === levelId)
   const { caveString } = splitCaveCode(level.text)
   const grid = new Cave({ caveString })

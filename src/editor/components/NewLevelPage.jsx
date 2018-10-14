@@ -12,8 +12,7 @@ import styles from './NewLevelPage.css'
 
 function mapStateToProps(state) {
   return {
-    displayName: state.profile.displayName,
-    caveLikes: state.editor.caveLikes
+    displayName: state.profile.displayName
   }
 }
 

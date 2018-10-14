@@ -300,8 +300,6 @@ export function loadCaveIntoGrid(uuidToLoad) {
       payload: {
         uuid: cave.uuid,
         name: cave.name,
-        likes: cave.likes,
-        isPublic: cave.isPublic,
         caveCode: caveString,
         eventsText,
         backgroundType,

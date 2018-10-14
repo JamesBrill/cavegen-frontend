@@ -3,8 +3,7 @@ import { combineReducers } from 'redux'
 export default combineReducers({
   userId,
   picture,
-  displayName,
-  likedCaves
+  displayName
 })
 
 function userId(state = -1, { type, payload }) {
@@ -43,26 +42,6 @@ function displayName(state = 'anonymous', { type, payload }) {
 
     case 'LOGOUT':
       return 'anonymous'
-
-    default:
-      return state
-  }
-}
-
-function likedCaves(state = [], { type, payload }) {
-  switch (type) {
-    case 'LOAD_USER_PROFILE':
-    case 'UPDATE_USER_PROFILE':
-      return payload.likedCaves
-
-    case 'LIKE_CAVE':
-      if (state.indexOf(payload.newLikedCave.id) === -1) {
-        return [...state, payload.newLikedCave.id]
-      }
-      return state
-
-    case 'LOGOUT':
-      return []
 
     default:
       return state

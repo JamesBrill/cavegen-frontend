@@ -33,7 +33,6 @@ export default class ProfilePage extends PureComponent {
   handleDisplayNameChange(e) {
     const displayName = e.target.value
     this.props.updateUserProfile({ displayName })
-    this.setState({ publicLevelsNeedUpdating: true })
   }
 
   render() {

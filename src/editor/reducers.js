@@ -20,8 +20,6 @@ export default combineReducers({
   imageMap,
   caveUuid,
   caveName,
-  isCavePublic,
-  caveLikes,
   hoverXCoordinate,
   hoverYCoordinate
 })
@@ -248,40 +246,6 @@ function caveName(state = 'Untitled', { type, payload }) {
 
     case 'LOAD_CAVE_INTO_GRID':
       return payload.name
-
-    default:
-      return state
-  }
-}
-
-function isCavePublic(state = false, { type, payload }) {
-  switch (type) {
-    case 'NEW_CAVE':
-    case 'LOGOUT':
-      return false
-
-    case 'UPDATE_CAVE':
-      return payload.updatedCave.isPublic
-
-    case 'LOAD_CAVE_INTO_GRID':
-      return payload.isPublic
-
-    default:
-      return state
-  }
-}
-
-function caveLikes(state = 0, { type, payload }) {
-  switch (type) {
-    case 'NEW_CAVE':
-    case 'LOGOUT':
-      return 0
-
-    case 'LOAD_CAVE_INTO_GRID':
-      return payload.likes
-
-    case 'LIKE_CAVE':
-      return state + 1
 
     default:
       return state

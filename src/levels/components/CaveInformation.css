@@ -24,36 +24,6 @@
   font-weight: normal;
 }
 
-.likesContainer {
-  padding-left: 0.5em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.like {
-  width: 2em;
-  height: 2em;
-}
-
-.like:hover {
-  animation: pop 0.3s ease-in;
-}
-
-@keyframes pop {
-  0% {
-    transform: translate(0, 0);
-  }
-
-  50% {
-    transform: translate(0, -3px);
-  }
-
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
 .propertyInput {
   margin-left: 1em;
 }

@@ -6,7 +6,6 @@ import keydown from 'react-keydown'
 import Button from 'src/components/Button'
 import BrushSizeSelector from 'src/editor/components/BrushSizeSelector'
 import CopyToClipboard from 'src/editor/components/CopyToClipboard'
-import Play from 'src/editor/components/icons/Play'
 import Undo from 'src/editor/components/icons/Undo'
 import Redo from 'src/editor/components/icons/Redo'
 import Palette from 'src/editor/components/Palette'
@@ -14,9 +13,6 @@ import ReactTooltip from 'react-tooltip'
 
 import styles from 'src/editor/components/EditorControls.css'
 
-import {
-  playCave
-} from 'src/levels/actions'
 import {
   setCurrentBrush,
   setBrushSize,
@@ -37,7 +33,6 @@ const mapDispatchToProps = {
   dispatchSetBrushSize: setBrushSize,
   dispatchUndo: undoCaveChange,
   dispatchRedo: redoCaveChange,
-  dispatchPlayCave: playCave,
   dispatchFillRegion: fillRegion
 }
 
@@ -53,9 +48,8 @@ export default class EditorControls extends PureComponent {
     dispatchSetBrushSize: PropTypes.func,
     dispatchUndo: PropTypes.func,
     dispatchRedo: PropTypes.func,
-    dispatchPlayCave: PropTypes.func,
     dispatchFillRegion: PropTypes.func
-  };
+  }
 
   @autobind
   @keydown(UNDO_KEYS)
@@ -71,30 +65,37 @@ export default class EditorControls extends PureComponent {
     this.props.dispatchRedo()
   }
 
-  @autobind
-  handlePlay(e) {
-    e.preventDefault()
-    this.props.dispatchPlayCave()
-  }
-
   render() {
-    const { className, caveCode, currentBrush, dispatchSetBrushSize,
-            dispatchSetCurrentBrush, dispatchFillRegion } = this.props
+    const {
+      className,
+      caveCode,
+      currentBrush,
+      dispatchSetBrushSize,
+      dispatchSetCurrentBrush,
+      dispatchFillRegion
+    } = this.props
     const computedClassName = classNames(styles.EditorControls, className)
 
     return (
       <div className={computedClassName}>
-        <BrushSizeSelector className={styles.brushSize} onBrushSizeChange={dispatchSetBrushSize} />
+        <BrushSizeSelector
+          className={styles.brushSize}
+          onBrushSizeChange={dispatchSetBrushSize} />
         <div className={styles.buttonContainer}>
           <CopyToClipboard caveCode={caveCode} data-tip='Undo' />
-          <Button className={styles.iconButton} onClick={this.handleUndo} data-tip='Undo'>
+          <Button
+            className={styles.iconButton}
+            onClick={this.handleUndo}
+            data-tip='Undo'
+          >
             <Undo className={styles.icon} />
           </Button>
-          <Button className={styles.iconButton} onClick={this.handleRedo} data-tip='Redo'>
+          <Button
+            className={styles.iconButton}
+            onClick={this.handleRedo}
+            data-tip='Redo'
+          >
             <Redo className={styles.icon} />
-          </Button>
-          <Button className={styles.iconButton} onClick={this.handlePlay} data-tip='Play'>
-            <Play className={styles.icon} />
           </Button>
           <ReactTooltip effect='solid' delayShow={250} />
         </div>
